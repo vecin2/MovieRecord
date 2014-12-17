@@ -4,8 +4,6 @@ public class Movie {
 	String name;
 
 	public Movie(String name) {
-		if(name==null || name=="")
-			throw new IllegalArgumentException();
 		this.name = name;
 	}
 
@@ -38,11 +36,6 @@ public class Movie {
 			return false;
 		return true;
 	}
-
-	public void rename(String name) {
-		if(name ==null|| name.isEmpty())
-			throw new IllegalArgumentException();
-		this.name = name;
-	}
+	
 
 }

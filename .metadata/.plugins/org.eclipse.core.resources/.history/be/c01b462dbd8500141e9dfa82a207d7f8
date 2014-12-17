@@ -1,0 +1,18 @@
+package tests;
+
+import static org.junit.Assert.*;
+
+import org.junit.Test;
+
+import src.core.Movie;
+
+public class TestMovie {
+	Movie movie;
+
+	@Test
+	public void testRename() {
+		movie =new Movie("Star Trek");
+		movie.rename("Indiana Jones");
+		assertEquals("Indiana Jones", movie.toString());
+	}
+}

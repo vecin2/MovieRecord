@@ -1,0 +1,28 @@
+package tests;
+
+import static org.junit.Assert.*;
+
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.internal.runners.statements.ExpectException;
+import org.junit.rules.ExpectedException;
+
+import src.core.Movie;
+
+public class TestMovie {
+	Movie movie;
+	@Rule
+	public ExpectedException thrown = ExpectedException.none();
+	@Test
+	public void testRename() {
+		movie =new Movie("Star Trek");
+		movie.rename("Indiana Jones");
+		assertEquals("Indiana Jones", movie.toString());
+	}
+	@Test
+	public void testMovieCantBeConstructedWithANullName(){
+		movie = new Movie(null);
+		 
+		thrown.expect(ArrayIndexOutOfBoundsException.class);
+	}
+}

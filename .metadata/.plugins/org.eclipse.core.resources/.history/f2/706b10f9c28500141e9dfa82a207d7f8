@@ -40,7 +40,7 @@ public class Movie {
 	}
 
 	public void rename(String name) {
-		if(name ==null|| name.isEmpty())
+		if(name ==null)
 			throw new IllegalArgumentException();
 		this.name = name;
 	}
