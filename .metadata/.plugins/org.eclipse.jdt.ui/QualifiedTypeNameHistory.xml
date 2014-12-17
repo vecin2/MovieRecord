@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<qualifiedTypeNameHistroy>
+<fullyQualifiedTypeName name="src.AppRunner"/>
+<fullyQualifiedTypeName name="src.GalaxyAgenda"/>
+<fullyQualifiedTypeName name="src.InstructionReader"/>
+<fullyQualifiedTypeName name="java.io.BufferedReader"/>
+<fullyQualifiedTypeName name="src.Instruction"/>
+<fullyQualifiedTypeName name="java.io.PrintStream"/>
+<fullyQualifiedTypeName name="src.GalaxyAgendaApp"/>
+<fullyQualifiedTypeName name="src.QuestionParser"/>
+<fullyQualifiedTypeName name="src.Expression"/>
+<fullyQualifiedTypeName name="src.GalacticAddition"/>
+<fullyQualifiedTypeName name="src.GalacticCurrency"/>
+<fullyQualifiedTypeName name="java.awt.FlowLayout"/>
+<fullyQualifiedTypeName name="javax.swing.JScrollPane"/>
+<fullyQualifiedTypeName name="javax.swing.ScrollPaneConstants"/>
+<fullyQualifiedTypeName name="java.util.ArrayList"/>
+<fullyQualifiedTypeName name="org.mockito.Mock"/>
+<fullyQualifiedTypeName name="src.ui.MovieListEditorView"/>
+<fullyQualifiedTypeName name="org.junit.Before"/>
+<fullyQualifiedTypeName name="javax.swing.JList"/>
+<fullyQualifiedTypeName name="javax.swing.ListModel"/>
+<fullyQualifiedTypeName name="org.junit.Test"/>
+<fullyQualifiedTypeName name="src.ui.SwingMovieListEditorView"/>
+<fullyQualifiedTypeName name="javax.swing.JFrame"/>
+<fullyQualifiedTypeName name="org.netbeans.jemmy.operators.JFrameOperator"/>
+<fullyQualifiedTypeName name="src.core.Movie"/>
+<fullyQualifiedTypeName name="org.netbeans.jemmy.operators.JLabelOperator"/>
+<fullyQualifiedTypeName name="java.util.Vector"/>
+<fullyQualifiedTypeName name="org.netbeans.jemmy.operators.JButtonOperator"/>
+<fullyQualifiedTypeName name="org.netbeans.jemmy.operators.ComponentOperator"/>
+<fullyQualifiedTypeName name="org.netbeans.jemmy.operators.JTextFieldOperator"/>
+<fullyQualifiedTypeName name="javax.swing.JTextField"/>
+<fullyQualifiedTypeName name="javax.swing.JButton"/>
+<fullyQualifiedTypeName name="org.netbeans.jemmy.operators.JListOperator"/>
+<fullyQualifiedTypeName name="src.core.MovieListEditor"/>
+<fullyQualifiedTypeName name="java.awt.event.ActionListener"/>
+</qualifiedTypeNameHistroy>

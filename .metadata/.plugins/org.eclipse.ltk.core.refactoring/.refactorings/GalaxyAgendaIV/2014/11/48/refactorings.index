@@ -1,0 +1,38 @@
+1416863167513	Delete element
+1416863722401	Rename type 'Note'
+1416863743606	Rename method 'addTo'
+1416863870053	Rename local variable 'note'
+1416866636855	Delete element
+1416866723764	Delete element
+1416897528099	Rename method 'ask'
+1416897951352	Change method 'run'
+1416898928289	Rename local variable 'g'
+1416900415233	Change method 'addNote'
+1416901333745	Rename method 'parseGalacticCurrency'
+1416901387310	Rename local variable 'galacticCurrency'
+1417157845991	Extract method 'parseGalacticExpression'
+1417160321973	Extract method 'getStringExpression'
+1417160466754	Rename method 'getStringExpression'
+1417270234062	Extract superclass 'QuestionParser'
+1417270495537	Pull up 'parseGalacticExpression(String)' to 'QuestionParser'
+1417273026052	Rename method 'doParse'
+1417274521428	Rename method 'getStringGalacticCurrency'
+1417274831468	Extract method 'parseGalacticCurrency'
+1417276082319	Move compilation unit
+1417374646108	Rename type 'GalacticRomanPair'
+1417374961620	Extract Class...
+1417375180776	Delete element
+1417376555168	Move compilation unit
+1417380240689	Rename type 'GalacticCurrencyQuestion'
+1417380797985	Rename field 'galacticCurrency'
+1417381710263	Move compilation unit
+1417381731225	Move compilation unit
+1417381782819	Move compilation unit
+1417381864780	Delete element
+1417381897114	Move compilation unit
+1417381910562	Move compilation unit
+1417381921031	Move compilation unit
+1417381943730	Move compilation unit
+1417382014253	Move compilation unit
+1417382422945	Move compilation unit
+1417384865688	Delete element

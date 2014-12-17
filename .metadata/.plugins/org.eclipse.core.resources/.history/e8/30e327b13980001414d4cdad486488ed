@@ -1,0 +1,23 @@
+package src.core;
+
+import java.util.ArrayList;
+import java.util.Vector;
+
+import src.ui.MovieListEditorView;
+
+public class MovieListEditor {
+	MovieListEditorView view;
+
+	public MovieListEditor(ArrayList<Movie> movieList, MovieListEditorView view) {
+		this.view = view;
+		this.view.setMovies(new Vector<Movie>(movieList));
+	}
+
+	public void addMovie() {
+		Movie newMovie = new Movie(vie.getMovieName());
+		
+	}
+
+
+
+}

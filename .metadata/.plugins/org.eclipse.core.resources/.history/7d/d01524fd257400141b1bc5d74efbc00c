@@ -1,0 +1,27 @@
+package src;
+
+import java.text.DecimalFormat;
+
+public class ConversionQuestionAnswerer {
+
+	private ConversionTable conversionTable;
+
+	public ConversionQuestionAnswerer(ConversionTable conversionTable) {
+		this.conversionTable = conversionTable;
+	}
+
+	public String answer(String question) throws InvalidConversionKey {
+		if (question.split(" is ").length < 2) {
+			return "I have no idea what you are talking about";
+		} else if (!question.contains("Credits")) {
+			Galactic g =(Galactic)AgendaParser.parseInstruction(question);
+			return g.getSolvedString(conversionTable);
+		} else {
+			GalacticCurrency galacticCurrency =(GalacticCurrency)AgendaParser.parseInstruction(question);
+			return galacticCurrency.getSolvedString(conversionTable);
+		}
+	}
+
+	
+
+}

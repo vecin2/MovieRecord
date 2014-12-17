@@ -1,0 +1,11 @@
+Add Movie
+Test 7. When the logical layer is asked to add a movie, it should request the required data from the view and
+update the movie list to include a new movie based on the data provided.
+Test 8. The GUI should have a field for the movie name and an add button. It should answer the contents of
+the name field when asked, and request that the logical layer add a movie when the add button is pushed.
+
+It uses an approach in-out, since trigger comes from the GUI but instead of implementing this method first implements the logical layer first.
+Note as well that the listener of the button add dont get any parameter, instead the listener knows about the View and calls the method getMovieName on the View.
+
+Test add movie on MovieListeEditorView, uses mocks to check the view was called with right parameters. Instead we could add a method getDisplayed list on the View.
+Then we could check the displayed list is correctly. I believe this would be a more classic TDD approach, rather than the current mockist one.
