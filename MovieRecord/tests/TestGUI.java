@@ -18,6 +18,7 @@ public class TestGUI {
 	private Movie starTrek = null;
 	private Movie stargate = null;
 	private ArrayList<Movie> movieList;
+	private MovieListEditor editor;
 
 	@Before
 	public void setUp() {
@@ -32,26 +33,55 @@ public class TestGUI {
 		movieList.add(starWars);
 		movieList.add(starTrek);
 		movieList.add(stargate);
+		mockView = mock(MovieListEditorView.class);
+		editor = new MovieListEditor(movieList, mockView);
 	}
 
 	@Test
 	public void testConstructorCallsViewWithListToDisplay() {
-		mockView = mock(MovieListEditorView.class);
-		MovieListEditor editor = new MovieListEditor(movieList, mockView);
 		verify(mockView).setMovies(movies);
 	}
-	/*Test 7. When the logical layer is asked to add a movie, it should request the required data from the view and
-	update the movie list to include a new movie based on the data provided.*/
+
+	/*
+	 * Test 7. When the logical layer is asked to add a movie, it should request
+	 * the required data from the view and update the movie list to include a
+	 * new movie based on the data provided.
+	 */
 	@Test
-	public void testAdd(){
-		mockView = mock(MovieListEditorView.class);
-	    when(mockView.getMovieName()).thenReturn("New Movie");
-		MovieListEditor editor = new MovieListEditor(movieList, mockView);
+	public void testAdd() {
+		when(mockView.getMovieName()).thenReturn("New Movie");
 		verify(mockView).setMovies(movies);
 
 		editor.addMovie();
-	    
+
 		movies.add(new Movie("New Movie"));
-	    verify(mockView).setMovies(movies);
+		verify(mockView).setMovies(movies);
+	}
+
+	/*
+	 * Test 14. Indicating, to the logical layer, that a selection is made from
+	 * the list causes the view to be given a value for the name field, that is,
+	 * the selected movie's name.
+	 */
+	/* Rewrite to: */
+	@Test
+	public void testWhenMovieIsSelectedCallsSetMovieNameOnViewWithTheNameOfSelectedMovie() {
+		editor.selectMovie(1);
+		verify(mockView).setMovieName("Star Trek");
+	}
+	/*Test 16: When an update is requested, the selected movie is renamed to
+	*whatever is answered by the view as the new name
+	*/
+	@Test
+	public void testUpdate(){
+		when(mockView.getMovieName()).thenReturn("New Movie");
+		movies = new Vector<Movie>();
+		movies.add(starWars);
+		Movie newMovie = new  Movie("New Movie");
+		movies.add(newMovie);
+		movies.add(stargate);
+		editor.selectMovie(1);
+		editor.updateMovie();
+		verify(mockView).setMovies(movies);
 	}
 }

@@ -20,10 +20,16 @@ public class MovieListEditor {
 		Movie newMovie = new Movie(view.getMovieName());
 		movieList.add(newMovie);
 		this.view.setMovies(new Vector<Movie>(movieList));
-		
-		
+
 	}
 
+	public void selectMovie(int i) {
+		this.view.setMovieName(this.movieList.get(i).getName());
+	}
 
+	public void updateMovie() {
+		// TODO Auto-generated method stub
+		
+	}
 
 }

@@ -9,4 +9,5 @@ public interface MovieListEditorView {
 	void setMovies(Vector<Movie> movieList);
 	String getMovieName();
 	void setEditor(MovieListEditor anEditor);
+	void setMovieName(String movieName);
 }

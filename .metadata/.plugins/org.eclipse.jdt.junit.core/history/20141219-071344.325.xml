@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?><testrun name="TestSwingMovieListEditorView" project="MovieRecord" tests="3" started="3" failures="0" errors="0" ignored="0">
+  <testsuite name="tests.TestSwingMovieListEditorView" time="0.905">
+    <testcase name="testWhenSelectFromTheListFillsTheNameFieldWithTheSelectedMovie" classname="tests.TestSwingMovieListEditorView" time="0.578"/>
+    <testcase name="testAdding" classname="tests.TestSwingMovieListEditorView" time="0.224"/>
+    <testcase name="testListContents" classname="tests.TestSwingMovieListEditorView" time="0.103"/>
+  </testsuite>
+</testrun>

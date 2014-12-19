@@ -19,6 +19,12 @@ For this test to pass the logical class need to be implemented.
 I would probably have done a mock here, and in the previous test I would have done a check on the number of elements of the list. The reason why, is because this 
 class seems to me the most outer class, the class that receive the event that triggers the action, and therefore I would start from there.
 
+#14 and #15
+14 checks that the editor calls "setMovieName" on the view when selectItem is called.
+15 checks that when the list is clicked the textfield is populated with the movie name
+15 is more and end to end test, or at least an integration test between the logical and the view classes.
+If 15 works 14 has to work. 14 is a unit test for the editor class.
+
 Retrospective
 we implemented a simple GUI to expose the functionality we built.
 This is an important point. It's imperative to develop the system in as many wide-ranging slices as possible. Even after the first story
