@@ -7,13 +7,18 @@ import src.ui.MovieListEditorView;
 
 public class MovieListEditor {
 	MovieListEditorView view;
-	ArrayList<Movie> movieList;
+	private ArrayList<Movie> movieList;
+	private Movie selectedMovie;
 
 	public MovieListEditor(ArrayList<Movie> movieList, MovieListEditorView view) {
 		this.movieList = movieList;
 		this.view = view;
-		this.view.setMovies(new Vector<Movie>(this.movieList));
+		updateMovieList();
 		this.view.setEditor(this);
+	}
+
+	private void updateMovieList() {
+		this.view.setMovies(new Vector<Movie>(this.movieList));
 	}
 
 	public void addMovie() {
@@ -24,12 +29,19 @@ public class MovieListEditor {
 	}
 
 	public void selectMovie(int i) {
-		this.view.setMovieName(this.movieList.get(i).getName());
+		if (i == -1) {
+			selectedMovie = null;
+		} else {
+			view.setMovieName(this.movieList.get(i).getName());
+			selectedMovie = movieList.get(i);
+		}
 	}
 
 	public void updateMovie() {
-		// TODO Auto-generated method stub
-		
+		if (selectedMovie != null) {
+			selectedMovie.rename(view.getMovieName());
+			view.setMovies(new Vector<Movie>(movieList));
+		}
 	}
 
 }

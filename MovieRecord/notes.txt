@@ -29,3 +29,10 @@ Retrospective
 we implemented a simple GUI to expose the functionality we built.
 This is an important point. It's imperative to develop the system in as many wide-ranging slices as possible. Even after the first story
 you should have something to show.
+
+
+#16 learning mockito
+This test fail because of this:
+verify(mockClass).method(list)
+
+Changing the an element of the list

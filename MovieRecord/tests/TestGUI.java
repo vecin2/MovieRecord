@@ -33,12 +33,12 @@ public class TestGUI {
 		movieList.add(starWars);
 		movieList.add(starTrek);
 		movieList.add(stargate);
-		mockView = mock(MovieListEditorView.class);
-		editor = new MovieListEditor(movieList, mockView);
 	}
 
 	@Test
 	public void testConstructorCallsViewWithListToDisplay() {
+		mockView = mock(MovieListEditorView.class);
+		editor = new MovieListEditor(movieList, mockView);
 		verify(mockView).setMovies(movies);
 	}
 
@@ -49,6 +49,8 @@ public class TestGUI {
 	 */
 	@Test
 	public void testAdd() {
+		mockView = mock(MovieListEditorView.class);
+		editor = new MovieListEditor(movieList, mockView);
 		when(mockView.getMovieName()).thenReturn("New Movie");
 		verify(mockView).setMovies(movies);
 
@@ -66,6 +68,8 @@ public class TestGUI {
 	/* Rewrite to: */
 	@Test
 	public void testWhenMovieIsSelectedCallsSetMovieNameOnViewWithTheNameOfSelectedMovie() {
+		mockView = mock(MovieListEditorView.class);
+		editor = new MovieListEditor(movieList, mockView);
 		editor.selectMovie(1);
 		verify(mockView).setMovieName("Star Trek");
 	}
@@ -74,14 +78,21 @@ public class TestGUI {
 	*/
 	@Test
 	public void testUpdate(){
+		mockView = mock(MovieListEditorView.class);
+		editor = new MovieListEditor(movieList, mockView);
+		
 		when(mockView.getMovieName()).thenReturn("New Movie");
-		movies = new Vector<Movie>();
-		movies.add(starWars);
+		verify(mockView).setMovies(movies);
+		
+		Vector<Movie >newMovies = new Vector<Movie>();
+		newMovies.add(starWars);
 		Movie newMovie = new  Movie("New Movie");
-		movies.add(newMovie);
-		movies.add(stargate);
+		newMovies.add(newMovie);
+		newMovies.add(stargate);
+		
 		editor.selectMovie(1);
 		editor.updateMovie();
-		verify(mockView).setMovies(movies);
+		
+		verify(mockView, times(2)).setMovies(newMovies);
 	}
 }

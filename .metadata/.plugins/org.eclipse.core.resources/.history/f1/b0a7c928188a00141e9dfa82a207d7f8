@@ -1,0 +1,19 @@
+package tests;
+
+import static org.junit.Assert.*;
+
+import java.util.ArrayList;
+
+import org.junit.Test;
+
+import src.core.Movie;
+import static org.mockito.Mockito;
+public class TestMockito {
+
+	@Test
+	public void test() {
+		ArrayList<Movie> mockedArray = mock(mockArrayList.class);
+		verify(aClass).method(new Movie("Title"));
+	}
+
+}

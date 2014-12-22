@@ -107,9 +107,41 @@ public class TestSwingMovieListEditorView {
 		MovieListEditor editor = new MovieListEditor(movieList,
 				(SwingMovieListEditorView) mainWindow.getWindow());
 		JListOperator listOperator = new JListOperator(mainWindow);
-		listOperator.clickOnItem(1, 1);
 		JTextFieldOperator newMovieField = new JTextFieldOperator(mainWindow);
+		listOperator.clickOnItem(0, 1);
+		assertEquals("wrong text from selection", "Star Wars",
+				newMovieField.getText());
+		listOperator.clickOnItem(1, 1);
 		assertEquals("wrong text from selection", "Star Trek",
 				newMovieField.getText());
+		listOperator.clickOnItem(2, 1);
+		assertEquals("wrong text from selection", "Stargate",
+				newMovieField.getText());
+	}
+
+	/*
+	 * Test 17: When the update button is pushed, the selected movie is renamed
+	 * to whatever is in the name field
+	 */
+	@Test
+	public void testUpdate() {
+		mainWindow = new JFrameOperator("Movie List");
+		MovieListEditor editor = new MovieListEditor(movieList,
+				(SwingMovieListEditorView) mainWindow.getWindow());
+		JListOperator movieListOperator = new JListOperator(mainWindow);
+		JTextFieldOperator movieNameTxtField = new JTextFieldOperator(mainWindow);
+		JButtonOperator updateBtn = new JButtonOperator(mainWindow,"Update");
+
+		movieListOperator.clickOnItem(1, 1);
+		movieNameTxtField.setText("Star Trek (updated)");
+		
+		updateBtn.doClick();
+		
+		movieListOperator.clickOnItem(0, 1);
+		assertEquals("Star Wars",movieNameTxtField.getText());
+		movieListOperator.clickOnItem(2, 1);
+		assertEquals("Stargate",movieNameTxtField.getText());
+		movieListOperator.clickOnItem(1, 1);
+		assertEquals("Star Trek (updated)",movieNameTxtField.getText());
 	}
 }

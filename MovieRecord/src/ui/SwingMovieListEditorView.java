@@ -3,6 +3,7 @@ package src.ui;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.Vector;
 
 import javax.swing.JButton;
@@ -28,7 +29,7 @@ public class SwingMovieListEditorView extends JFrame implements
 	private static final long serialVersionUID = 1L;
 	private JList<Movie> movieList = null;
 	private JTextField newMovieTxt;
-	private MovieListEditor editor=null;
+	private MovieListEditor editor = null;
 
 	public SwingMovieListEditorView() {
 		super();
@@ -37,6 +38,12 @@ public class SwingMovieListEditorView extends JFrame implements
 	public SwingMovieListEditorView(String title) {
 		super(title);
 	}
+
+	public static void main (String[] args){
+	SwingMovieListEditorView window = SwingMovieListEditorView.start();
+	ArrayList<Movie> movieList = new ArrayList<Movie>();
+	MovieListEditor editor = new MovieListEditor(movieList, window);
+}
 
 	@Override
 	public void setMovies(Vector<Movie> movies) {
@@ -49,18 +56,31 @@ public class SwingMovieListEditorView extends JFrame implements
 		initList();
 		initNewMovieTextField();
 		initAddBtn();
+		initUpdateBtn();
 		pack();
 	}
 
 	private void initAddBtn() {
 		JButton addBtn = new JButton("Add");
-		addBtn.addActionListener(new ActionListener() {			
+		addBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				editor.addMovie();
-			}	
+			}
 		});
 		getContentPane().add(addBtn);
+	}
+
+	private void initUpdateBtn() {
+		JButton updateBtn = new JButton("Update");
+		getContentPane().add(updateBtn);
+		updateBtn.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				editor.updateMovie();
+			}
+		});
+
 	}
 
 	private void initNewMovieTextField() {
@@ -72,13 +92,13 @@ public class SwingMovieListEditorView extends JFrame implements
 		movieList = new JList<Movie>(new Vector<Movie>());
 		movieList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		movieList.addListSelectionListener(new ListSelectionListener() {
-			
+
 			@Override
 			public void valueChanged(ListSelectionEvent e) {
-				editor.selectMovie(e.getFirstIndex());
+				editor.selectMovie(movieList.getSelectedIndex());
 			}
 		});
-		
+
 		JScrollPane scroller = new JScrollPane(movieList,
 				ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
 				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
@@ -89,10 +109,11 @@ public class SwingMovieListEditorView extends JFrame implements
 		getContentPane().setLayout(new FlowLayout());
 	}
 
-	public static void start() {
+	public static SwingMovieListEditorView start() {
 		SwingMovieListEditorView window = new SwingMovieListEditorView();
 		window.init();
 		window.setVisible(true);
+		return window;
 	}
 
 	@Override
@@ -108,7 +129,7 @@ public class SwingMovieListEditorView extends JFrame implements
 	@Override
 	public void setMovieName(String movieName) {
 		newMovieTxt.setText(movieName);
-		
+
 	}
 
 }
