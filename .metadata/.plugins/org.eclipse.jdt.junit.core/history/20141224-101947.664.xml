@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?><testrun name="Rerun Rerun tests (1) (Failed Tests first)" project="MovieRecord" tests="20" started="20" failures="0" errors="0" ignored="0">
+  <testsuite name="tests.TestSwingMovieListEditorView" time="1.573">
+    <testcase name="testAddingADuplicateMovieDisplaysErrorDialog" classname="tests.TestSwingMovieListEditorView" time="0.773"/>
+    <testcase name="testWhenSelectFromTheListFillsTheNameFieldWithTheSelectedMovie" classname="tests.TestSwingMovieListEditorView" time="0.206"/>
+    <testcase name="testAdding" classname="tests.TestSwingMovieListEditorView" time="0.284"/>
+    <testcase name="testListContents" classname="tests.TestSwingMovieListEditorView" time="0.021"/>
+    <testcase name="testUpdate" classname="tests.TestSwingMovieListEditorView" time="0.289"/>
+  </testsuite>
+  <testsuite name="tests.TestMovie" time="0.012">
+    <testcase name="testMovieCantBeConstructedWithANullName" classname="tests.TestMovie" time="0.009"/>
+    <testcase name="testMovieCantBeConstructedWithAEmptyName" classname="tests.TestMovie" time="0.001"/>
+    <testcase name="testMovieCantBeRenamedWithANullName" classname="tests.TestMovie" time="0.0"/>
+    <testcase name="testMovieCantBeRenamedWithAEmptyName" classname="tests.TestMovie" time="0.001"/>
+    <testcase name="testRename" classname="tests.TestMovie" time="0.001"/>
+  </testsuite>
+  <testsuite name="tests.TestGUI" time="0.116">
+    <testcase name="testConstructorCallsViewWithListToDisplay" classname="tests.TestGUI" time="0.11"/>
+    <testcase name="testAdd" classname="tests.TestGUI" time="0.003"/>
+    <testcase name="testWhenAddDuplicateMovieItInformsTheView" classname="tests.TestGUI" time="0.001"/>
+    <testcase name="testWhenMovieIsSelectedCallsSetMovieNameOnViewWithTheNameOfSelectedMovie" classname="tests.TestGUI" time="0.001"/>
+    <testcase name="testWhenUpdateDuplicateMovieItInformsTheView" classname="tests.TestGUI" time="0.0"/>
+    <testcase name="testUpdate" classname="tests.TestGUI" time="0.001"/>
+  </testsuite>
+  <testsuite name="tests.TestMockito" time="0.017">
+    <testcase name="testWhenParameterPassedTwiceWithDifferentValuesReturnTimesTwoWhenCheckingBySecondValue" classname="tests.TestMockito" time="0.017"/>
+  </testsuite>
+  <testsuite name="tests.TestMovieList" time="0.001">
+    <testcase name="testWhenRenameMovieNameIsChanged" classname="tests.TestMovieList" time="0.001"/>
+    <testcase name="test" classname="tests.TestMovieList" time="0.0"/>
+    <testcase name="testWhenRenameMovieNameEndsInDuplicatedThrowsDuplicatedException" classname="tests.TestMovieList" time="0.0"/>
+  </testsuite>
+</testrun>

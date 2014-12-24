@@ -3,14 +3,15 @@ package src.core;
 import java.util.ArrayList;
 import java.util.Vector;
 
+import src.core.exceptions.DuplicateMovieException;
 import src.ui.MovieListEditorView;
 
 public class MovieListEditor {
 	MovieListEditorView view;
-	private ArrayList<Movie> movieList;
+	private MovieList movieList;
 	private Movie selectedMovie;
 
-	public MovieListEditor(ArrayList<Movie> movieList, MovieListEditorView view) {
+	public MovieListEditor(MovieList movieList, MovieListEditorView view) {
 		this.movieList = movieList;
 		this.view = view;
 		updateMovieList();
@@ -18,13 +19,17 @@ public class MovieListEditor {
 	}
 
 	private void updateMovieList() {
-		this.view.setMovies(new Vector<Movie>(this.movieList));
+		this.view.setMovies(new Vector<Movie>(this.movieList.getMovies()));
 	}
 
 	public void addMovie() {
 		Movie newMovie = new Movie(view.getMovieName());
-		movieList.add(newMovie);
-		this.view.setMovies(new Vector<Movie>(movieList));
+		try {
+			movieList.add(newMovie);
+		} catch (DuplicateMovieException e) {
+			view.handleDuplicateMovieException(view.getMovieName());
+		}
+		updateMovieList();
 
 	}
 
@@ -39,9 +44,12 @@ public class MovieListEditor {
 
 	public void updateMovie() {
 		if (selectedMovie != null) {
-			selectedMovie.rename(view.getMovieName());
-			view.setMovies(new Vector<Movie>(movieList));
+			try {
+				movieList.rename(selectedMovie, view.getMovieName());
+			} catch (DuplicateMovieException e) {
+				view.handleDuplicateMovieException(view.getMovieName());
+			}
+			updateMovieList();
 		}
 	}
-
 }

@@ -10,4 +10,5 @@ public interface MovieListEditorView {
 	String getMovieName();
 	void setEditor(MovieListEditor anEditor);
 	void setMovieName(String movieName);
+	void handleDuplicateMovieException(String movieName);
 }

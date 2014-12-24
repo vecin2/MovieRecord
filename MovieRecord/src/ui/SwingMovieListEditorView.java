@@ -7,8 +7,10 @@ import java.util.ArrayList;
 import java.util.Vector;
 
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
@@ -19,6 +21,7 @@ import javax.swing.event.ListSelectionListener;
 import org.netbeans.jemmy.operators.JTextFieldOperator;
 
 import src.core.Movie;
+import src.core.MovieList;
 import src.core.MovieListEditor;
 
 public class SwingMovieListEditorView extends JFrame implements
@@ -39,11 +42,11 @@ public class SwingMovieListEditorView extends JFrame implements
 		super(title);
 	}
 
-	public static void main (String[] args){
-	SwingMovieListEditorView window = SwingMovieListEditorView.start();
-	ArrayList<Movie> movieList = new ArrayList<Movie>();
-	MovieListEditor editor = new MovieListEditor(movieList, window);
-}
+	public static void main(String[] args) {
+		SwingMovieListEditorView window = SwingMovieListEditorView.start();
+		MovieList movieList = new MovieList();
+		MovieListEditor editor = new MovieListEditor(movieList, window);
+	}
 
 	@Override
 	public void setMovies(Vector<Movie> movies) {
@@ -130,6 +133,13 @@ public class SwingMovieListEditorView extends JFrame implements
 	public void setMovieName(String movieName) {
 		newMovieTxt.setText(movieName);
 
+	}
+
+	@Override
+	public void handleDuplicateMovieException(String movieName) {
+		JOptionPane.showMessageDialog(this,
+				"Adding this movie will result in a duplicate movie",
+				"Duplicate Movie", JOptionPane.ERROR_MESSAGE);
 	}
 
 }

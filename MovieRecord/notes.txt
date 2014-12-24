@@ -30,6 +30,10 @@ we implemented a simple GUI to expose the functionality we built.
 This is an important point. It's imperative to develop the system in as many wide-ranging slices as possible. Even after the first story
 you should have something to show.
 
+#23
+Learn that string == string1, does not always work. In the previous test it worked, but it didn't work in this one.
+Use instead string.equals(string1)
+
 
 #16 learning mockito
 This test fail because of this:

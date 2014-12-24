@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?><testrun name="tests (1)" project="MovieRecord" tests="15" started="15" failures="0" errors="0" ignored="0">
+  <testsuite name="tests.TestSwingMovieListEditorView" time="1.255">
+    <testcase name="testWhenSelectFromTheListFillsTheNameFieldWithTheSelectedMovie" classname="tests.TestSwingMovieListEditorView" time="0.58"/>
+    <testcase name="testAdding" classname="tests.TestSwingMovieListEditorView" time="0.218"/>
+    <testcase name="testListContents" classname="tests.TestSwingMovieListEditorView" time="0.109"/>
+    <testcase name="testUpdate" classname="tests.TestSwingMovieListEditorView" time="0.348"/>
+  </testsuite>
+  <testsuite name="tests.TestMovie" time="0.007">
+    <testcase name="testMovieCantBeConstructedWithANullName" classname="tests.TestMovie" time="0.005"/>
+    <testcase name="testMovieCantBeConstructedWithAEmptyName" classname="tests.TestMovie" time="0.001"/>
+    <testcase name="testMovieCantBeRenamedWithANullName" classname="tests.TestMovie" time="0.0"/>
+    <testcase name="testMovieCantBeRenamedWithAEmptyName" classname="tests.TestMovie" time="0.0"/>
+    <testcase name="testRename" classname="tests.TestMovie" time="0.001"/>
+  </testsuite>
+  <testsuite name="tests.TestGUI" time="0.125">
+    <testcase name="testConstructorCallsViewWithListToDisplay" classname="tests.TestGUI" time="0.119"/>
+    <testcase name="testAdd" classname="tests.TestGUI" time="0.005"/>
+    <testcase name="testWhenMovieIsSelectedCallsSetMovieNameOnViewWithTheNameOfSelectedMovie" classname="tests.TestGUI" time="0.0"/>
+    <testcase name="testUpdate" classname="tests.TestGUI" time="0.001"/>
+  </testsuite>
+  <testsuite name="tests.TestMockito" time="0.017">
+    <testcase name="testWhenParameterPassedTwiceWithDifferentValuesReturnTimesTwoWhenCheckingBySecondValue" classname="tests.TestMockito" time="0.017"/>
+  </testsuite>
+  <testsuite name="tests.TestMovieList" time="0.0">
+    <testcase name="test" classname="tests.TestMovieList" time="0.0"/>
+  </testsuite>
+</testrun>

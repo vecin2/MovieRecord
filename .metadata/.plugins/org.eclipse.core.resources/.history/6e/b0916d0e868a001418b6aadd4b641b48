@@ -1,0 +1,20 @@
+package src.core;
+
+import java.util.ArrayList;
+import java.util.Collection;
+
+import src.core.exceptions.DuplicateMovieException;
+
+public class MovieList {
+
+	ArrayList<Movie> movies = new ArrayList<Movie>();
+
+	public void add(Movie movie) throws DuplicateMovieException {
+		movies.add(movie);
+	}
+
+	public ArrayList<Movie> getMovies() {
+		return movies;
+	}
+
+}

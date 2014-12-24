@@ -1,0 +1,9 @@
+package src.core;
+
+import java.util.ArrayList;
+
+public class MovieList  {
+	
+ArrayList <Movie> movies = new ArrayList<Movie> movies;
+	
+}
