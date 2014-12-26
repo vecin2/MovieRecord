@@ -39,4 +39,7 @@ Use instead string.equals(string1)
 This test fail because of this:
 verify(mockClass).method(list)
 
-Changing the an element of the list
+#32
+The book is not testing that the movie rate has been updated. Again it test, that the logical layer call the method on the view "getRatingField". I have decided
+to add a method getMovie, to the editor that allows me to a get a movie and assert on it. 
+
