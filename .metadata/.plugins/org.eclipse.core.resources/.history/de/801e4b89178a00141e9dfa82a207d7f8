@@ -1,0 +1,31 @@
+Add Movie
+Test 7. When the logical layer is asked to add a movie, it should request the required data from the view and
+update the movie list to include a new movie based on the data provided.
+Test 8. The GUI should have a field for the movie name and an add button. It should answer the contents of
+the name field when asked, and request that the logical layer add a movie when the add button is pushed.
+
+It uses an approach in-out, since trigger comes from the GUI but instead of implementing this method first implements the logical layer first.
+Note as well that the listener of the button add dont get any parameter, instead the listener knows about the View and calls the method getMovieName on the View.
+
+#7
+Test add movie on MovieListeEditorView, uses mocks to check the view was called with right parameters. Instead we could add a method getDisplayed list on the View.
+Then we could check the displayed list is correctly. I believe this would be a more classic TDD approach, rather than the current mockist one.
+
+#8
+The GUI should have a field for the movie name and an add button. It should answer the contents of the name field when asked, and request that the logical
+layer add a movie when the add button is pushed.
+Here it doesnt test it calls the logical obj method "add". Instead does the endToEnd test and it tests directly that the list have the right number of movies added.
+For this test to pass the logical class need to be implemented.
+I would probably have done a mock here, and in the previous test I would have done a check on the number of elements of the list. The reason why, is because this 
+class seems to me the most outer class, the class that receive the event that triggers the action, and therefore I would start from there.
+
+#14 and #15
+14 checks that the editor calls "setMovieName" on the view when selectItem is called.
+15 checks that when the list is clicked the textfield is populated with the movie name
+15 is more and end to end test, or at least an integration test between the logical and the view classes.
+If 15 works 14 has to work. 14 is a unit test for the editor class.
+
+Retrospective
+we implemented a simple GUI to expose the functionality we built.
+This is an important point. It's imperative to develop the system in as many wide-ranging slices as possible. Even after the first story
+you should have something to show.

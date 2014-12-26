@@ -1,0 +1,4 @@
+1418369987159	Extract method 'setLayout'
+1418370005320	Extract method 'initList'
+1418370038866	Extract method 'initNewMovieTextField'
+1418370053084	Extract method 'initAddBtn'

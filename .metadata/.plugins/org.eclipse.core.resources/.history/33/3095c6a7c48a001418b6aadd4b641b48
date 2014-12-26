@@ -1,0 +1,44 @@
+package src.core;
+
+import java.util.ArrayList;
+
+import src.core.exceptions.DuplicateMovieException;
+
+public class MovieList {
+
+	ArrayList<Movie> movies = new ArrayList<Movie>();
+
+	public boolean add(Movie movie) throws DuplicateMovieException {
+		if (movies.contains(movie))
+			throw new DuplicateMovieException("Trying to add a duplicate movie");
+		return movies.add(movie);
+	}
+
+	public ArrayList<Movie> getMovies() {
+		return movies;
+	}
+
+	public Movie get(int i) {
+		return movies.get(i);
+	}
+
+	public static MovieList create(String movieName) {
+		MovieList movieList = new MovieList();
+		// when creating a list it can not throw a duplication movie Exception
+		try {
+			movieList.add(new Movie(movieName));
+		} catch (DuplicateMovieException e) {
+			e.printStackTrace();
+		}
+		return movieList;
+	}
+
+	public boolean add(String movieName) throws DuplicateMovieException {
+		return add(new Movie(movieName));
+	}
+
+	public void rename(String titleToReplace, String replacerTitle) {
+		getByName().rename(replacerTitle);
+	}
+
+}

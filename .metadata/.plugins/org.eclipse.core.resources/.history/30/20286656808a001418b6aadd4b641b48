@@ -1,0 +1,20 @@
+package tests;
+
+import org.junit.Test;
+
+import src.core.Movie;
+import src.core.MovieList;
+
+public class TestMovieList {
+
+	/*
+	 * Test 18. Attempting to add a duplicate movie throws an exception and
+	 * leaves the list unchanged
+	 */
+	@Test(Expected=DuplicateMovieException.class)
+	public void test(){
+	 MovieList movieList = new MovieList();
+	 movieList.add(new Movie("Braveheart"));
+	 movieList.add(new Movie("Braveheart"));
+	}
+}

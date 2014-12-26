@@ -1,0 +1,66 @@
+package src.ui;
+
+import java.awt.FlowLayout;
+import java.util.Vector;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JList;
+import javax.swing.JScrollPane;
+import javax.swing.JTextField;
+import javax.swing.ScrollPaneConstants;
+
+import org.netbeans.jemmy.operators.JTextFieldOperator;
+
+import src.core.Movie;
+
+public class SwingMovieListEditorView extends JFrame implements
+		MovieListEditorView {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private JList<Movie> movieList = null;
+
+	public SwingMovieListEditorView() {
+		super();
+	}
+
+	public SwingMovieListEditorView(String title) {
+		super(title);
+	}
+
+	@Override
+	public void setMovies(Vector<Movie> movies) {
+		movieList.setListData(movies);
+	}
+
+	public void init() {
+		setTitle("Movie List");
+		getContentPane().setLayout(new FlowLayout());
+		movieList = new JList<Movie>(new Vector<Movie>());
+		JScrollPane scroller = new JScrollPane(movieList,
+				ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
+				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		getContentPane().add(scroller);
+		
+		JTextField newMovieTxt = new JTextField();
+		getContentPane().add(newMovieTxt);
+		JButton addBtn = new JButton("Add");
+		getContentPane().add(addBtn);
+		pack();
+	}
+
+	public static void start() {
+		SwingMovieListEditorView window = new SwingMovieListEditorView();
+		window.init();
+		window.setVisible(true);
+	}
+
+	@Override
+	public String getMovieName() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}

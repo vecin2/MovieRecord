@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?><testrun name="tests (1)" project="MovieRecord" tests="16" started="16" failures="0" errors="0" ignored="0">
+  <testsuite name="tests.TestSwingMovieListEditorView" time="1.36">
+    <testcase name="testWhenSelectFromTheListFillsTheNameFieldWithTheSelectedMovie" classname="tests.TestSwingMovieListEditorView" time="0.55"/>
+    <testcase name="testAdding" classname="tests.TestSwingMovieListEditorView" time="0.363"/>
+    <testcase name="testListContents" classname="tests.TestSwingMovieListEditorView" time="0.123"/>
+    <testcase name="testUpdate" classname="tests.TestSwingMovieListEditorView" time="0.324"/>
+  </testsuite>
+  <testsuite name="tests.TestMovie" time="0.009">
+    <testcase name="testMovieCantBeConstructedWithANullName" classname="tests.TestMovie" time="0.007"/>
+    <testcase name="testMovieCantBeConstructedWithAEmptyName" classname="tests.TestMovie" time="0.001"/>
+    <testcase name="testMovieCantBeRenamedWithANullName" classname="tests.TestMovie" time="0.0"/>
+    <testcase name="testMovieCantBeRenamedWithAEmptyName" classname="tests.TestMovie" time="0.0"/>
+    <testcase name="testRename" classname="tests.TestMovie" time="0.001"/>
+  </testsuite>
+  <testsuite name="tests.TestGUI" time="0.13">
+    <testcase name="testConstructorCallsViewWithListToDisplay" classname="tests.TestGUI" time="0.125"/>
+    <testcase name="testAdd" classname="tests.TestGUI" time="0.004"/>
+    <testcase name="testWhenMovieIsSelectedCallsSetMovieNameOnViewWithTheNameOfSelectedMovie" classname="tests.TestGUI" time="0.001"/>
+    <testcase name="testUpdate" classname="tests.TestGUI" time="0.0"/>
+  </testsuite>
+  <testsuite name="tests.TestMockito" time="0.021">
+    <testcase name="testWhenParameterPassedTwiceWithDifferentValuesReturnTimesTwoWhenCheckingBySecondValue" classname="tests.TestMockito" time="0.021"/>
+  </testsuite>
+  <testsuite name="tests.TestMovieList" time="0.001">
+    <testcase name="testWhenRenameMovieNameIsChanged" classname="tests.TestMovieList" time="0.0"/>
+    <testcase name="test" classname="tests.TestMovieList" time="0.001"/>
+  </testsuite>
+</testrun>

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?><testrun name="tests (1)" project="MovieRecord" tests="14" started="14" failures="1" errors="0" ignored="0">
+  <testsuite name="tests.TestSwingMovieListEditorView" time="1.225">
+    <testcase name="testWhenSelectFromTheListFillsTheNameFieldWithTheSelectedMovie" classname="tests.TestSwingMovieListEditorView" time="0.574"/>
+    <testcase name="testAdding" classname="tests.TestSwingMovieListEditorView" time="0.273"/>
+    <testcase name="testListContents" classname="tests.TestSwingMovieListEditorView" time="0.11"/>
+    <testcase name="testUpdate" classname="tests.TestSwingMovieListEditorView" time="0.268">
+      <failure>
+        <expected>Star Trek (updated)</expected>
+        <actual>Start Trek (updated)</actual>org.junit.ComparisonFailure: expected:&lt;Star[] Trek (updated)&gt; but was:&lt;Star[t] Trek (updated)&gt;
+	at org.junit.Assert.assertEquals(Assert.java:115)
+	at org.junit.Assert.assertEquals(Assert.java:144)
+	at tests.TestSwingMovieListEditorView.testUpdate(TestSwingMovieListEditorView.java:145)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:47)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:44)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:27)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:271)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:70)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:50)
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:238)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:63)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:236)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:53)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:229)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:309)
+	at org.eclipse.jdt.internal.junit4.runner.JUnit4TestReference.run(JUnit4TestReference.java:50)
+	at org.eclipse.jdt.internal.junit.runner.TestExecution.run(TestExecution.java:38)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:467)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:683)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.run(RemoteTestRunner.java:390)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.main(RemoteTestRunner.java:197)
+
+</failure>
+    </testcase>
+  </testsuite>
+  <testsuite name="tests.TestMovie" time="0.007">
+    <testcase name="testMovieCantBeConstructedWithANullName" classname="tests.TestMovie" time="0.005"/>
+    <testcase name="testMovieCantBeConstructedWithAEmptyName" classname="tests.TestMovie" time="0.0"/>
+    <testcase name="testMovieCantBeRenamedWithANullName" classname="tests.TestMovie" time="0.0"/>
+    <testcase name="testMovieCantBeRenamedWithAEmptyName" classname="tests.TestMovie" time="0.001"/>
+    <testcase name="testRename" classname="tests.TestMovie" time="0.001"/>
+  </testsuite>
+  <testsuite name="tests.TestGUI" time="0.126">
+    <testcase name="testConstructorCallsViewWithListToDisplay" classname="tests.TestGUI" time="0.121"/>
+    <testcase name="testAdd" classname="tests.TestGUI" time="0.003"/>
+    <testcase name="testWhenMovieIsSelectedCallsSetMovieNameOnViewWithTheNameOfSelectedMovie" classname="tests.TestGUI" time="0.001"/>
+    <testcase name="testUpdate" classname="tests.TestGUI" time="0.001"/>
+  </testsuite>
+  <testsuite name="tests.TestMockito" time="0.018">
+    <testcase name="testWhenParameterPassedTwiceWithDifferentValuesReturnTimesTwoWhenCheckingBySecondValue" classname="tests.TestMockito" time="0.018"/>
+  </testsuite>
+</testrun>
