@@ -2,6 +2,7 @@ package src.ui;
 
 import java.util.Vector;
 
+import src.core.Category;
 import src.core.Movie;
 import src.core.MovieListEditor;
 
@@ -13,4 +14,5 @@ public interface MovieListEditorView {
 	void handleDuplicateMovieException(String movieName);
 	void setRatingField(int rating);
 	int getRatingField();
+	Category getCategoryField();
 }

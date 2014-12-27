@@ -5,16 +5,22 @@ import src.core.exceptions.UnratedMovieException;
 public class Movie {
 	String name;
 	int rating;
+	private Category category;
 
 	public Movie(String name) {
 		this(name, -1);
 	}
 
 	public Movie(String name, int rate) {
+		this(name, Category.UNCATEGORIZED, rate);
+	}
+
+	public Movie(String name, Category category, int rating) {
 		if (name == null || name.equals(""))
 			throw new IllegalArgumentException();
 		this.name = name;
-		this.rating = rate;
+		this.rating = rating;
+		this.category = category;
 	}
 
 	@Override
@@ -69,5 +75,9 @@ public class Movie {
 
 	public void setRating(int rating) {
 		this.rating = rating;
+	}
+
+	public Category getCategory() {
+		return category;
 	}
 }

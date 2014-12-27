@@ -6,7 +6,9 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Vector;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JList;
@@ -20,6 +22,7 @@ import javax.swing.event.ListSelectionListener;
 
 import org.netbeans.jemmy.operators.JTextFieldOperator;
 
+import src.core.Category;
 import src.core.Movie;
 import src.core.MovieList;
 import src.core.MovieListEditor;
@@ -33,6 +36,7 @@ public class SwingMovieListEditorView extends JFrame implements
 	private JList<Movie> movieList = null;
 	private JTextField newMovieTxt;
 	private MovieListEditor editor = null;
+	private JComboBox<ImageIcon> ratingCombo;
 
 	public SwingMovieListEditorView() {
 		super();
@@ -58,9 +62,15 @@ public class SwingMovieListEditorView extends JFrame implements
 		setLayout();
 		initList();
 		initNewMovieTextField();
+		initRatingComboBox();
 		initAddBtn();
 		initUpdateBtn();
 		pack();
+	}
+
+	private void initRatingComboBox() {
+		ratingCombo = new JComboBox<>(CustomMovieListRenderer.icons());
+		getContentPane().add(ratingCombo);
 	}
 
 	private void initAddBtn() {
@@ -145,8 +155,18 @@ public class SwingMovieListEditorView extends JFrame implements
 
 	@Override
 	public void setRatingField(int rating) {
+		ratingCombo.setSelectedIndex(rating+1);
+	}
+
+	@Override
+	public int getRatingField() {
+		return ratingCombo.getSelectedIndex()-1;
+	}
+
+	@Override
+	public Category getCategoryField() {
 		// TODO Auto-generated method stub
-		
+		return null;
 	}
 
 }

@@ -10,10 +10,12 @@ import java.util.Vector;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
 
 import src.core.Movie;
 import src.core.MovieList;
 import src.core.MovieListEditor;
+import src.core.Category;
 import src.core.exceptions.DuplicateMovieException;
 import src.core.exceptions.UnratedMovieException;
 import src.ui.MovieListEditorView;
@@ -55,16 +57,29 @@ public class TestGUI {
 	 * new movie based on the data provided.
 	 */
 	@Test
-	public void testAdd() {
+	public void testAdd() throws UnratedMovieException {
 		mockView = mock(MovieListEditorView.class);
 		editor = new MovieListEditor(movieList, mockView);
 		when(mockView.getNameField()).thenReturn("New Movie");
+		when(mockView.getRatingField()).thenReturn(2);
+		when(mockView.getCategoryField()).thenReturn(Category.HORROR);
 		verify(mockView).setMovies(movies);
 
 		editor.addMovie();
 
-		movies.add(new Movie("New Movie"));
-		verify(mockView).setMovies(movies);
+		movies.add(new Movie("New Movie", Category.HORROR,2));
+		ArgumentCaptor<Vector> movieListCaptor = ArgumentCaptor
+				.forClass(Vector.class);
+		verify(mockView, times(2)).setMovies(movieListCaptor.capture());
+		Vector<Movie> captureMovies = movieListCaptor.getValue();
+
+		assertEquals(movies, captureMovies);
+		// this is checked separeted because with the prev assert only checks
+		// all the names are the same
+		assertEquals(movies.get(movies.size() - 1).getRating(), captureMovies
+				.get(movies.size() - 1).getRating());
+		assertEquals(movies.get(movies.size() - 1).getCategory(), captureMovies
+				.get(movies.size() - 1).getCategory());
 	}
 
 	/* Test 31. Selecting a movie updates the rating in the GUI. */
@@ -94,8 +109,7 @@ public class TestGUI {
 
 	/*
 	 * Test 16: When an update is requested, the selected movie is renamed to
-	 * whatever is answered by the view as the new name 
-	 * Test 32: Updating a
+	 * whatever is answered by the view as the new name Test 32: Updating a
 	 * movie changes its rating if a different rating was selected for it
 	 */
 	@Test
@@ -109,7 +123,7 @@ public class TestGUI {
 
 		Vector<Movie> newMovies = new Vector<Movie>();
 		newMovies.add(starWars);
-		Movie newMovie = new Movie("New Movie",2);
+		Movie newMovie = new Movie("New Movie", 2);
 		newMovies.add(newMovie);
 		newMovies.add(stargate);
 

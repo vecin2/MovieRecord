@@ -17,12 +17,12 @@ public class CustomMovieListRenderer extends JLabel implements
 
 	private static ImageIcon[] ratingIcons = {
 			new ImageIcon("images/no-rating.jpg"),
-			new ImageIcon("images/zero-stars.gif"),
-			new ImageIcon("images/one-star.gif"),
-			new ImageIcon("images/two-stars.gif"),
-			new ImageIcon("images/three-stars.gif"),
-			new ImageIcon("images/four-stars.gif"),
-			new ImageIcon("images/five-stars.gif") };
+			new ImageIcon("images/zero-stars.jpg"),
+			new ImageIcon("images/one-star.jpg"),
+			new ImageIcon("images/two-stars.jpg"),
+			new ImageIcon("images/three-stars.jpg"),
+			new ImageIcon("images/four-stars.jpg"),
+			new ImageIcon("images/five-stars.jpg") };
 
 	@Override
 	public Component getListCellRendererComponent(JList<? extends Movie> list,
@@ -44,6 +44,9 @@ public class CustomMovieListRenderer extends JLabel implements
 
 	public static ImageIcon iconForRating(int index) {
 		return ratingIcons[index];
+	}
+	public static ImageIcon[] icons(){
+		return ratingIcons;
 	}
 
 }

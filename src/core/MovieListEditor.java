@@ -25,7 +25,7 @@ public class MovieListEditor {
 	}
 
 	public void addMovie() {
-		Movie newMovie = new Movie(view.getNameField());
+		Movie newMovie = new Movie(view.getNameField(),view.getCategoryField(), view.getRatingField());
 		try {
 			movieList.add(newMovie);
 		} catch (DuplicateMovieException e) {
@@ -51,11 +51,13 @@ public class MovieListEditor {
 
 	public void updateMovie() {
 		if (selectedMovie != null) {
-			try {
-				movieList.rename(selectedMovie, view.getNameField());
-				selectedMovie.setRating(view.getRatingField());
-			} catch (DuplicateMovieException e) {
-				view.handleDuplicateMovieException(view.getNameField());
+			selectedMovie.setRating(view.getRatingField());
+			if (!view.getNameField().equals(selectedMovie.getName())) {
+				try {
+					movieList.rename(selectedMovie, view.getNameField());
+				} catch (DuplicateMovieException e) {
+					view.handleDuplicateMovieException(view.getNameField());
+				}
 			}
 			updateMovieList();
 		}
