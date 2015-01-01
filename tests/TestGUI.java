@@ -6,11 +6,14 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.util.Collection;
+import java.util.List;
 import java.util.Vector;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
+import org.mockito.internal.stubbing.answers.Returns;
 
 import src.core.Movie;
 import src.core.MovieList;
@@ -19,6 +22,7 @@ import src.core.Category;
 import src.core.exceptions.DuplicateMovieException;
 import src.core.exceptions.UnratedMovieException;
 import src.ui.MovieListEditorView;
+import testUtils.MoviesAssert;
 
 public class TestGUI {
 	private MovieListEditorView mockView = null;
@@ -31,9 +35,9 @@ public class TestGUI {
 
 	@Before
 	public void setUp() throws DuplicateMovieException {
-		starWars = new Movie("Star Wars", 5);
-		starTrek = new Movie("Star Trek", 1);
-		stargate = new Movie("Stargate", 0);
+		starWars = new Movie("Star Wars", Category.SCIFI, 5);
+		starTrek = new Movie("Star Trek", Category.HORROR, 1);
+		stargate = new Movie("Stargate", Category.HORROR, 0);
 		movies = new Vector<Movie>();
 		movies.add(starWars);
 		movies.add(starTrek);
@@ -47,6 +51,7 @@ public class TestGUI {
 	@Test
 	public void testConstructorCallsViewWithListToDisplay() {
 		mockView = mock(MovieListEditorView.class);
+		when(mockView.getCategoryFilter()).thenReturn(Category.ALL);
 		editor = new MovieListEditor(movieList, mockView);
 		verify(mockView).setMovies(movies);
 	}
@@ -59,6 +64,7 @@ public class TestGUI {
 	@Test
 	public void testAdd() throws UnratedMovieException {
 		mockView = mock(MovieListEditorView.class);
+		when(mockView.getCategoryFilter()).thenReturn(Category.ALL);
 		editor = new MovieListEditor(movieList, mockView);
 		when(mockView.getNameField()).thenReturn("New Movie");
 		when(mockView.getRatingField()).thenReturn(2);
@@ -67,29 +73,25 @@ public class TestGUI {
 
 		editor.addMovie();
 
-		movies.add(new Movie("New Movie", Category.HORROR,2));
+		movies.add(new Movie("New Movie", Category.HORROR, 2));
 		ArgumentCaptor<Vector> movieListCaptor = ArgumentCaptor
 				.forClass(Vector.class);
 		verify(mockView, times(2)).setMovies(movieListCaptor.capture());
 		Vector<Movie> captureMovies = movieListCaptor.getValue();
 
-		assertEquals(movies, captureMovies);
-		// this is checked separeted because with the prev assert only checks
-		// all the names are the same
-		assertEquals(movies.get(movies.size() - 1).getRating(), captureMovies
-				.get(movies.size() - 1).getRating());
-		assertEquals(movies.get(movies.size() - 1).getCategory(), captureMovies
-				.get(movies.size() - 1).getCategory());
+		MoviesAssert.assertEqualMovieCollection(movies, captureMovies);
 	}
 
 	/* Test 31. Selecting a movie updates the rating in the GUI. */
 	@Test
 	public void testSelecting() throws UnratedMovieException {
 		mockView = mock(MovieListEditorView.class);
+		when(mockView.getCategoryFilter()).thenReturn(Category.ALL);
 		editor = new MovieListEditor(movieList, mockView);
 
 		editor.selectMovie(1);
 		verify(mockView).setNameField(starTrek.getName());
+		verify(mockView).setCategoryField(starTrek.getCategory());
 		verify(mockView).setRatingField(starTrek.getRating());
 	}
 
@@ -102,6 +104,7 @@ public class TestGUI {
 	@Test
 	public void testWhenMovieIsSelectedCallsSetMovieNameOnViewWithTheNameOfSelectedMovie() {
 		mockView = mock(MovieListEditorView.class);
+		when(mockView.getCategoryFilter()).thenReturn(Category.ALL);
 		editor = new MovieListEditor(movieList, mockView);
 		editor.selectMovie(1);
 		verify(mockView).setNameField("Star Trek");
@@ -115,10 +118,12 @@ public class TestGUI {
 	@Test
 	public void testUpdate() throws UnratedMovieException {
 		mockView = mock(MovieListEditorView.class);
+		when(mockView.getCategoryFilter()).thenReturn(Category.ALL);
 		editor = new MovieListEditor(movieList, mockView);
 
 		when(mockView.getNameField()).thenReturn("New Movie");
 		when(mockView.getRatingField()).thenReturn(2);
+		when(mockView.getCategoryField()).thenReturn(Category.SCIFI);
 		verify(mockView).setMovies(movies);
 
 		Vector<Movie> newMovies = new Vector<Movie>();
@@ -129,10 +134,37 @@ public class TestGUI {
 
 		editor.selectMovie(1);
 		editor.updateMovie();
+		ArgumentCaptor<Vector> argumentCaptor = ArgumentCaptor
+				.forClass(Vector.class);
+		verify(mockView, times(2)).setMovies(argumentCaptor.capture());
+		Vector<Movie> argument = (Vector<Movie>) argumentCaptor.getValue();
+		assertEquals("New Movie", argument.get(1).getName());
+		assertEquals("Wrong Category", Category.SCIFI, argument.get(1)
+				.getCategory());
+		assertEquals(2, argument.get(1).getRating());
+	}
 
-		verify(mockView, times(2)).setMovies(newMovies);
-		assertEquals("New Movie", editor.getMovie(1).getName());
-		assertEquals(2, editor.getMovie(1).getRating());
+	/*
+	 * Test 49. Changing the category of a movie in a filtered list causes that
+	 * movie to be removed from the list. If that category is filtered on, that
+	 * movie will be in the list.
+	 */
+	@Test
+	public void testChangingAMovieCategoryOnFilterListCausesTheMovieToDisappearFromTheList() {
+		mockView = mock(MovieListEditorView.class);
+		when(mockView.getCategoryFilter()).thenReturn(Category.ALL).thenReturn(Category.HORROR);
+		when(mockView.getNameField()).thenReturn(stargate.getName());
+		when(mockView.getCategoryField()).thenReturn(Category.SCIFI);
+		editor = new MovieListEditor(movieList, mockView);
+		editor.filter();
+		editor.selectMovie(1);
+		editor.updateMovie();
+		ArgumentCaptor<Vector> movieListCaptor = ArgumentCaptor
+				.forClass(Vector.class);
+
+		verify(mockView,times(3)).setMovies(movieListCaptor.capture());
+		assertEquals(1, movieListCaptor.getValue().size());
+		assertEquals(starTrek, movieListCaptor.getValue().get(0));
 	}
 
 	/*
@@ -143,6 +175,7 @@ public class TestGUI {
 	@Test
 	public void testWhenAddDuplicateMovieItInformsTheView() {
 		mockView = mock(MovieListEditorView.class);
+		when(mockView.getCategoryFilter()).thenReturn(Category.ALL);
 		when(mockView.getNameField()).thenReturn("Star Wars");
 
 		editor = new MovieListEditor(movieList, mockView);
@@ -159,6 +192,7 @@ public class TestGUI {
 	@Test
 	public void testWhenUpdateDuplicateMovieItInformsTheView() {
 		mockView = mock(MovieListEditorView.class);
+		when(mockView.getCategoryFilter()).thenReturn(Category.ALL);
 		when(mockView.getNameField()).thenReturn("Stargate");
 
 		editor = new MovieListEditor(movieList, mockView);
@@ -166,6 +200,50 @@ public class TestGUI {
 		editor.updateMovie();
 
 		verify(mockView).handleDuplicateMovieException("Stargate");
+	}
+
+	@Test
+	public void testWhenSelectHorrorFilterItDisplayHorrorMoviesOnly()
+			throws DuplicateMovieException, UnratedMovieException {
+
+		MovieList horrorMovies = new MovieList();
+		horrorMovies.add(starTrek);
+		horrorMovies.add(stargate);
+		mockView = mock(MovieListEditorView.class);
+		when(mockView.getCategoryFilter()).thenReturn(Category.HORROR);
+		editor = new MovieListEditor(movieList, mockView);
+
+		editor.filter();
+
+		ArgumentCaptor<Vector> movieListCaptor = ArgumentCaptor
+				.forClass(Vector.class);
+		verify(mockView, times(2)).setMovies(movieListCaptor.capture());
+		Vector<Movie> captureMovies = movieListCaptor.getValue();
+
+		MoviesAssert.assertEqualMovieCollection(horrorMovies.getMovies(),
+				captureMovies);
+	}
+
+	@Test
+	public void testWhenSelectAllCategoriesDisplaysAllMovies()
+			throws DuplicateMovieException, UnratedMovieException {
+
+		mockView = mock(MovieListEditorView.class);
+		when(mockView.getCategoryFilter()).thenReturn(Category.ALL);
+		editor = new MovieListEditor(movieList, mockView);
+
+		when(mockView.getCategoryFilter()).thenReturn(Category.HORROR);
+		editor.filter();
+		when(mockView.getCategoryFilter()).thenReturn(Category.ALL);
+		editor.filter();
+
+		ArgumentCaptor<Vector> movieListCaptor = ArgumentCaptor
+				.forClass(Vector.class);
+		verify(mockView, times(3)).setMovies(movieListCaptor.capture());
+		Vector<Movie> captureMovies = movieListCaptor.getValue();
+
+		MoviesAssert.assertEqualMovieCollection(movieList.getMovies(),
+				captureMovies);
 	}
 
 }

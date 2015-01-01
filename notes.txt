@@ -41,5 +41,21 @@ verify(mockClass).method(list)
 
 #32
 The book is not testing that the movie rate has been updated. Again it test, that the logical layer call the method on the view "getRatingField". I have decided
-to add a method getMovie, to the editor that allows me to a get a movie and assert on it. 
+to add a method getMovie, to the editor that allows me to a get a movie and assert on it. But I really should add this method to the view, so I can check the final 
+result rather than the just the logical class.
+
+#44
+edit.filterOnCategory(Category.ALL), why in this case the editor recieves the category instead of taking from the UI with getCategoryField(), like rating and name.
+
+#50 Persistance
+Astels uses a more bottom/up approach in the development of the stories. My goal is to determine or come up with a rule for my personal development, which defines 
+for most of the cases whether I start top/down or bottom/up.
+The question do I start with a low level test like he does, testing movie and movieList classes.
+Or do I write a test to the editorMovieList logical object.
+Or do I write and end to end test, which adds two movies from the interface and them save them.
+
+Astels implements a design where the view always calls a method on the logical layer. However there are sometimes where it seems easier to just the view itself. For
+example: SaveAs, it calls the logical, who calls the view to display the filechooser popup. Instead the view could call directly a method within itself to display
+the filechooser, then under the ok button add the listener "editor.save()". Why does he do it? Keep consistency?
+
 

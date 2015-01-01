@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
+import src.core.Category;
 import src.core.Movie;
 import src.core.MovieList;
 import src.core.exceptions.DuplicateMovieException;
@@ -43,5 +44,19 @@ public class TestMovieList {
 		movieList.add(braveHeart);
 		movieList.rename(braveHeart, "Titanic");
 	}
+	@Test
+	public void testFilterByCategory() throws DuplicateMovieException{
+		MovieList movieList = new MovieList();
+		movieList.add(new Movie("Braveheart",Category.HORROR,5));
+		movieList.add(new Movie("Starwars",Category.SCIFI,4));
+		movieList.add(new Movie("Stargate",Category.HORROR,5));
+		
+		MovieList filteredMovieList = movieList.filterBy(Category.HORROR);
+		
+		assertEquals(2, filteredMovieList.size());
+		assertEquals("Braveheart", filteredMovieList.get(0).getName());
+		assertEquals("Stargate", filteredMovieList.get(1).getName());
+	}
+	
 
 }

@@ -11,27 +11,29 @@ import src.ui.MovieListEditorView;
 public class MovieListEditor {
 	MovieListEditorView view;
 	private MovieList movieList;
+	private MovieList filteredMovieList;
 	private Movie selectedMovie;
 
 	public MovieListEditor(MovieList movieList, MovieListEditorView view) {
 		this.movieList = movieList;
 		this.view = view;
-		updateMovieList();
+		filter();
 		this.view.setEditor(this);
 	}
 
 	private void updateMovieList() {
-		this.view.setMovies(new Vector<Movie>(this.movieList.getMovies()));
+		this.view.setMovies(new Vector<Movie>(this.filteredMovieList.getMovies()));
 	}
 
 	public void addMovie() {
-		Movie newMovie = new Movie(view.getNameField(),view.getCategoryField(), view.getRatingField());
+		Movie newMovie = new Movie(view.getNameField(),
+				view.getCategoryField(), view.getRatingField());
 		try {
 			movieList.add(newMovie);
 		} catch (DuplicateMovieException e) {
 			view.handleDuplicateMovieException(view.getNameField());
 		}
-		updateMovieList();
+		filter();
 
 	}
 
@@ -39,19 +41,21 @@ public class MovieListEditor {
 		if (i == -1) {
 			selectedMovie = null;
 		} else {
-			view.setNameField(this.movieList.get(i).getName());
+			selectedMovie = filteredMovieList.get(i);
+			view.setNameField(selectedMovie.getName());
+			view.setCategoryField(selectedMovie.getCategory());
 			try {
-				view.setRatingField(this.movieList.get(i).getRating());
+				view.setRatingField(selectedMovie.getRating());
 			} catch (UnratedMovieException e) {
 				e.printStackTrace();
 			}
-			selectedMovie = movieList.get(i);
 		}
 	}
 
 	public void updateMovie() {
 		if (selectedMovie != null) {
 			selectedMovie.setRating(view.getRatingField());
+			selectedMovie.setCategory(view.getCategoryField());
 			if (!view.getNameField().equals(selectedMovie.getName())) {
 				try {
 					movieList.rename(selectedMovie, view.getNameField());
@@ -59,11 +63,21 @@ public class MovieListEditor {
 					view.handleDuplicateMovieException(view.getNameField());
 				}
 			}
-			updateMovieList();
+			filter();
 		}
 	}
 
 	public Movie getMovie(int i) {
 		return movieList.get(i);
+	}
+
+	public void filter() {
+		if (view.getCategoryFilter().equals(Category.ALL)) {
+			filteredMovieList = new MovieList();
+			filteredMovieList.addAll(movieList);
+		} else {
+			filteredMovieList = movieList.filterBy(view.getCategoryFilter());
+		}
+		updateMovieList();
 	}
 }

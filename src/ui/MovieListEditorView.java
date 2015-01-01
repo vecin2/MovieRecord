@@ -15,4 +15,6 @@ public interface MovieListEditorView {
 	void setRatingField(int rating);
 	int getRatingField();
 	Category getCategoryField();
+	Category getCategoryFilter();
+	void setCategoryField(Category category);
 }

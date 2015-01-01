@@ -41,9 +41,11 @@ public class MovieList {
 		return add(new Movie(movieName));
 	}
 
-	public void rename(Movie movieToReplace, String replacerTitle) throws DuplicateMovieException {
-		if(getByName(replacerTitle)!=null)
-			throw new DuplicateMovieException("Renaming resulting in a duplicate movie");
+	public void rename(Movie movieToReplace, String replacerTitle)
+			throws DuplicateMovieException {
+		if (getByName(replacerTitle) != null)
+			throw new DuplicateMovieException(
+					"Renaming resulting in a duplicate movie");
 		getByName(movieToReplace.getName()).rename(replacerTitle);
 	}
 
@@ -52,6 +54,28 @@ public class MovieList {
 			if (movie.getName().endsWith(movieName))
 				return movie;
 		return null;
+	}
+
+	public int size() {
+		return movies.size();
+	}
+
+	public void addAll(MovieList movieList) {
+		movies.addAll(movieList.movies);
+	}
+
+	public MovieList filterBy(Category category) {
+		MovieList result = new MovieList();
+		for(Movie movie: movies){
+			if(movie.getCategory().equals(category)){
+				try {
+					result.add(movie);
+				} catch (DuplicateMovieException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return result;
 	}
 
 }

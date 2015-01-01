@@ -2,14 +2,10 @@ package tests;
 
 import static org.junit.Assert.assertEquals;
 
-import java.util.Vector;
 
 import javax.swing.ListModel;
 
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
-import org.netbeans.jemmy.JemmyProperties;
 import org.netbeans.jemmy.operators.JButtonOperator;
 import org.netbeans.jemmy.operators.JComboBoxOperator;
 import org.netbeans.jemmy.operators.JDialogOperator;
@@ -17,58 +13,18 @@ import org.netbeans.jemmy.operators.JFrameOperator;
 import org.netbeans.jemmy.operators.JLabelOperator;
 import org.netbeans.jemmy.operators.JListOperator;
 import org.netbeans.jemmy.operators.JTextFieldOperator;
+import org.netbeans.jemmy.util.NameComponentChooser;
 
+import src.core.Category;
 import src.core.Movie;
 import src.core.MovieList;
 import src.core.MovieListEditor;
+import src.core.exceptions.DuplicateMovieException;
 import src.core.exceptions.UnratedMovieException;
 import src.ui.CustomMovieListRenderer;
 import src.ui.SwingMovieListEditorView;
 
-public class TestSwingMovieListEditorView {
-	private JFrameOperator mainWindow;
-	private Vector<Movie> movies = null;
-	private Movie starWars = null;
-	private Movie starTrek = null;
-	private Movie stargate = null;
-	private MovieList movieList = null;
-	private long backupWaitComponentTimeout;
-	private long backupWaitDialogTimeout;
-
-	@Before
-	public void setUp() throws Exception {
-		SwingMovieListEditorView.start();
-		starWars = new Movie("Star Wars",5);
-		starTrek = new Movie("Star Trek",4);
-		stargate = new Movie("Stargate",3);
-		movies = new Vector<Movie>();
-		movies.add(starWars);
-		movies.add(starTrek);
-		movies.add(stargate);
-		movieList = new MovieList();
-		movieList.add(starWars);
-		movieList.add(starTrek);
-		movieList.add(stargate);
-		backupWaitComponentTimeout = JemmyProperties
-				.getCurrentTimeout("ComponentOperator.WaitComponentTimeout");
-		JemmyProperties.setCurrentTimeout(
-				"ComponentOperator.WaitComponentTimeout", 2000L);
-		backupWaitDialogTimeout = JemmyProperties
-				.getCurrentTimeout("DialogWaiter.WaitDialogTimeout");
-		JemmyProperties.setCurrentTimeout("DialogWaiter.WaitDialogTimeout",
-				4000L);
-	}
-
-	@After
-	public void tearDown() throws Exception {
-		mainWindow.dispose();
-		JemmyProperties.setCurrentTimeout(
-				"ComponentOperator.WaitComponentTimeout",
-				backupWaitComponentTimeout);
-		JemmyProperties.setCurrentTimeout("DialogWaiter.WaitDialogTimeout",
-				backupWaitDialogTimeout);
-	}
-
+public class TestSwingMovieListEditorView extends TestSettingupView {
 	@Test
 	public void testListContents() {
 		mainWindow = new JFrameOperator("Movie List");
@@ -90,14 +46,18 @@ public class TestSwingMovieListEditorView {
 	// when the add button is pushed.
 	@Test
 	public void testAdding() throws UnratedMovieException {
-		Movie newMovie = new Movie("New Movie",1);
+		Movie newMovie = new Movie("New Movie", Category.SCIFI, 1);
 		movies.add(newMovie);
 		mainWindow = new JFrameOperator("Movie List");
 		MovieListEditor editor = new MovieListEditor(movieList,
 				(SwingMovieListEditorView) mainWindow.getWindow());
 		JTextFieldOperator movieField = new JTextFieldOperator(mainWindow);
 		movieField.enterText("New Movie");
-		JComboBoxOperator comboOperator = new JComboBoxOperator(mainWindow);
+		JComboBoxOperator categoryOperator = new JComboBoxOperator(mainWindow,
+				new NameComponentChooser("categoryCombo"));
+		categoryOperator.setSelectedItem(Category.SCIFI);
+		JComboBoxOperator comboOperator = new JComboBoxOperator(mainWindow,
+				new NameComponentChooser("ratingCombo"));
 		comboOperator.setSelectedIndex(2);
 		JButtonOperator addButton = new JButtonOperator(mainWindow, "Add");
 		addButton.doClick();
@@ -107,39 +67,72 @@ public class TestSwingMovieListEditorView {
 		for (int i = 0; i < movies.size(); i++) {
 			assertEquals("Movie list contains bad movie at index " + i,
 					movies.get(i), listModel.getElementAt(i));
-			assertEquals("Rating failing at element "+i,movies.get(i).getRating(), listModel.getElementAt(i).getRating());
+			assertEquals("Category failing at element " + i, movies.get(i)
+					.getCategory(), listModel.getElementAt(i).getCategory());
+			assertEquals("Rating failing at element " + i, movies.get(i)
+					.getRating(), listModel.getElementAt(i).getRating());
 		}
 	}
 
 	/*
 	 * Test 15: Selecting from the list causes the name field to be filled in
-	 * with the selected movie's name 
-	 * Test 33: Selecting a movie from the list
+	 * with the selected movie's name Test 33: Selecting a movie from the list
 	 * updates the displayed rating
 	 */
 	@Test
-	public void testWhenSelectFromTheListFillsTheNameAndRateFieldWithTheSelectedMovie() {
+	public void testWhenSelectFromOriginalListFillsMovieDetailsWithTheSelectedMovie() {
 		mainWindow = new JFrameOperator("Movie List");
 		MovieListEditor editor = new MovieListEditor(movieList,
 				(SwingMovieListEditorView) mainWindow.getWindow());
 		JListOperator listOperator = new JListOperator(mainWindow);
 		JTextFieldOperator newMovieField = new JTextFieldOperator(mainWindow);
-		JComboBoxOperator comboOperator = new JComboBoxOperator(mainWindow);
+		JComboBoxOperator categoryOperator = new JComboBoxOperator(mainWindow,
+				new NameComponentChooser("categoryCombo"));
+		JComboBoxOperator comboOperator = new JComboBoxOperator(mainWindow,
+				new NameComponentChooser("ratingCombo"));
 		listOperator.clickOnItem(0, 1);
 		assertEquals("wrong text from selection", "Star Wars",
 				newMovieField.getText());
-		assertEquals("wrong rating from selection",CustomMovieListRenderer.iconForRating(6) ,
+		assertEquals("Wrong category from selection", Category.SCIFI,
+				categoryOperator.getSelectedItem());
+		assertEquals("wrong rating from selection",
+				CustomMovieListRenderer.iconForRating(6),
 				comboOperator.getSelectedItem());
 		listOperator.clickOnItem(1, 1);
 		assertEquals("wrong text from selection", "Star Trek",
 				newMovieField.getText());
-		assertEquals("wrong rating from selection",CustomMovieListRenderer.iconForRating(5) ,
+		assertEquals("Wrong category from selection", Category.SCIFI,
+				categoryOperator.getSelectedItem());
+		assertEquals("wrong rating from selection",
+				CustomMovieListRenderer.iconForRating(5),
 				comboOperator.getSelectedItem());
 		listOperator.clickOnItem(2, 1);
 		assertEquals("wrong text from selection", "Stargate",
 				newMovieField.getText());
-		assertEquals("wrong rating from selection",CustomMovieListRenderer.iconForRating(4),
+		assertEquals("Wrong category from selection", Category.HORROR,
+				categoryOperator.getSelectedItem());
+		assertEquals("wrong rating from selection",
+				CustomMovieListRenderer.iconForRating(4),
 				comboOperator.getSelectedItem());
+	}
+
+	@Test
+	public void testWhenSelectFromFilterListFillsMovieDetailsWithTheSelectedMovie() {
+		mainWindow = new JFrameOperator("Movie List");
+		MovieListEditor editor = new MovieListEditor(movieList,
+				(SwingMovieListEditorView) mainWindow.getWindow());
+		JListOperator listOperator = new JListOperator(mainWindow);
+		JTextFieldOperator newMovieField = new JTextFieldOperator(mainWindow);
+		JComboBoxOperator categoryFilterOperator = new JComboBoxOperator(
+				mainWindow, new NameComponentChooser("categoryFilterCombo"));
+		categoryFilterOperator.setSelectedItem(Category.HORROR);
+		JComboBoxOperator categoryOperator = new JComboBoxOperator(mainWindow,
+				new NameComponentChooser("categoryCombo"));
+		JComboBoxOperator comboOperator = new JComboBoxOperator(mainWindow,
+				new NameComponentChooser("ratingCombo"));
+		listOperator.clickOnItem(0, 1);
+		assertEquals("wrong text from selection", stargate.getName(),
+				newMovieField.getText());
 	}
 
 	/*
@@ -156,17 +149,24 @@ public class TestSwingMovieListEditorView {
 		JTextFieldOperator movieNameTxtField = new JTextFieldOperator(
 				mainWindow);
 		movieNameTxtField.setText("Star Trek (updated)");
-		JComboBoxOperator comboOperator = new JComboBoxOperator(mainWindow);
-		comboOperator.selectItem(3);
-		
+		JComboBoxOperator categoryOperator = new JComboBoxOperator(mainWindow,
+				new NameComponentChooser("categoryCombo"));
+		categoryOperator.setSelectedItem(Category.HORROR);
+		JComboBoxOperator ratingOperator = new JComboBoxOperator(mainWindow,
+				new NameComponentChooser("ratingCombo"));
+		ratingOperator.selectItem(3);
+
 		JButtonOperator updateBtn = new JButtonOperator(mainWindow, "Update");
 		updateBtn.doClick();
 
 		movieListOperator.clickOnItem(0, 1);
 		movieListOperator.clickOnItem(1, 1);
 		assertEquals("Star Trek (updated)", movieNameTxtField.getText());
-		assertEquals(CustomMovieListRenderer.iconForRating(3), comboOperator.getSelectedItem());
+		assertEquals(Category.HORROR, categoryOperator.getSelectedItem());
+		assertEquals(CustomMovieListRenderer.iconForRating(3),
+				ratingOperator.getSelectedItem());
 	}
+
 	@Test
 	public void testUpdateWithSameName() {
 		mainWindow = new JFrameOperator("Movie List");
@@ -176,18 +176,21 @@ public class TestSwingMovieListEditorView {
 		movieListOperator.clickOnItem(1, 1);
 		JTextFieldOperator movieNameTxtField = new JTextFieldOperator(
 				mainWindow);
-		
-		JComboBoxOperator comboOperator = new JComboBoxOperator(mainWindow);
+
+		JComboBoxOperator comboOperator = new JComboBoxOperator(mainWindow,
+				new NameComponentChooser("ratingCombo"));
 		comboOperator.selectItem(3);
-		
+
 		JButtonOperator updateBtn = new JButtonOperator(mainWindow, "Update");
 		updateBtn.doClick();
 
 		movieListOperator.clickOnItem(0, 1);
 		movieListOperator.clickOnItem(1, 1);
 		assertEquals("Star Trek", movieNameTxtField.getText());
-		assertEquals(CustomMovieListRenderer.iconForRating(3), comboOperator.getSelectedItem());
+		assertEquals(CustomMovieListRenderer.iconForRating(3),
+				comboOperator.getSelectedItem());
 	}
+
 	/*
 	 * Test 22. Trying to add a movie that is the same as one in the list
 	 * results in the display of a "Duplicate Movie" error dialog.
@@ -217,18 +220,19 @@ public class TestSwingMovieListEditorView {
 
 		assertEquals(movies.size(), listOperator.getModel().getSize());
 	}
+
 	/*
 	 * Test 23: Trying to rename a movie to the name of one in the list results
 	 * in the display of a "Duplicate Movie" error dialog
 	 */
 	@Test
-	public void testUpdatingDuplicateMovieDisplaysErroDialog(){
+	public void testUpdatingDuplicateMovieDisplaysErroDialog() {
 		mainWindow = new JFrameOperator("Movie List");
 		MovieListEditor editor = new MovieListEditor(movieList,
 				(SwingMovieListEditorView) mainWindow.getWindow());
 
 		JListOperator listOperator = new JListOperator(mainWindow);
-		listOperator.clickOnItem(1,1);
+		listOperator.clickOnItem(1, 1);
 		JTextFieldOperator movieNameTextField = new JTextFieldOperator(
 				mainWindow);
 		movieNameTextField.setText(stargate.getName());
@@ -246,6 +250,56 @@ public class TestSwingMovieListEditorView {
 		okBtn.doClick();
 
 		assertEquals(movies.size(), listOperator.getModel().getSize());
+	}
+
+	/*
+	 * Test 47: A rename performed in the context of the logical layer is done
+	 * in the underlying full list; that is, potential duplicates in the full
+	 * list are detected
+	 */
+	@Test
+	public void testUpdateFilteredListToDuplicateInAllListDisplaysErrorDialog() {
+		mainWindow = new JFrameOperator("Movie List");
+		MovieListEditor editor = new MovieListEditor(movieList,
+				(SwingMovieListEditorView) mainWindow.getWindow());
+		JComboBoxOperator categoryFilterOperator = new JComboBoxOperator(
+				mainWindow, new NameComponentChooser("categoryFilterCombo"));
+		categoryFilterOperator.setSelectedItem(Category.SCIFI);
+		JListOperator listOperator = new JListOperator(mainWindow);
+		listOperator.clickOnItem(1, 1);
+		JTextFieldOperator movieNameTextField = new JTextFieldOperator(
+				mainWindow);
+		movieNameTextField.setText(stargate.getName());
+		JButtonOperator updateBtn = new JButtonOperator(mainWindow, "Update");
+		updateBtn.pushNoBlock();
+
+		JDialogOperator dialogOperator = new JDialogOperator("Duplicate Movie");
+		JLabelOperator labelOperator = new JLabelOperator(dialogOperator);
+
+		assertEquals("Duplicated error dialog contains wrong label",
+				"Adding this movie will result in a duplicate movie",
+				labelOperator.getText());
+
+		JButtonOperator okBtn = new JButtonOperator(dialogOperator);
+		okBtn.doClick();
+
+		assertEquals(2, listOperator.getModel().getSize());
+	}
+
+	@Test
+	public void testFilteringList() throws DuplicateMovieException {
+		mainWindow = new JFrameOperator("Movie List");
+		MovieListEditor editor = new MovieListEditor(movieList,
+				(SwingMovieListEditorView) mainWindow.getWindow());
+		JComboBoxOperator categoryOperator = new JComboBoxOperator(mainWindow);
+		categoryOperator.setSelectedItem(Category.SCIFI);
+		JListOperator listOperator = new JListOperator(mainWindow);
+
+		MovieList filteredMovies = new MovieList();
+		filteredMovies.add(starWars);
+		filteredMovies.add(starTrek);
+
+		assertEquals(filteredMovies.size(), listOperator.getModel().getSize());
 	}
 
 }

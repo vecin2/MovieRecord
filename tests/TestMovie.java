@@ -6,6 +6,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
+import src.core.Category;
 import src.core.Movie;
 import src.core.exceptions.UnratedMovieException;
 
@@ -59,5 +60,10 @@ public class TestMovie {
 	public void testGetRateThrowsAnExceptionWhenMovieUnrate() throws UnratedMovieException{
 		movie = new Movie("Stargate");
 		movie.getRating();
+	}
+	@Test
+	public void testGetCategoryReturnsUncategorizedIfNotSet(){
+		movie =new Movie("Stargate");
+		assertEquals(Category.UNCATEGORIZED, movie.getCategory());
 	}
 }
