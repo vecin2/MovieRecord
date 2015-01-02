@@ -1,5 +1,8 @@
 package src.core;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.Writer;
 import java.util.ArrayList;
 
 import src.core.exceptions.DuplicateMovieException;
@@ -76,6 +79,9 @@ public class MovieList {
 			}
 		}
 		return result;
+	}
+
+	public void writeTo(File outputFile) {
 	}
 
 }

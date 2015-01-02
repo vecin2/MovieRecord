@@ -1,5 +1,6 @@
 package src.ui;
 
+import java.io.File;
 import java.util.Vector;
 
 import src.core.Category;
@@ -17,4 +18,5 @@ public interface MovieListEditorView {
 	Category getCategoryField();
 	Category getCategoryFilter();
 	void setCategoryField(Category category);
+	File getFile();
 }

@@ -1,5 +1,7 @@
 package src.core;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.nio.channels.SeekableByteChannel;
 import java.util.ArrayList;
 import java.util.Vector;
@@ -73,11 +75,16 @@ public class MovieListEditor {
 
 	public void filter() {
 		if (view.getCategoryFilter().equals(Category.ALL)) {
-			filteredMovieList = new MovieList();
-			filteredMovieList.addAll(movieList);
+			filteredMovieList =movieList;
 		} else {
 			filteredMovieList = movieList.filterBy(view.getCategoryFilter());
 		}
 		updateMovieList();
+	}
+
+	public void saveAs() {
+		FileWriter fileWriter;
+		movieList.writeTo(view.getFile());
+		
 	}
 }

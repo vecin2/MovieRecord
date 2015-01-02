@@ -6,6 +6,7 @@ import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
@@ -48,7 +49,10 @@ public class SwingMovieListEditorView extends JFrame implements
 	private JComboBox<ImageIcon> ratingCombo;
 	private JComboBox<Category> categoryFilterCombo;
 	private JComboBox<Category> categoryCombo;
-
+	JMenuItem saveAs;
+	JMenu menu;
+	public int i=0;
+public static SwingMovieListEditorView window;
 	public SwingMovieListEditorView() {
 		super();
 	}
@@ -71,7 +75,22 @@ public class SwingMovieListEditorView extends JFrame implements
 	public void init() {
 		setTitle("Movie List");
 		setLayout();
-		setJMenuBar(initJMenuBar());
+		JMenuBar menuBar = new JMenuBar();
+		JMenu fileMenu = new JMenu("File");
+		JMenuItem menuItem = new JMenuItem("SaveAs");
+		fileMenu.add(menuItem);
+		menuBar.add(fileMenu);
+		setJMenuBar(menuBar);
+		menuItem.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				editor.saveAs();
+				
+			}
+		});
+		//setJMenuBar(initJMenuBar());
+		getContentPane().add(initButtonSaveAs());
 		getContentPane().add(initMovieListPane());
 		getContentPane().add(initMovieDetailsPane());
 		getContentPane().add(initButtonPanel());
@@ -84,10 +103,22 @@ public class SwingMovieListEditorView extends JFrame implements
 		return menuBar;
 	}
 
+	private JMenuItem initButtonSaveAs() {
+		JMenuItem saveAsItem = new JMenuItem("SaveAss");
+
+		return saveAsItem;
+	}
+
 	private JMenu initFileMenu() {
-		JMenu menu = new JMenu("File");
-		JMenuItem saveAs = new JMenuItem();
-		saveAs.setText("SaveAs");
+		menu = new JMenu("File");
+		saveAs = new JMenuItem("SaveAs");
+		saveAs.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				editor.saveAs();
+			}
+		});
+		saveAs.setName("SaveAs");
 		menu.add(saveAs);
 		return menu;
 	}
@@ -216,7 +247,7 @@ public class SwingMovieListEditorView extends JFrame implements
 	}
 
 	public static SwingMovieListEditorView start() {
-		SwingMovieListEditorView window = new SwingMovieListEditorView();
+		 window = new SwingMovieListEditorView();
 		window.init();
 		window.setVisible(true);
 		return window;
@@ -268,5 +299,11 @@ public class SwingMovieListEditorView extends JFrame implements
 	@Override
 	public void setCategoryField(Category category) {
 		categoryCombo.setSelectedItem(category);
+	}
+
+	@Override
+	public File getFile() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

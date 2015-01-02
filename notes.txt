@@ -58,4 +58,18 @@ Astels implements a design where the view always calls a method on the logical l
 example: SaveAs, it calls the logical, who calls the view to display the filechooser popup. Instead the view could call directly a method within itself to display
 the filechooser, then under the ok button add the listener "editor.save()". Why does he do it? Keep consistency?
 
+#52 and #53
+These two test have some duplication, one test that the string that is written from the movielist is of the form Movie|title|rating... the other test this plus that 
+this is written into a file. In the test #53 we could mock the call which computes the string (Movie|title|rating), and just check that a file is created with 
+whatever returns the mock.
+When going for an out-in approach Problem testing that FileWriter containing the ouputFile is passed to the movieList.write method. Problem because theare too many
+mocks. We could create two methods one that just the FileWriter around but it seems to overkill it.
+
+
+**Bottom-up or Outer-inner development**
+With in-out approach less mocks need to be required. Because we create the inner code first then we can invoke from the next tests. However this produces some 
+duplication in the tests, since both tests, inner and outer are testing the inner funcionality. 
+ 
+
+
 

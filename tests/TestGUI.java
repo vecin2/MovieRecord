@@ -245,5 +245,5 @@ public class TestGUI {
 		MoviesAssert.assertEqualMovieCollection(movieList.getMovies(),
 				captureMovies);
 	}
-
+	
 }
