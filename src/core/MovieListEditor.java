@@ -6,6 +6,8 @@ import java.nio.channels.SeekableByteChannel;
 import java.util.ArrayList;
 import java.util.Vector;
 
+import org.mockito.Mockito;
+
 import src.core.exceptions.DuplicateMovieException;
 import src.core.exceptions.UnratedMovieException;
 import src.ui.MovieListEditorView;
@@ -82,9 +84,8 @@ public class MovieListEditor {
 		updateMovieList();
 	}
 
-	public void saveAs() {
-		FileWriter fileWriter;
-		movieList.writeTo(view.getFile());
+	public void saveAs() throws IOException {
+		movieList.writeTo(view.getFile(),new MovieListFormatter());
 		
 	}
 }

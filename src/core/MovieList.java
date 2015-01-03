@@ -2,7 +2,7 @@ package src.core;
 
 import java.io.File;
 import java.io.FileWriter;
-import java.io.Writer;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import src.core.exceptions.DuplicateMovieException;
@@ -81,7 +81,11 @@ public class MovieList {
 		return result;
 	}
 
-	public void writeTo(File outputFile) {
+	public void writeTo(File outputFile, MovieListFormatter movieListFormatter) throws IOException {
+		FileWriter fileWriter = new FileWriter(outputFile);
+		fileWriter.write(movieListFormatter.fileFormat(this));
+		fileWriter.flush();
+		fileWriter.close();
 	}
 
 }

@@ -2,12 +2,18 @@ package tests;
 
 import static org.junit.Assert.assertEquals;
 
+import java.io.File;
+import java.io.IOException;
+
 import org.junit.Test;
 
 import src.core.Category;
 import src.core.Movie;
 import src.core.MovieList;
+import src.core.MovieListFormatter;
 import src.core.exceptions.DuplicateMovieException;
+import testUtils.FileAssertor;
+import static org.mockito.Mockito.*;
 
 public class TestMovieList {
 
@@ -56,6 +62,18 @@ public class TestMovieList {
 		assertEquals(2, filteredMovieList.size());
 		assertEquals("Braveheart", filteredMovieList.get(0).getName());
 		assertEquals("Stargate", filteredMovieList.get(1).getName());
+	}
+	@Test
+	public void testWriteToWritesToTheFileTheResultTheFormatterProduces() throws IOException{
+		File output = File.createTempFile("output", ".dat");
+		output.deleteOnExit();
+		MovieList movieList = new MovieList();
+		MovieListFormatter movieListFormatter = mock(MovieListFormatter.class);
+		when(movieListFormatter.fileFormat(movieList)).thenReturn("mocked file text\n");
+		
+		movieList.writeTo(output, movieListFormatter);
+		
+		FileAssertor.assertEqualFile("mocked file text", output);
 	}
 	
 

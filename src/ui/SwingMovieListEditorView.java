@@ -7,6 +7,7 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.IOException;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
@@ -85,7 +86,12 @@ public static SwingMovieListEditorView window;
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				editor.saveAs();
+				try {
+					editor.saveAs();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				
 			}
 		});
@@ -115,7 +121,12 @@ public static SwingMovieListEditorView window;
 		saveAs.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				editor.saveAs();
+				try {
+					editor.saveAs();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		});
 		saveAs.setName("SaveAs");

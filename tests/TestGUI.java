@@ -6,19 +6,16 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import java.util.Collection;
-import java.util.List;
 import java.util.Vector;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
-import org.mockito.internal.stubbing.answers.Returns;
 
+import src.core.Category;
 import src.core.Movie;
 import src.core.MovieList;
 import src.core.MovieListEditor;
-import src.core.Category;
 import src.core.exceptions.DuplicateMovieException;
 import src.core.exceptions.UnratedMovieException;
 import src.ui.MovieListEditorView;

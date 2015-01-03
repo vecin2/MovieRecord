@@ -64,6 +64,18 @@ this is written into a file. In the test #53 we could mock the call which comput
 whatever returns the mock.
 When going for an out-in approach Problem testing that FileWriter containing the ouputFile is passed to the movieList.write method. Problem because theare too many
 mocks. We could create two methods one that just the FileWriter around but it seems to overkill it.
+We need to separate reponsabilities:
+1. Application layer which gets the info from the UI and it passes to the responsable object to execute the operation (this is the saveAs() method)
+1. Write to the file with the correct format.
+2. Format the movieList to be written into a file.
+We can cover this with three tests:
+One for the logical layer, to file got from the view is passed as a parameter to the movieList.writeTo() method. 
+And then two inside the movieList: 
+    one will check that file is written with the result of the formatter.
+    And the other will test the formatter itself.
+ 
+ David passes the writer to the movieList, which allows to formatting result using a StringWriter, but you end up with two tests that are testing a common requirement
+ saveAs() and writeTo() both check the text format written into the file is like "Braveheart|Horror|5..."
 
 
 **Bottom-up or Outer-inner development**

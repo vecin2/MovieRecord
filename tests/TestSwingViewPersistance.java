@@ -2,6 +2,8 @@ package tests;
 
 import static org.junit.Assert.*;
 
+import java.io.IOException;
+
 import javax.swing.JMenuBar;
 
 import org.junit.Test;
@@ -15,7 +17,7 @@ import static org.mockito.Mockito.verify;
 public class TestSwingViewPersistance {
 
 	@Test
-	public void testSaveAsCallSaveAsInLogicalLayer() {
+	public void testSaveAsCallSaveAsInLogicalLayer() throws IOException {
 		MovieListEditor mockedEditor= mock(MovieListEditor.class);
 		SwingMovieListEditorView.start();
 		JFrameOperator mainWindow = new JFrameOperator("Movie List");

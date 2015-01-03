@@ -5,16 +5,15 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.StringWriter;
-import java.io.Writer;
 
 import org.junit.Test;
+import org.mockito.Mockito;
 
 import src.core.Category;
 import src.core.MovieList;
 import src.core.MovieListEditor;
+import src.core.MovieListFormatter;
 import src.ui.MovieListEditorView;
 
 public class TestGUIPersistance {
@@ -32,7 +31,8 @@ public class TestGUIPersistance {
 
 		editor.saveAs();
 
-		verify(mockedMovieList).writeTo(outputFile);
+		verify(mockedMovieList).writeTo(Mockito.eq(outputFile),
+				Mockito.any(MovieListFormatter.class));
 	}
 
 }
