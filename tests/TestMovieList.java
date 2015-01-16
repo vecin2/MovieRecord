@@ -3,6 +3,7 @@ package tests;
 import static org.junit.Assert.assertEquals;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 
 import org.junit.Test;
@@ -13,6 +14,7 @@ import src.core.MovieList;
 import src.core.MovieListFormatter;
 import src.core.exceptions.DuplicateMovieException;
 import testUtils.FileAssertor;
+import testUtils.MoviesAssert;
 import static org.mockito.Mockito.*;
 
 public class TestMovieList {
@@ -52,7 +54,8 @@ public class TestMovieList {
 	}
 	@Test
 	public void testFilterByCategory() throws DuplicateMovieException{
-		MovieList movieList = new MovieList();
+		MovieList movieList;
+		movieList= new MovieList();
 		movieList.add(new Movie("Braveheart",Category.HORROR,5));
 		movieList.add(new Movie("Starwars",Category.SCIFI,4));
 		movieList.add(new Movie("Stargate",Category.HORROR,5));
@@ -73,7 +76,26 @@ public class TestMovieList {
 		
 		movieList.writeTo(output, movieListFormatter);
 		
-		FileAssertor.assertEqualFile("mocked file text", output);
+		FileAssertor.assertEqualFile("mocked file text\n", output);
+	}
+	@Test
+	public void testReadFromAFileBuildsAMovieList() throws IOException, NumberFormatException, DuplicateMovieException{
+		File output = File.createTempFile("output", ".dat");
+		output.deleteOnExit();
+		FileWriter fileWriter = new FileWriter(output);
+		fileWriter.write("Braveheart|" + Category.HORROR + "|5\n");
+		fileWriter.flush();
+		MovieListFormatter movieListFormatter = mock(MovieListFormatter.class);
+		String formattedMoviesArray[] = {"Braveheart|" + Category.HORROR + "|5"};
+		MovieList expectedMovieList = new MovieList();
+		expectedMovieList.add(new Movie("Braveheart",Category.HORROR,5));
+		when(movieListFormatter.toMoviesList(formattedMoviesArray)).thenReturn(expectedMovieList);
+		
+		MovieList movieList = MovieList.readFrom(output, movieListFormatter);
+		
+
+		verify(movieListFormatter).toMoviesList(formattedMoviesArray);
+		MoviesAssert.assertEqualMovieCollection(expectedMovieList, movieList);
 	}
 	
 

@@ -17,6 +17,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JList;
 import javax.swing.JMenu;
@@ -30,6 +31,7 @@ import javax.swing.ListSelectionModel;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.plaf.FileChooserUI;
 
 import org.netbeans.jemmy.operators.JMenuBarOperator;
 
@@ -52,8 +54,9 @@ public class SwingMovieListEditorView extends JFrame implements
 	private JComboBox<Category> categoryCombo;
 	JMenuItem saveAs;
 	JMenu menu;
-	public int i=0;
-public static SwingMovieListEditorView window;
+	public int i = 0;
+	public static SwingMovieListEditorView window;
+
 	public SwingMovieListEditorView() {
 		super();
 	}
@@ -76,27 +79,8 @@ public static SwingMovieListEditorView window;
 	public void init() {
 		setTitle("Movie List");
 		setLayout();
-		JMenuBar menuBar = new JMenuBar();
-		JMenu fileMenu = new JMenu("File");
-		JMenuItem menuItem = new JMenuItem("SaveAs");
-		fileMenu.add(menuItem);
-		menuBar.add(fileMenu);
-		setJMenuBar(menuBar);
-		menuItem.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				try {
-					editor.saveAs();
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-				
-			}
-		});
-		//setJMenuBar(initJMenuBar());
-		getContentPane().add(initButtonSaveAs());
+		setJMenuBar(initJMenuBar());
+		//getContentPane().add(initButtonSaveAs());
 		getContentPane().add(initMovieListPane());
 		getContentPane().add(initMovieDetailsPane());
 		getContentPane().add(initButtonPanel());
@@ -110,28 +94,49 @@ public static SwingMovieListEditorView window;
 	}
 
 	private JMenuItem initButtonSaveAs() {
-		JMenuItem saveAsItem = new JMenuItem("SaveAss");
+		JMenuItem saveAs = new JMenuItem("SaveAs");
+		saveAs.addActionListener(new ActionListener() {
 
-		return saveAsItem;
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				try {
+					editor.saveAs();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+
+			}
+		});
+		return saveAs;
 	}
 
 	private JMenu initFileMenu() {
-		menu = new JMenu("File");
-		saveAs = new JMenuItem("SaveAs");
-		saveAs.addActionListener(new ActionListener() {
+		JMenu fileMenu = new JMenu("File");
+		fileMenu.add(initButtonSave());
+		fileMenu.add(initButtonSaveAs());
+		return fileMenu;
+
+	}
+
+	private JMenuItem initButtonSave() {
+		JMenuItem save = new JMenuItem("Save");
+		save.setName("Save");
+		save.addActionListener(new ActionListener() {
+
 			@Override
-			public void actionPerformed(ActionEvent arg0) {
+			public void actionPerformed(ActionEvent e) {
 				try {
-					editor.saveAs();
-				} catch (IOException e) {
+					editor.save();
+				} catch (IOException e1) {
 					// TODO Auto-generated catch block
-					e.printStackTrace();
+					e1.printStackTrace();
 				}
+
 			}
 		});
-		saveAs.setName("SaveAs");
-		menu.add(saveAs);
-		return menu;
+		return save;
+
 	}
 
 	private JPanel initButtonPanel() {
@@ -231,6 +236,7 @@ public static SwingMovieListEditorView window;
 
 	private JComponent initNewMovieTextField() {
 		newMovieTxt = new JTextField(16);
+		newMovieTxt.setName("movieName");
 		return newMovieTxt;
 	}
 
@@ -258,7 +264,7 @@ public static SwingMovieListEditorView window;
 	}
 
 	public static SwingMovieListEditorView start() {
-		 window = new SwingMovieListEditorView();
+		window = new SwingMovieListEditorView();
 		window.init();
 		window.setVisible(true);
 		return window;
@@ -314,7 +320,12 @@ public static SwingMovieListEditorView window;
 
 	@Override
 	public File getFile() {
-		// TODO Auto-generated method stub
-		return null;
+		JFileChooser fileChooser = new JFileChooser();
+		int returnVal = fileChooser.showSaveDialog(this);
+		if (returnVal == JFileChooser.APPROVE_OPTION) {
+			return fileChooser.getSelectedFile();
+		} else {
+			return null;
+		}
 	}
 }

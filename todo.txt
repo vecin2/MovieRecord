@@ -1,0 +1,11 @@
+	refactor save end to end
+	refactor unit test save end to end
+	read from a flat file
+number format exception
+duplicate movie exception
+Category null
+Category different from all categories return uncategorized
+Rating should be enumeration?
+MovieList read from non existing file
+
+load in gui

@@ -1,5 +1,6 @@
 package tests;
 
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -34,5 +35,15 @@ public class TestGUIPersistance {
 		verify(mockedMovieList).writeTo(Mockito.eq(outputFile),
 				Mockito.any(MovieListFormatter.class));
 	}
+	@Test
+	public void testCancelSaveAsWritesNothingToAfile() throws IOException {
+		MovieListEditorView mockView = mock(MovieListEditorView.class);
+		when(mockView.getCategoryFilter()).thenReturn(Category.ALL);
+		when(mockView.getFile()).thenReturn(null);
+		MovieList mockedMovieList = mock(MovieList.class);
+		MovieListEditor editor = new MovieListEditor(mockedMovieList, mockView);
 
+		assertFalse("when cancel save should not be saving", editor.saveAs());
+
+	}
 }

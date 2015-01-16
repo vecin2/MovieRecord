@@ -76,6 +76,8 @@ And then two inside the movieList:
  
  David passes the writer to the movieList, which allows to formatting result using a StringWriter, but you end up with two tests that are testing a common requirement
  saveAs() and writeTo() both check the text format written into the file is like "Braveheart|Horror|5..."
+ 
+ I have created unit tests for each of the classes formatter, movieList and editor. Now we need to pass the end to end test.
 
 
 **Bottom-up or Outer-inner development**

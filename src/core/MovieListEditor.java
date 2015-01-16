@@ -1,5 +1,6 @@
 package src.core;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.channels.SeekableByteChannel;
@@ -17,6 +18,7 @@ public class MovieListEditor {
 	private MovieList movieList;
 	private MovieList filteredMovieList;
 	private Movie selectedMovie;
+	private File outputFile;
 
 	public MovieListEditor(MovieList movieList, MovieListEditorView view) {
 		this.movieList = movieList;
@@ -26,7 +28,8 @@ public class MovieListEditor {
 	}
 
 	private void updateMovieList() {
-		this.view.setMovies(new Vector<Movie>(this.filteredMovieList.getMovies()));
+		this.view.setMovies(new Vector<Movie>(this.filteredMovieList
+				.getMovies()));
 	}
 
 	public void addMovie() {
@@ -77,15 +80,30 @@ public class MovieListEditor {
 
 	public void filter() {
 		if (view.getCategoryFilter().equals(Category.ALL)) {
-			filteredMovieList =movieList;
+			filteredMovieList = movieList;
 		} else {
 			filteredMovieList = movieList.filterBy(view.getCategoryFilter());
 		}
 		updateMovieList();
 	}
 
-	public void saveAs() throws IOException {
-		movieList.writeTo(view.getFile(),new MovieListFormatter());
-		
+	public boolean saveAs() throws IOException {
+		outputFile = view.getFile();
+		if (outputFile != null) {
+			movieList.writeTo(outputFile, new MovieListFormatter());
+			return true;
+		} else {
+			return false;
+		}
+
+	}
+
+	public boolean save() throws IOException {
+		if (outputFile != null) {
+			movieList.writeTo(outputFile, new MovieListFormatter());
+			return true;
+		} else {
+			return false;
+		}
 	}
 }

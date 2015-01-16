@@ -1,10 +1,9 @@
 package tests;
 
-import static org.junit.Assert.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 import java.io.IOException;
-
-import javax.swing.JMenuBar;
 
 import org.junit.Test;
 import org.netbeans.jemmy.operators.JFrameOperator;
@@ -12,20 +11,31 @@ import org.netbeans.jemmy.operators.JMenuBarOperator;
 
 import src.core.MovieListEditor;
 import src.ui.SwingMovieListEditorView;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
+import testUtils.ApplicationRunner;
 public class TestSwingViewPersistance {
 
 	@Test
 	public void testSaveAsCallSaveAsInLogicalLayer() throws IOException {
 		MovieListEditor mockedEditor= mock(MovieListEditor.class);
 		SwingMovieListEditorView.start();
+		ApplicationRunner appRunner = new ApplicationRunner("Movie List");
+		//JFrameOperator mainWindow = new JFrameOperator("Movie List");
+		//SwingMovieListEditorView view =(SwingMovieListEditorView)mainWindow.getWindow();
+		appRunner.getView().setEditor(mockedEditor);
+		//JMenuBarOperator menuBarOperator = new JMenuBarOperator(mainWindow);
+		//menuBarOperator.pushMenu("File|SaveAs","|");
+		appRunner.pushSaveAs();
+		verify(mockedEditor).saveAs();
+	}
+	@Test
+	public void testSaveCallSaveInLogicalLayer() throws IOException {
+		MovieListEditor mockedEditor= mock(MovieListEditor.class);
+		SwingMovieListEditorView.start();
 		JFrameOperator mainWindow = new JFrameOperator("Movie List");
 		SwingMovieListEditorView view =(SwingMovieListEditorView)mainWindow.getWindow();
 		view.setEditor(mockedEditor);
 		JMenuBarOperator menuBarOperator = new JMenuBarOperator(mainWindow);
-		menuBarOperator.pushMenu("File|SaveAs","|");
-		verify(mockedEditor).saveAs();
+		menuBarOperator.pushMenu("File|Save","|");
+		verify(mockedEditor).save();
 	}
-
 }

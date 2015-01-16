@@ -1,6 +1,9 @@
 package src.core;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -69,8 +72,8 @@ public class MovieList {
 
 	public MovieList filterBy(Category category) {
 		MovieList result = new MovieList();
-		for(Movie movie: movies){
-			if(movie.getCategory().equals(category)){
+		for (Movie movie : movies) {
+			if (movie.getCategory().equals(category)) {
 				try {
 					result.add(movie);
 				} catch (DuplicateMovieException e) {
@@ -81,11 +84,27 @@ public class MovieList {
 		return result;
 	}
 
-	public void writeTo(File outputFile, MovieListFormatter movieListFormatter) throws IOException {
+	public void writeTo(File outputFile, MovieListFormatter movieListFormatter)
+			throws IOException {
 		FileWriter fileWriter = new FileWriter(outputFile);
 		fileWriter.write(movieListFormatter.fileFormat(this));
 		fileWriter.flush();
 		fileWriter.close();
+	}
+
+	public static MovieList readFrom(File file, MovieListFormatter movieListFormatter)
+			throws NumberFormatException,
+			DuplicateMovieException, IOException {
+
+		BufferedReader br = new BufferedReader(new FileReader(file));
+		String line = br.readLine();
+		String fileContent = "";
+		while (line != null) {
+			fileContent += line;
+			line = br.readLine();
+		}
+		return movieListFormatter.toMoviesList(fileContent.split("\\\n"));
+
 	}
 
 }

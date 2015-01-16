@@ -4,28 +4,25 @@ import java.util.Vector;
 
 import org.junit.After;
 import org.junit.Before;
-import org.netbeans.jemmy.JemmyProperties;
-import org.netbeans.jemmy.operators.JFrameOperator;
 
 import src.core.Category;
 import src.core.Movie;
 import src.core.MovieList;
+import src.core.MovieListEditor;
 import src.ui.SwingMovieListEditorView;
+import testUtils.ApplicationRunner;
 
-public class TestSettingupView {
+public abstract class TestSettingupView {
 
-	protected JFrameOperator mainWindow;
 	protected Vector<Movie> movies = null;
 	protected Movie starWars = null;
 	protected Movie starTrek = null;
 	protected Movie stargate = null;
 	protected MovieList movieList = null;
-	private long backupWaitComponentTimeout;
-	private long backupWaitDialogTimeout;
+	
+	protected ApplicationRunner appRunner;
 
-	public TestSettingupView() {
-		super();
-	}
+
 
 	@Before
 	public void setUp() throws Exception {
@@ -41,24 +38,17 @@ public class TestSettingupView {
 		movieList.add(starWars);
 		movieList.add(starTrek);
 		movieList.add(stargate);
-		backupWaitComponentTimeout = JemmyProperties
-				.getCurrentTimeout("ComponentOperator.WaitComponentTimeout");
-		JemmyProperties.setCurrentTimeout(
-				"ComponentOperator.WaitComponentTimeout", 2000L);
-		backupWaitDialogTimeout = JemmyProperties
-				.getCurrentTimeout("DialogWaiter.WaitDialogTimeout");
-		JemmyProperties.setCurrentTimeout("DialogWaiter.WaitDialogTimeout",
-				4000L);
+		
+		appRunner = new ApplicationRunner("Movie List");
+		appRunner.setup();
+		MovieListEditor editor = new MovieListEditor(movieList,
+				appRunner.getView());
 	}
 
 	@After
 	public void tearDown() throws Exception {
-		mainWindow.dispose();
-		JemmyProperties.setCurrentTimeout(
-				"ComponentOperator.WaitComponentTimeout",
-				backupWaitComponentTimeout);
-		JemmyProperties.setCurrentTimeout("DialogWaiter.WaitDialogTimeout",
-				backupWaitDialogTimeout);
+		appRunner.tearDown();
+	
 	}
 
 }
