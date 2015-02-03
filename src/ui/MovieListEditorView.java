@@ -19,4 +19,5 @@ public interface MovieListEditorView {
 	Category getCategoryFilter();
 	void setCategoryField(Category category);
 	File getFile();
+	File getFileToOpen();
 }

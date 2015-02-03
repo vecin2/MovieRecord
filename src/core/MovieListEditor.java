@@ -10,7 +10,10 @@ import java.util.Vector;
 import org.mockito.Mockito;
 
 import src.core.exceptions.DuplicateMovieException;
+import src.core.exceptions.InvalidFileFormatException;
 import src.core.exceptions.UnratedMovieException;
+import src.sorting.MovieNameComparator;
+import src.sorting.MovieRatingComparator;
 import src.ui.MovieListEditorView;
 
 public class MovieListEditor {
@@ -105,5 +108,29 @@ public class MovieListEditor {
 		} else {
 			return false;
 		}
+	}
+
+	public boolean open() throws NumberFormatException,
+			DuplicateMovieException, IOException, InvalidFileFormatException {
+		outputFile = view.getFileToOpen();
+		if (outputFile != null) {
+			filteredMovieList = MovieList.readFrom(outputFile,
+					new MovieListFormatter());
+			updateMovieList();
+			return true;
+		}
+
+		return false;
+	}
+
+	public void sortByName() {
+		filteredMovieList.orderBy(new MovieNameComparator(), OrderType.ASC);
+		updateMovieList();
+	}
+
+	public void sortByRating() {
+		filteredMovieList.orderBy(new MovieRatingComparator(), OrderType.DESC);
+		updateMovieList();
+		
 	}
 }

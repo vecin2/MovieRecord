@@ -1,4 +1,4 @@
-package tests;
+package tests.endToEnd;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -19,11 +19,7 @@ public class TestSwingViewPersistance {
 		MovieListEditor mockedEditor= mock(MovieListEditor.class);
 		SwingMovieListEditorView.start();
 		ApplicationRunner appRunner = new ApplicationRunner("Movie List");
-		//JFrameOperator mainWindow = new JFrameOperator("Movie List");
-		//SwingMovieListEditorView view =(SwingMovieListEditorView)mainWindow.getWindow();
 		appRunner.getView().setEditor(mockedEditor);
-		//JMenuBarOperator menuBarOperator = new JMenuBarOperator(mainWindow);
-		//menuBarOperator.pushMenu("File|SaveAs","|");
 		appRunner.pushSaveAs();
 		verify(mockedEditor).saveAs();
 	}

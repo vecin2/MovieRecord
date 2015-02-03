@@ -1,6 +1,7 @@
 package src.core;
 
 import src.core.exceptions.DuplicateMovieException;
+import src.core.exceptions.InvalidFileFormatException;
 import src.core.exceptions.UnratedMovieException;
 
 public class MovieListFormatter {
@@ -26,10 +27,13 @@ public class MovieListFormatter {
 	}
 
 	public MovieList toMoviesList(String[] formattedMoviesText)
-			throws NumberFormatException, DuplicateMovieException {
+			throws NumberFormatException, DuplicateMovieException, InvalidFileFormatException {
 		MovieList movieList = new MovieList();
-		for (String line : formattedMoviesText) {
+		for (int i=0; i < formattedMoviesText.length; i++) {
+			String line = formattedMoviesText[i];
 			String movieArray[] = line.split("\\|");
+			if(movieArray.length!=3)
+				throw new InvalidFileFormatException(i, line);
 			movieList.add(new Movie(movieArray[0], Category.make(movieArray[1]), Integer
 					.parseInt(movieArray[2])));
 		}

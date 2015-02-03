@@ -7,8 +7,10 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Comparator;
 
 import src.core.exceptions.DuplicateMovieException;
+import src.core.exceptions.InvalidFileFormatException;
 
 public class MovieList {
 
@@ -92,19 +94,25 @@ public class MovieList {
 		fileWriter.close();
 	}
 
-	public static MovieList readFrom(File file, MovieListFormatter movieListFormatter)
-			throws NumberFormatException,
-			DuplicateMovieException, IOException {
+	public static MovieList readFrom(File file,
+			MovieListFormatter movieListFormatter)
+			throws NumberFormatException, DuplicateMovieException, IOException,
+			InvalidFileFormatException {
 
 		BufferedReader br = new BufferedReader(new FileReader(file));
 		String line = br.readLine();
 		String fileContent = "";
 		while (line != null) {
-			fileContent += line;
+			fileContent += line + "\n";
 			line = br.readLine();
 		}
-		return movieListFormatter.toMoviesList(fileContent.split("\\\n"));
+		return movieListFormatter.toMoviesList(fileContent.split("\\n"));
 
+	}
+
+	public void orderBy(Comparator comparator, OrderType orderType) {
+		MovieListSorter sorter = new MovieListSorter(this, orderType);
+		sorter.sort(comparator);
 	}
 
 }

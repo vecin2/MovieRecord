@@ -10,6 +10,7 @@ import src.core.Movie;
 import src.core.MovieList;
 import src.core.MovieListFormatter;
 import src.core.exceptions.DuplicateMovieException;
+import src.core.exceptions.InvalidFileFormatException;
 import testUtils.MoviesAssert;
 
 public class TestMovieListFormatter {
@@ -48,9 +49,11 @@ public class TestMovieListFormatter {
 		expectedText += "Starwars|" + Category.SCIFI + "|4\n";
 		assertEquals(expectedText, formatter.fileFormat(movieList));
 	}
+
 	@Test
 	public void testReadEmptyReturnsNewMovieList()
-			throws DuplicateMovieException {
+			throws DuplicateMovieException, NumberFormatException,
+			InvalidFileFormatException {
 		MovieList expectedMovies = new MovieList();
 		String formattedMoviesText[] = {};
 
@@ -58,9 +61,11 @@ public class TestMovieListFormatter {
 
 		MoviesAssert.assertEqualMovieCollection(expectedMovies, movieList);
 	}
+
 	@Test
 	public void testReadMovieLinesArrayReturnsMovieList()
-			throws DuplicateMovieException {
+			throws DuplicateMovieException, NumberFormatException,
+			InvalidFileFormatException {
 		MovieList expectedMovies = new MovieList();
 		expectedMovies.add(new Movie("Braveheart", Category.HORROR, 5));
 		expectedMovies.add(new Movie("Starwars", Category.SCIFI, 4));
@@ -71,6 +76,33 @@ public class TestMovieListFormatter {
 		movieList = formatter.toMoviesList(formattedMoviesText);
 
 		MoviesAssert.assertEqualMovieCollection(expectedMovies, movieList);
+	}
+
+	@Test(expected = InvalidFileFormatException.class)
+	public void testInvalidNumberOfAttributesThrowsInvalidFileFormatException()
+			throws DuplicateMovieException, NumberFormatException,
+			InvalidFileFormatException {
+		String formattedMoviesText[] = { "Braveheart|" + Category.HORROR };
+		movieList = formatter.toMoviesList(formattedMoviesText);
+	}
+
+	@Test(expected = NumberFormatException.class)
+	public void testNoRatingNumberThrowsNumberFormatException()
+			throws DuplicateMovieException, NumberFormatException,
+			InvalidFileFormatException {
+		String formattedMoviesText[] = { "Braveheart|" + Category.HORROR + "|"
+				+ "a" };
+		movieList = formatter.toMoviesList(formattedMoviesText);
+	}
+
+	@Test(expected = DuplicateMovieException.class)
+	public void testDuplicateMovieThrowsDuplicateMovieException()
+			throws DuplicateMovieException, NumberFormatException,
+			InvalidFileFormatException {
+		String formattedMoviesText[] = {
+				"Braveheart|" + Category.HORROR + "|5",
+				"Braveheart|" + Category.SCIFI + "|1" };
+		movieList = formatter.toMoviesList(formattedMoviesText);
 	}
 
 	@Test

@@ -1,10 +1,12 @@
 package src.core;
 
+import java.util.ArrayList;
+
 import src.core.exceptions.UnratedMovieException;
 
 public class Movie {
 	String name;
-	int rating;
+	ArrayList<Integer> ratings = new ArrayList<Integer>();
 	private Category category;
 
 	public Movie(String name) {
@@ -19,7 +21,8 @@ public class Movie {
 		if (name == null || name.equals(""))
 			throw new IllegalArgumentException();
 		this.name = name;
-		this.rating = rating;
+		if (rating != -1)
+			this.ratings.add(rating);
 		this.category = category;
 	}
 
@@ -64,17 +67,18 @@ public class Movie {
 	}
 
 	public boolean isRated() {
-		return rating != -1;
+		return ratings.size() > 0;
 	}
 
 	public int getRating() throws UnratedMovieException {
 		if (!isRated())
 			throw new UnratedMovieException("This movie has not been rated");
-		return rating;
+		return ratings.get(0);
 	}
 
 	public void setRating(int rating) {
-		this.rating = rating;
+		this.ratings.clear();
+		this.ratings.add(rating);
 	}
 
 	public Category getCategory() {

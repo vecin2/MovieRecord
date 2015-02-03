@@ -2,7 +2,7 @@ package src.core;
 
 public enum Category {
 	ALL("All"), UNCATEGORIZED("Uncategorized"), SCIFI("Science Fiction"), HORROR(
-			"Horror");
+			"Horror"), COMEDY("Comedy");
 	private String name;
 
 	Category(String name) {

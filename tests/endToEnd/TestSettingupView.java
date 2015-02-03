@@ -1,4 +1,4 @@
-package tests;
+package tests.endToEnd;
 
 import java.util.Vector;
 
@@ -27,9 +27,9 @@ public abstract class TestSettingupView {
 	@Before
 	public void setUp() throws Exception {
 		SwingMovieListEditorView.start();
-		starWars = new Movie("Star Wars", Category.SCIFI, 5);
+		starWars = new Movie("Star Wars", Category.SCIFI, 3);
 		starTrek = new Movie("Star Trek", Category.SCIFI, 4);
-		stargate = new Movie("Stargate", Category.HORROR, 3);
+		stargate = new Movie("Stargate", Category.HORROR, 5);
 		movies = new Vector<Movie>();
 		movies.add(starWars);
 		movies.add(starTrek);

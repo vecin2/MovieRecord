@@ -1,11 +1,16 @@
 	refactor save end to end
 	refactor unit test save end to end
 	read from a flat file
-number format exception
-duplicate movie exception
+	number format exception
+	duplicate movie exception
 Category null
-Category different from all categories return uncategorized
+	Category different from all categories return uncategorized (cant passed different category)
 Rating should be enumeration?
-MovieList read from non existing file
 
-load in gui
+	MovieList read from non existing file
+	manage format exception in UI
+>load in gui
+	review unit test running time
+change editor so it doesnt read the category from the view on entry
+	revert changes in movieList
+order by name

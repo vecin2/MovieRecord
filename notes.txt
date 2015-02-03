@@ -48,7 +48,9 @@ result rather than the just the logical class.
 edit.filterOnCategory(Category.ALL), why in this case the editor recieves the category instead of taking from the UI with getCategoryField(), like rating and name.
 
 #50 Persistance
-Astels uses a more bottom/up approach in the development of the stories. My goal is to determine or come up with a rule for my personal development, which defines 
+Astels uses a more bottom/up approach in the development of the stories. My goal is to determine or come up with a rule for my personal development, which defines
+
+ 
 for most of the cases whether I start top/down or bottom/up.
 The question do I start with a low level test like he does, testing movie and movieList classes.
 Or do I write a test to the editorMovieList logical object.
@@ -85,5 +87,22 @@ With in-out approach less mocks need to be required. Because we create the inner
 duplication in the tests, since both tests, inner and outer are testing the inner funcionality. 
  
 
+*Rating*
+Rating could be a safe type enumeration. It would have:1,2,3,4,5. Containing an int inside, but not the image icon related with it, since we understand this is the
+visual representation of a rating and therefore should be included in the view, as it is now in the MovieListRenderer.
 
 
+*Exception Handling
+Two ways of manage exception handling. 
+The first one is having the logical layer catching the exceptions and calling handleWhatEverError() method on the view interface. This way the view should implement
+all the handleMethodErrors that the logical layer could possible create.
+The other one is having the logical layer throwing directly the exceptions. Then on button click of the view you would have the try catch block, which could have a
+diferent catch for everykind of exception. Maybe has one initially to catch all the types of exceptions but this could be change in the future to catch each exception
+separately without affecting the logical layer.
+
+*Ordering by name and rating
+Define a compare method which can compare two movies.
+I have created a class "MovieListSorter", which defines the algorithm for sorting. Instead I could used the JAVA collection method "sortUsing(Comparator comparator).
+As well I defined types of sorting as ASC or DESC. This logic could be encapsulated on the Comparator, creating and Comparator that compares by ascending order and
+Comparator that compares by descending rating.
+ 

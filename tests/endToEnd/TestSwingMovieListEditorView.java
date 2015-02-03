@@ -1,4 +1,4 @@
-package tests;
+package tests.endToEnd;
 
 import java.util.Vector;
 
@@ -38,13 +38,13 @@ public class TestSwingMovieListEditorView extends TestSettingupView {
 	@Test
 	public void testWhenSelectFromOriginalListFillsMovieDetailsWithTheSelectedMovie() {
 		appRunner.selectMovie(0);
-		appRunner.assertMovieDetailsDisplays("Star Wars", Category.SCIFI, 6);
+		appRunner.assertMovieDetailsDisplays("Star Wars", Category.SCIFI, 4);
 
 		appRunner.selectMovie(1);
 		appRunner.assertMovieDetailsDisplays("Star Trek", Category.SCIFI, 5);
 
 		appRunner.selectMovie(2);
-		appRunner.assertMovieDetailsDisplays("Stargate", Category.HORROR, 4);
+		appRunner.assertMovieDetailsDisplays("Stargate", Category.HORROR, 6);
 	}
 
 	@Test
@@ -96,7 +96,7 @@ public class TestSwingMovieListEditorView extends TestSettingupView {
 	public void testAddingADuplicateMovieDisplaysErrorDialog() {
 		appRunner.addMovie(stargate.getName(), Category.HORROR, 2);
 		appRunner
-				.assertDisplaysDialogWithText("Adding this movie will result in a duplicate movie");
+				.assertDisplaysDialogWithText("Duplicate Movie", "Adding this movie will result in a duplicate movie");
 		appRunner.clickOkInDialog();
 		appRunner.assertMoviesSize(movies.size());
 	}
@@ -110,7 +110,7 @@ public class TestSwingMovieListEditorView extends TestSettingupView {
 			throws UnratedMovieException {
 		appRunner.updateMovie(1, stargate);
 		appRunner
-				.assertDisplaysDialogWithText("Adding this movie will result in a duplicate movie");
+				.assertDisplaysDialogWithText("Duplicate Movie", "Adding this movie will result in a duplicate movie");
 		appRunner.clickOkInDialog();
 
 		appRunner.assertMoviesSize(movies.size());
@@ -130,7 +130,7 @@ public class TestSwingMovieListEditorView extends TestSettingupView {
 		appRunner.enterMovieName(stargate.getName());
 		appRunner.clickUpdate();
 		appRunner
-				.assertDisplaysDialogWithText("Adding this movie will result in a duplicate movie");
+				.assertDisplaysDialogWithText("Duplicate Movie", "Adding this movie will result in a duplicate movie");
 		appRunner.assertMoviesSize(2);
 
 	}

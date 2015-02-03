@@ -39,6 +39,8 @@ import src.core.Category;
 import src.core.Movie;
 import src.core.MovieList;
 import src.core.MovieListEditor;
+import src.core.exceptions.DuplicateMovieException;
+import src.core.exceptions.InvalidFileFormatException;
 
 public class SwingMovieListEditorView extends JFrame implements
 		MovieListEditorView {
@@ -80,7 +82,7 @@ public class SwingMovieListEditorView extends JFrame implements
 		setTitle("Movie List");
 		setLayout();
 		setJMenuBar(initJMenuBar());
-		//getContentPane().add(initButtonSaveAs());
+		// getContentPane().add(initButtonSaveAs());
 		getContentPane().add(initMovieListPane());
 		getContentPane().add(initMovieDetailsPane());
 		getContentPane().add(initButtonPanel());
@@ -90,7 +92,34 @@ public class SwingMovieListEditorView extends JFrame implements
 	private JMenuBar initJMenuBar() {
 		JMenuBar menuBar = new JMenuBar();
 		menuBar.add(initFileMenu());
+		menuBar.add(initViewMenu());
 		return menuBar;
+	}
+
+	private JMenu initViewMenu() {
+		JMenu viewMenu = new JMenu("View");
+		viewMenu.add(initSortBy("Sort By Name", new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				editor.sortByName();
+
+			}
+		}));
+		viewMenu.add(initSortBy("Sort by Rating", new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				editor.sortByRating();
+			}
+		}));
+		return viewMenu;
+	}
+
+	private JMenuItem initSortBy(String text, ActionListener actionListener) {
+		JMenuItem sortByName = new JMenuItem(text);
+		sortByName.addActionListener(actionListener);
+		return sortByName;
 	}
 
 	private JMenuItem initButtonSaveAs() {
@@ -113,9 +142,37 @@ public class SwingMovieListEditorView extends JFrame implements
 
 	private JMenu initFileMenu() {
 		JMenu fileMenu = new JMenu("File");
+		fileMenu.add(initButtonOpen());
 		fileMenu.add(initButtonSave());
 		fileMenu.add(initButtonSaveAs());
 		return fileMenu;
+
+	}
+
+	private JMenuItem initButtonOpen() {
+		JMenuItem open = new JMenuItem("Open");
+		open.setName("Open");
+		open.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				try {
+					editor.open();
+				} catch (NumberFormatException | DuplicateMovieException
+						| IOException | InvalidFileFormatException e1) {
+					handleInvalidFormatMoviesFileException();
+				}
+			}
+		});
+		return open;
+	}
+
+	private void handleInvalidFormatMoviesFileException() {
+		JOptionPane
+				.showMessageDialog(
+						this,
+						"Wrong file format. Correct format is: Braveheart|HORROR|5. Please review the format and try again.",
+						"Wrong file format", JOptionPane.ERROR_MESSAGE);
 
 	}
 
@@ -322,6 +379,17 @@ public class SwingMovieListEditorView extends JFrame implements
 	public File getFile() {
 		JFileChooser fileChooser = new JFileChooser();
 		int returnVal = fileChooser.showSaveDialog(this);
+		if (returnVal == JFileChooser.APPROVE_OPTION) {
+			return fileChooser.getSelectedFile();
+		} else {
+			return null;
+		}
+	}
+
+	@Override
+	public File getFileToOpen() {
+		JFileChooser fileChooser = new JFileChooser();
+		int returnVal = fileChooser.showOpenDialog(this);
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
 			return fileChooser.getSelectedFile();
 		} else {

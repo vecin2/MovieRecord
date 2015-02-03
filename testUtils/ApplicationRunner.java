@@ -152,12 +152,11 @@ public class ApplicationRunner {
 		return updateBtn;
 	}
 
-	public void assertDisplaysDialogWithText(String string) {
-		dialogOperator = new JDialogOperator("Duplicate Movie");
+	public void assertDisplaysDialogWithText(String title, String string) {
+		dialogOperator = new JDialogOperator(title);
 		JLabelOperator labelOperator = new JLabelOperator(dialogOperator);
 
-		assertEquals("Error dialog contains wrong label",
-				"Adding this movie will result in a duplicate movie",
+		assertEquals("Error dialog contains wrong label", string,
 				labelOperator.getText());
 	}
 
@@ -208,12 +207,16 @@ public class ApplicationRunner {
 	public void saveAs(File outputFile) {
 		pushSaveAsNoBlock();
 
+		chooseFile(outputFile, "Save");
+
+	}
+
+	private void chooseFile(File outputFile, String btnAction) {
 		JFileChooserOperator fileChooserOperator = new JFileChooserOperator();
 		fileChooserOperator.setSelectedFile(outputFile);
 		JButtonOperator saveBtnOperator = new JButtonOperator(
-				fileChooserOperator, "Save");
+				fileChooserOperator, btnAction);
 		saveBtnOperator.push();
-
 	}
 
 	private JMenuBarOperator menuBarOperator() {
@@ -223,14 +226,41 @@ public class ApplicationRunner {
 	}
 
 	public void save() {
-		menuBarOperator().pushMenu("File|Save", "|");		
+		menuBarOperator().pushMenu("File|Save", "|");
 	}
 
 	public void pushSaveAs() {
-		menuBarOperator().pushMenu("File|SaveAs", "|");		
+		menuBarOperator().pushMenu("File|SaveAs", "|");
 	}
-	public void pushSaveAsNoBlock(){
-		menuBarOperator().pushMenuNoBlock("File|SaveAs", "|");	
+
+	public void pushSaveAsNoBlock() {
+		menuBarOperator().pushMenuNoBlock("File|SaveAs", "|");
+	}
+
+	public void open(File outputFile) {
+		menuBarOperator().pushMenuNoBlock("File|Open", "|");
+		chooseFile(outputFile, "Open");
+
+	}
+
+	public void openAndCancel() {
+		menuBarOperator().pushMenuNoBlock("File|Open", "|");
+		chooseFile(null, "Cancel");
+
+	}
+
+	public void setDisplayMovies(Vector<Movie> movies) {
+		getView().setMovies(movies);
+
+	}
+
+	public void orderByName() {
+		menuBarOperator().pushMenu("View|Sort by name", "|");
+
+	}
+
+	public void orderByRating() {
+		menuBarOperator().pushMenu("View|Sort by rating", "|");
 	}
 
 }

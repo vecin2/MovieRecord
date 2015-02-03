@@ -13,6 +13,7 @@ import src.core.Movie;
 import src.core.MovieList;
 import src.core.MovieListFormatter;
 import src.core.exceptions.DuplicateMovieException;
+import src.core.exceptions.InvalidFileFormatException;
 import testUtils.FileAssertor;
 import testUtils.MoviesAssert;
 import static org.mockito.Mockito.*;
@@ -44,7 +45,7 @@ public class TestMovieList {
 		assertEquals("Braveheart (1995)", movieList.get(1).getName());
 	}
 
-	@Test(expected=DuplicateMovieException.class)
+	@Test(expected = DuplicateMovieException.class)
 	public void testWhenRenameMovieNameEndsInDuplicatedThrowsDuplicatedException()
 			throws DuplicateMovieException {
 		MovieList movieList = MovieList.create("Titanic");
@@ -52,51 +53,64 @@ public class TestMovieList {
 		movieList.add(braveHeart);
 		movieList.rename(braveHeart, "Titanic");
 	}
+
 	@Test
-	public void testFilterByCategory() throws DuplicateMovieException{
+	public void testFilterByCategory() throws DuplicateMovieException {
 		MovieList movieList;
-		movieList= new MovieList();
-		movieList.add(new Movie("Braveheart",Category.HORROR,5));
-		movieList.add(new Movie("Starwars",Category.SCIFI,4));
-		movieList.add(new Movie("Stargate",Category.HORROR,5));
-		
+		movieList = new MovieList();
+		movieList.add(new Movie("Braveheart", Category.HORROR, 5));
+		movieList.add(new Movie("Starwars", Category.SCIFI, 4));
+		movieList.add(new Movie("Stargate", Category.HORROR, 5));
+
 		MovieList filteredMovieList = movieList.filterBy(Category.HORROR);
-		
+
 		assertEquals(2, filteredMovieList.size());
 		assertEquals("Braveheart", filteredMovieList.get(0).getName());
 		assertEquals("Stargate", filteredMovieList.get(1).getName());
 	}
+
 	@Test
-	public void testWriteToWritesToTheFileTheResultTheFormatterProduces() throws IOException{
+	public void testWriteToWritesToTheFileTheResultTheFormatterProduces()
+			throws IOException {
 		File output = File.createTempFile("output", ".dat");
 		output.deleteOnExit();
 		MovieList movieList = new MovieList();
 		MovieListFormatter movieListFormatter = mock(MovieListFormatter.class);
-		when(movieListFormatter.fileFormat(movieList)).thenReturn("mocked file text\n");
-		
+		when(movieListFormatter.fileFormat(movieList)).thenReturn(
+				"mocked file text\n");
+
 		movieList.writeTo(output, movieListFormatter);
-		
+
 		FileAssertor.assertEqualFile("mocked file text\n", output);
 	}
+
 	@Test
-	public void testReadFromAFileBuildsAMovieList() throws IOException, NumberFormatException, DuplicateMovieException{
-		File output = File.createTempFile("output", ".dat");
-		output.deleteOnExit();
-		FileWriter fileWriter = new FileWriter(output);
-		fileWriter.write("Braveheart|" + Category.HORROR + "|5\n");
+	public void testReadFromAFileBuildsAMovieList() throws IOException,
+			NumberFormatException, DuplicateMovieException,
+			InvalidFileFormatException {
+		File input = File.createTempFile("output", ".dat");
+		input.deleteOnExit();
+		FileWriter fileWriter = new FileWriter(input);
+		String fileText = "Star Wars|" + Category.SCIFI + "|5\n";
+		fileText += "Star Trek|" + Category.SCIFI + "|4\n";
+		fileText += "Stargate|" + Category.HORROR + "|3\n";
+		fileWriter.write(fileText);
 		fileWriter.flush();
+		fileWriter.close();
 		MovieListFormatter movieListFormatter = mock(MovieListFormatter.class);
-		String formattedMoviesArray[] = {"Braveheart|" + Category.HORROR + "|5"};
-		MovieList expectedMovieList = new MovieList();
-		expectedMovieList.add(new Movie("Braveheart",Category.HORROR,5));
-		when(movieListFormatter.toMoviesList(formattedMoviesArray)).thenReturn(expectedMovieList);
-		
-		MovieList movieList = MovieList.readFrom(output, movieListFormatter);
-		
+		String formattedMoviesArray[] = { "Star Wars|" + Category.SCIFI + "|5",
+				"Star Trek|" + Category.SCIFI + "|4",
+				"Stargate|" + Category.HORROR + "|3" };
+		// return any list, the important test is to check that the formatter is
+		// invoked with the correct array string
+		MovieList mockedList = new MovieList();
+		when(movieListFormatter.toMoviesList(formattedMoviesArray)).thenReturn(
+				mockedList);
+
+		MovieList movieList = MovieList.readFrom(input, movieListFormatter);
 
 		verify(movieListFormatter).toMoviesList(formattedMoviesArray);
-		MoviesAssert.assertEqualMovieCollection(expectedMovieList, movieList);
+		MoviesAssert.assertEqualMovieCollection(mockedList, movieList);
 	}
-	
 
 }

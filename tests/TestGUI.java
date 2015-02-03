@@ -1,11 +1,15 @@
 package tests;
 
+import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Vector;
 
 import org.junit.Before;
@@ -17,8 +21,10 @@ import src.core.Movie;
 import src.core.MovieList;
 import src.core.MovieListEditor;
 import src.core.exceptions.DuplicateMovieException;
+import src.core.exceptions.InvalidFileFormatException;
 import src.core.exceptions.UnratedMovieException;
 import src.ui.MovieListEditorView;
+import testUtils.FileAssertor;
 import testUtils.MoviesAssert;
 
 public class TestGUI {
@@ -241,6 +247,41 @@ public class TestGUI {
 
 		MoviesAssert.assertEqualMovieCollection(movieList.getMovies(),
 				captureMovies);
+	}
+	@Test
+	public void testWhenOpenSetMoviesWithConvertedFileContent() throws IOException, NumberFormatException, DuplicateMovieException, InvalidFileFormatException, UnratedMovieException{
+		mockView = mock(MovieListEditorView.class);
+		File inputFile = File.createTempFile("movies", ".dat");
+		inputFile.deleteOnExit();
+		FileWriter fileWriter = new FileWriter(inputFile);
+		String fileText = "Star Wars|" + Category.SCIFI + "|5\n";
+		fileText += "Star Trek|" + Category.HORROR + "|1\n";
+		fileText += "Stargate|" + Category.HORROR + "|0\n";
+		fileWriter.write(fileText);
+		fileWriter.flush();
+		fileWriter.close();
+		when(mockView.getFileToOpen()).thenReturn(inputFile);
+		when(mockView.getCategoryFilter()).thenReturn(Category.ALL);
+		editor = new MovieListEditor(new MovieList(), mockView);
+		
+		assertTrue("Opening a file should return true when succesful", editor.open());
+		
+		ArgumentCaptor<Vector> captor = ArgumentCaptor.forClass(Vector.class);
+		verify(mockView,times(2)).setMovies(captor.capture());
+		MoviesAssert.assertEqualMovieCollection(new Vector<Movie>(), captor.getAllValues().get(0));
+		MoviesAssert.assertEqualMovieCollection(movies, captor.getAllValues().get(1));
+	}
+	@Test
+	public void testWhenOrderByNameCallsTheViewWithThelistOrdered(){
+		mockView = mock(MovieListEditorView.class);
+		when(mockView.getCategoryFilter()).thenReturn(Category.ALL);
+		editor = new MovieListEditor(movieList, mockView);
+		Vector<Movie> orderedMovies = new Vector<Movie>();
+		orderedMovies.add(starTrek);
+		orderedMovies.add(starWars);
+		orderedMovies.add(stargate);
+		editor.sortByName();
+		verify(mockView).setMovies(movies);
 	}
 	
 }
