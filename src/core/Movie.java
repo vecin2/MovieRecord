@@ -6,7 +6,7 @@ import src.core.exceptions.UnratedMovieException;
 
 public class Movie {
 	String name;
-	ArrayList<Integer> ratings = new ArrayList<Integer>();
+	ArrayList<Rating> ratings = new ArrayList<Rating>();
 	private Category category;
 
 	public Movie(String name) {
@@ -22,7 +22,7 @@ public class Movie {
 			throw new IllegalArgumentException();
 		this.name = name;
 		if (rating != -1)
-			this.ratings.add(rating);
+			this.ratings.add(new Rating(rating));
 		this.category = category;
 	}
 
@@ -73,12 +73,28 @@ public class Movie {
 	public int getRating() throws UnratedMovieException {
 		if (!isRated())
 			throw new UnratedMovieException("This movie has not been rated");
-		return ratings.get(0);
+		int ratingSum=0;
+		for(Rating rating: ratings){
+			ratingSum+= rating.getValue();
+		}
+		return ratingSum/ratings.size();
+	}
+	public int getRawRating() {
+		if(!isRated())
+			return -1;
+		else
+			try {
+				return getRating();
+			} catch (UnratedMovieException e) {
+				e.printStackTrace();
+			}
+		return 0;
+					
 	}
 
 	public void setRating(int rating) {
 		this.ratings.clear();
-		this.ratings.add(rating);
+		this.ratings.add(new Rating(rating));
 	}
 
 	public Category getCategory() {
@@ -87,5 +103,10 @@ public class Movie {
 
 	public void setCategory(Category category) {
 		this.category = category;
+	}
+
+	public void addRating(Rating rating) {
+		this.ratings.add(rating);
+		
 	}
 }

@@ -13,17 +13,9 @@ public class MovieRatingComparator implements Comparator {
 		Movie movie2 = (Movie) o2;
 		Integer rating1;
 		Integer rating2;
-		try {
-			rating1 = new Integer(movie1.getRating());
-		} catch (UnratedMovieException e) {
-			return -1;
-		}
-		try {
-			rating2 = new Integer(movie2.getRating());
-		} catch (UnratedMovieException e) {
-			return 1;
-		}
-		
+		rating1 = new Integer(movie1.getRawRating());
+		rating2 = new Integer(movie2.getRawRating());
+
 		return rating1.compareTo(rating2);
 	}
 

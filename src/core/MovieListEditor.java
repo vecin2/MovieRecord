@@ -22,12 +22,14 @@ public class MovieListEditor {
 	private MovieList filteredMovieList;
 	private Movie selectedMovie;
 	private File outputFile;
+	private ArrayList<Rating> ratingList;
 
 	public MovieListEditor(MovieList movieList, MovieListEditorView view) {
 		this.movieList = movieList;
 		this.view = view;
 		filter();
 		this.view.setEditor(this);
+		this.ratingList = new ArrayList<Rating>();
 	}
 
 	private void updateMovieList() {
@@ -132,5 +134,10 @@ public class MovieListEditor {
 		filteredMovieList.orderBy(new MovieRatingComparator(), OrderType.DESC);
 		updateMovieList();
 		
+	}
+
+	public void addRating() {
+		ratingList.add(new Rating(view.getRatingField(), view.getRatingSource()));
+		view.setRatings(new Vector<Rating>(ratingList));
 	}
 }

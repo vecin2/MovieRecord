@@ -20,6 +20,7 @@ import src.core.Category;
 import src.core.Movie;
 import src.core.MovieList;
 import src.core.MovieListEditor;
+import src.core.Rating;
 import src.core.exceptions.DuplicateMovieException;
 import src.core.exceptions.InvalidFileFormatException;
 import src.core.exceptions.UnratedMovieException;
@@ -83,6 +84,22 @@ public class TestGUI {
 		Vector<Movie> captureMovies = movieListCaptor.getValue();
 
 		MoviesAssert.assertEqualMovieCollection(movies, captureMovies);
+	}
+
+	@Test
+	public void testAddRating() throws UnratedMovieException {
+		mockView = mock(MovieListEditorView.class);
+		when(mockView.getCategoryFilter()).thenReturn(Category.ALL);
+		editor = new MovieListEditor(movieList, mockView);
+		when(mockView.getRatingField()).thenReturn(2);
+		when(mockView.getRatingSource()).thenReturn("Spielberg");
+		verify(mockView).setMovies(movies);
+
+		editor.addRating();
+		Vector<Rating> ratings = new Vector<Rating>();
+		ratings.add(new Rating(2, "Spielberg"));
+		verify(mockView).setRatings(ratings);
+
 	}
 
 	/* Test 31. Selecting a movie updates the rating in the GUI. */
@@ -155,7 +172,8 @@ public class TestGUI {
 	@Test
 	public void testChangingAMovieCategoryOnFilterListCausesTheMovieToDisappearFromTheList() {
 		mockView = mock(MovieListEditorView.class);
-		when(mockView.getCategoryFilter()).thenReturn(Category.ALL).thenReturn(Category.HORROR);
+		when(mockView.getCategoryFilter()).thenReturn(Category.ALL).thenReturn(
+				Category.HORROR);
 		when(mockView.getNameField()).thenReturn(stargate.getName());
 		when(mockView.getCategoryField()).thenReturn(Category.SCIFI);
 		editor = new MovieListEditor(movieList, mockView);
@@ -165,7 +183,7 @@ public class TestGUI {
 		ArgumentCaptor<Vector> movieListCaptor = ArgumentCaptor
 				.forClass(Vector.class);
 
-		verify(mockView,times(3)).setMovies(movieListCaptor.capture());
+		verify(mockView, times(3)).setMovies(movieListCaptor.capture());
 		assertEquals(1, movieListCaptor.getValue().size());
 		assertEquals(starTrek, movieListCaptor.getValue().get(0));
 	}
@@ -209,7 +227,7 @@ public class TestGUI {
 	public void testWhenSelectHorrorFilterItDisplayHorrorMoviesOnly()
 			throws DuplicateMovieException, UnratedMovieException {
 
-		MovieList horrorMovies = new MovieList();
+		Vector<Movie> horrorMovies = new Vector<Movie>();
 		horrorMovies.add(starTrek);
 		horrorMovies.add(stargate);
 		mockView = mock(MovieListEditorView.class);
@@ -218,13 +236,7 @@ public class TestGUI {
 
 		editor.filter();
 
-		ArgumentCaptor<Vector> movieListCaptor = ArgumentCaptor
-				.forClass(Vector.class);
-		verify(mockView, times(2)).setMovies(movieListCaptor.capture());
-		Vector<Movie> captureMovies = movieListCaptor.getValue();
-
-		MoviesAssert.assertEqualMovieCollection(horrorMovies.getMovies(),
-				captureMovies);
+		verify(mockView, times(2)).setMovies(horrorMovies);
 	}
 
 	@Test
@@ -240,16 +252,13 @@ public class TestGUI {
 		when(mockView.getCategoryFilter()).thenReturn(Category.ALL);
 		editor.filter();
 
-		ArgumentCaptor<Vector> movieListCaptor = ArgumentCaptor
-				.forClass(Vector.class);
-		verify(mockView, times(3)).setMovies(movieListCaptor.capture());
-		Vector<Movie> captureMovies = movieListCaptor.getValue();
-
-		MoviesAssert.assertEqualMovieCollection(movieList.getMovies(),
-				captureMovies);
+		verify(mockView, times(2)).setMovies(movies);
 	}
+
 	@Test
-	public void testWhenOpenSetMoviesWithConvertedFileContent() throws IOException, NumberFormatException, DuplicateMovieException, InvalidFileFormatException, UnratedMovieException{
+	public void testWhenOpenSetMoviesWithConvertedFileContent()
+			throws IOException, NumberFormatException, DuplicateMovieException,
+			InvalidFileFormatException, UnratedMovieException {
 		mockView = mock(MovieListEditorView.class);
 		File inputFile = File.createTempFile("movies", ".dat");
 		inputFile.deleteOnExit();
@@ -263,16 +272,20 @@ public class TestGUI {
 		when(mockView.getFileToOpen()).thenReturn(inputFile);
 		when(mockView.getCategoryFilter()).thenReturn(Category.ALL);
 		editor = new MovieListEditor(new MovieList(), mockView);
-		
-		assertTrue("Opening a file should return true when succesful", editor.open());
-		
+
+		assertTrue("Opening a file should return true when succesful",
+				editor.open());
+
 		ArgumentCaptor<Vector> captor = ArgumentCaptor.forClass(Vector.class);
-		verify(mockView,times(2)).setMovies(captor.capture());
-		MoviesAssert.assertEqualMovieCollection(new Vector<Movie>(), captor.getAllValues().get(0));
-		MoviesAssert.assertEqualMovieCollection(movies, captor.getAllValues().get(1));
+		verify(mockView, times(2)).setMovies(captor.capture());
+		MoviesAssert.assertEqualMovieCollection(new Vector<Movie>(), captor
+				.getAllValues().get(0));
+		MoviesAssert.assertEqualMovieCollection(movies, captor.getAllValues()
+				.get(1));
 	}
+
 	@Test
-	public void testWhenOrderByNameCallsTheViewWithThelistOrdered(){
+	public void testWhenOrderByNameCallsTheViewWithThelistOrdered() {
 		mockView = mock(MovieListEditorView.class);
 		when(mockView.getCategoryFilter()).thenReturn(Category.ALL);
 		editor = new MovieListEditor(movieList, mockView);
@@ -283,5 +296,5 @@ public class TestGUI {
 		editor.sortByName();
 		verify(mockView).setMovies(movies);
 	}
-	
+
 }

@@ -2,6 +2,7 @@ package testUtils;
 
 import static org.junit.Assert.assertEquals;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -13,6 +14,7 @@ import org.netbeans.jemmy.operators.JListOperator;
 
 import src.core.Movie;
 import src.core.MovieList;
+import src.core.Rating;
 import src.core.exceptions.UnratedMovieException;
 
 public class MoviesAssert {
@@ -59,5 +61,13 @@ public class MoviesAssert {
 		} catch (UnratedMovieException e) {
 			e.printStackTrace();
 		}
+	}
+
+	public static void assertRatingsEqualListModel(ArrayList<Rating> ratings,
+			ListModel<Rating> listModel) {
+		for (int i = 0; i < ratings.size(); i++) {
+			assertEquals(ratings.get(i),listModel.getElementAt(i));
+		}
+		
 	}
 }

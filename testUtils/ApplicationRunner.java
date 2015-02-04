@@ -3,6 +3,7 @@ package testUtils;
 import static org.junit.Assert.assertEquals;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Vector;
 
 import javax.swing.ListModel;
@@ -22,6 +23,7 @@ import org.netbeans.jemmy.util.NameComponentChooser;
 
 import src.core.Category;
 import src.core.Movie;
+import src.core.Rating;
 import src.core.exceptions.UnratedMovieException;
 import src.ui.CustomMovieListRenderer;
 import src.ui.MovieListEditorView;
@@ -42,6 +44,8 @@ public class ApplicationRunner {
 	private long backupWaitComponentTimeout;
 	private long backupWaitDialogTimeout;
 	private JMenuBarOperator menuBarOperator;
+	private JTextFieldOperator ratingSourceOperator;
+	private JButtonOperator addRatingBtnOperator;
 
 	public ApplicationRunner(String frameName) {
 		mainWindow = new JFrameOperator(frameName);
@@ -51,7 +55,29 @@ public class ApplicationRunner {
 		enterMovieName(movieName);
 		selectCategory(category);
 		selectRating(rating);
+		addRating(new Rating(rating));
 		clickAdd();
+	}
+
+	public void addRating(Rating rating) {
+		selectRating(rating.getValue());
+		ratingSourceOperator().setText(rating.getSource());
+		ratingBtnOperator().doClick();
+		
+	}
+
+	private JButtonOperator ratingBtnOperator() {
+		if (addRatingBtnOperator == null)
+			addRatingBtnOperator = new JButtonOperator(mainWindow,
+					new NameComponentChooser("addRatingBtn"));
+		return addRatingBtnOperator;
+	}
+
+	private JTextFieldOperator ratingSourceOperator() {
+		if (ratingSourceOperator == null)
+			ratingSourceOperator = new JTextFieldOperator(mainWindow,
+					new NameComponentChooser("ratingSource"));
+		return ratingSourceOperator;
 	}
 
 	public void clickAdd() {
@@ -72,7 +98,7 @@ public class ApplicationRunner {
 
 	private JButtonOperator addBtnOperator() {
 		if (addBtnOperator == null)
-			addBtnOperator = new JButtonOperator(mainWindow, "Add");
+			addBtnOperator = new JButtonOperator(mainWindow, new NameComponentChooser("addMovieBtn"));
 		return addBtnOperator;
 	}
 
@@ -261,6 +287,12 @@ public class ApplicationRunner {
 
 	public void orderByRating() {
 		menuBarOperator().pushMenu("View|Sort by rating", "|");
+	}
+
+	public void assertRatingDisplayedEqualTo(ArrayList<Rating> ratings) {
+		JListOperator ratingList = new JListOperator(mainWindow, new NameComponentChooser("ratingList"));
+		ListModel<Rating> listModel = ratingList.getModel();
+		MoviesAssert.assertRatingsEqualListModel(ratings, listModel);		
 	}
 
 }

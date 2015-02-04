@@ -1,11 +1,13 @@
 package tests.endToEnd;
 
+import java.util.ArrayList;
 import java.util.Vector;
 
 import org.junit.Test;
 
 import src.core.Category;
 import src.core.Movie;
+import src.core.Rating;
 import src.core.exceptions.DuplicateMovieException;
 import src.core.exceptions.UnratedMovieException;
 
@@ -21,13 +23,26 @@ public class TestSwingMovieListEditorView extends TestSettingupView {
 	// the name field when asked, and request that the logical layer add a movie
 	// when the add button is pushed.
 	@Test
-	public void testAdding() throws UnratedMovieException {
+	public void testAddingMovie() throws UnratedMovieException {
 		Movie newMovie = new Movie("New Movie", Category.SCIFI, 1);
 		movies.add(newMovie);
 
 		appRunner.addMovie("New Movie", Category.SCIFI, 2);
 
 		appRunner.assertMoviesDisplayedEqualTo(movies);
+	}
+
+	@Test
+	public void testAddingRating() throws UnratedMovieException {
+		Movie newMovie = new Movie("New Movie", Category.SCIFI, 1);
+		movies.add(newMovie);
+		ArrayList<Rating> ratings = new ArrayList<Rating>();
+		ratings.add(new Rating(2, "guru1"));
+		ratings.add(new Rating(3, "Spielberg"));
+		appRunner.addRating(ratings.get(0));
+		appRunner.addRating(ratings.get(1));
+		
+		appRunner.assertRatingDisplayedEqualTo(ratings);
 	}
 
 	/*
@@ -95,8 +110,8 @@ public class TestSwingMovieListEditorView extends TestSettingupView {
 	@Test
 	public void testAddingADuplicateMovieDisplaysErrorDialog() {
 		appRunner.addMovie(stargate.getName(), Category.HORROR, 2);
-		appRunner
-				.assertDisplaysDialogWithText("Duplicate Movie", "Adding this movie will result in a duplicate movie");
+		appRunner.assertDisplaysDialogWithText("Duplicate Movie",
+				"Adding this movie will result in a duplicate movie");
 		appRunner.clickOkInDialog();
 		appRunner.assertMoviesSize(movies.size());
 	}
@@ -109,8 +124,8 @@ public class TestSwingMovieListEditorView extends TestSettingupView {
 	public void testUpdatingDuplicateMovieDisplaysErroDialog()
 			throws UnratedMovieException {
 		appRunner.updateMovie(1, stargate);
-		appRunner
-				.assertDisplaysDialogWithText("Duplicate Movie", "Adding this movie will result in a duplicate movie");
+		appRunner.assertDisplaysDialogWithText("Duplicate Movie",
+				"Adding this movie will result in a duplicate movie");
 		appRunner.clickOkInDialog();
 
 		appRunner.assertMoviesSize(movies.size());
@@ -129,14 +144,15 @@ public class TestSwingMovieListEditorView extends TestSettingupView {
 		appRunner.selectMovie(1);
 		appRunner.enterMovieName(stargate.getName());
 		appRunner.clickUpdate();
-		appRunner
-				.assertDisplaysDialogWithText("Duplicate Movie", "Adding this movie will result in a duplicate movie");
+		appRunner.assertDisplaysDialogWithText("Duplicate Movie",
+				"Adding this movie will result in a duplicate movie");
 		appRunner.assertMoviesSize(2);
 
 	}
 
 	@Test
-	public void testFilteringList() throws DuplicateMovieException, UnratedMovieException {
+	public void testFilteringList() throws DuplicateMovieException,
+			UnratedMovieException {
 		appRunner.filterByCategory(Category.SCIFI);
 
 		Vector<Movie> filteredMovies = new Vector<Movie>();

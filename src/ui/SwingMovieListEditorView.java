@@ -39,6 +39,7 @@ import src.core.Category;
 import src.core.Movie;
 import src.core.MovieList;
 import src.core.MovieListEditor;
+import src.core.Rating;
 import src.core.exceptions.DuplicateMovieException;
 import src.core.exceptions.InvalidFileFormatException;
 
@@ -51,13 +52,16 @@ public class SwingMovieListEditorView extends JFrame implements
 	private JList<Movie> movieList = null;
 	private JTextField newMovieTxt;
 	private MovieListEditor editor = null;
-	private JComboBox<ImageIcon> ratingCombo;
 	private JComboBox<Category> categoryFilterCombo;
 	private JComboBox<Category> categoryCombo;
 	JMenuItem saveAs;
 	JMenu menu;
-	public int i = 0;
+	
+	private JComboBox<ImageIcon> ratingCombo;
+	private JTextField sourceRatingTxt;
+	private JList<Rating> ratingList = null;
 	public static SwingMovieListEditorView window;
+	private JButton addRatingBtn;
 
 	public SwingMovieListEditorView() {
 		super();
@@ -82,7 +86,7 @@ public class SwingMovieListEditorView extends JFrame implements
 		setTitle("Movie List");
 		setLayout();
 		setJMenuBar(initJMenuBar());
-		// getContentPane().add(initButtonSaveAs());
+
 		getContentPane().add(initMovieListPane());
 		getContentPane().add(initMovieDetailsPane());
 		getContentPane().add(initButtonPanel());
@@ -220,8 +224,41 @@ public class SwingMovieListEditorView extends JFrame implements
 		addVerticalStandardBtwComponents(movieDetailsPanel);
 		movieDetailsPanel.add(initCategoryComboBox());
 		addVerticalStandardBtwComponents(movieDetailsPanel);
-		movieDetailsPanel.add(initRatingComboBox());
+		movieDetailsPanel.add(initRatingsPanel());
 		return movieDetailsPanel;
+	}
+
+	private Component initRatingsPanel() {
+		JPanel ratingsPanel = new JPanel();
+		ratingsPanel.setLayout(new BoxLayout(ratingsPanel, BoxLayout.Y_AXIS));
+		addStandardEmptyBorder(ratingsPanel);
+		ratingList = new JList<Rating>();
+		ratingList.setName("ratingList");
+		ratingsPanel.add(ratingList);
+		ratingsPanel.add(initRatingComboBox());
+		ratingsPanel.add(initSourceTextField());
+		ratingsPanel.add(initAddRatingButton());
+		//addVerticalStandardBtwComponents(ratingsPanel);
+		return ratingsPanel;
+	}
+
+	private Component initAddRatingButton() {
+		addRatingBtn = new JButton("Add");
+		addRatingBtn.setName("addRatingBtn");
+		addRatingBtn.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				editor.addRating();
+			}
+		});
+		return addRatingBtn;
+	}
+
+	private Component initSourceTextField() {
+		sourceRatingTxt = new JTextField(16);
+		sourceRatingTxt.setName("ratingSource");
+		return sourceRatingTxt;
 	}
 
 	private Component initMovieListPane() {
@@ -270,6 +307,7 @@ public class SwingMovieListEditorView extends JFrame implements
 
 	private JComponent initAddBtn() {
 		JButton addBtn = new JButton("Add");
+		addBtn.setName("addMovieBtn");
 		addBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -395,5 +433,17 @@ public class SwingMovieListEditorView extends JFrame implements
 		} else {
 			return null;
 		}
+	}
+
+	@Override
+	public String getRatingSource() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void setRatings(Vector<Rating> vector) {
+		// TODO Auto-generated method stub
+		
 	}
 }
