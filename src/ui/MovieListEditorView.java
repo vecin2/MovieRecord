@@ -1,6 +1,8 @@
 package src.ui;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Vector;
 
 import src.core.Category;
@@ -23,4 +25,5 @@ public interface MovieListEditorView {
 	File getFileToOpen();
 	String getRatingSource();
 	void setRatings(Vector<Rating> vector);
+	ArrayList<Rating> getRatings();
 }

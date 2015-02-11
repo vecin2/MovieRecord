@@ -106,3 +106,6 @@ I have created a class "MovieListSorter", which defines the algorithm for sortin
 As well I defined types of sorting as ASC or DESC. This logic could be encapsulated on the Comparator, creating and Comparator that compares by ascending order and
 Comparator that compares by descending rating.
  
+ assertEquals list. 
+ It runs the equals method for each of the component!!
+ 

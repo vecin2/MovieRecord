@@ -51,19 +51,26 @@ public class ApplicationRunner {
 		mainWindow = new JFrameOperator(frameName);
 	}
 
-	public void addMovie(String movieName, Category category, int rating) {
+	public void addMovie(String movieName, Category category,
+		ArrayList<Rating> ratings) {
 		enterMovieName(movieName);
 		selectCategory(category);
-		selectRating(rating);
-		addRating(new Rating(rating));
+		addRatings(ratings);
 		clickAdd();
+	}
+
+	private void addRatings(ArrayList<Rating> ratings) {
+		for (Rating rating : ratings) {
+			addRating(rating);
+		}
+
 	}
 
 	public void addRating(Rating rating) {
 		selectRating(rating.getValue());
 		ratingSourceOperator().setText(rating.getSource());
 		ratingBtnOperator().doClick();
-		
+
 	}
 
 	private JButtonOperator ratingBtnOperator() {
@@ -85,7 +92,7 @@ public class ApplicationRunner {
 	}
 
 	public void selectRating(int rating) {
-		ratingOperator().setSelectedIndex(rating);
+		getView().setRatingField(rating);
 	}
 
 	public void selectCategory(Category category) {
@@ -98,20 +105,12 @@ public class ApplicationRunner {
 
 	private JButtonOperator addBtnOperator() {
 		if (addBtnOperator == null)
-			addBtnOperator = new JButtonOperator(mainWindow, new NameComponentChooser("addMovieBtn"));
+			addBtnOperator = new JButtonOperator(mainWindow,
+					new NameComponentChooser("addMovieBtn"));
 		return addBtnOperator;
 	}
 
-	public void assertMovieDetailsDisplays(String movieName, Category category,
-			int ratingIndex) {
-		assertEquals("wrong text from selection", movieName, movieNameField()
-				.getText());
-		assertEquals("Wrong category from selection", category,
-				categoryOperator().getSelectedItem());
-		assertEquals("wrong rating from selection",
-				CustomMovieListRenderer.iconForRating(ratingIndex),
-				ratingOperator().getSelectedItem());
-	}
+	
 
 	public Movie selectMovie(int movieIndex) {
 		return (Movie) listOperator().clickOnItem(movieIndex, 1);
@@ -152,8 +151,24 @@ public class ApplicationRunner {
 
 	public void assertMovieDetailsDisplays(Movie movie)
 			throws UnratedMovieException {
-		assertMovieDetailsDisplays(movie.getName(), movie.getCategory(),
-				movie.getRating() + 1);
+	
+		assertEquals("wrong text from selection", movie.getName(), movieNameField()
+				.getText());
+		assertEquals("Wrong category from selection", movie.getCategory(),
+				categoryOperator().getSelectedItem());
+		assertEquals("wrong rating from selection",
+				CustomMovieListRenderer.iconForRating(movie.getRating()+1),
+				ratingOperator().getSelectedItem());	
+		assertEquals("Wrong list of ratings displayed", movie.getRatings(), getView().getRatings());
+		//assertRatingsDisplayed(movie.getRatings());
+	}
+
+	private void assertRatingsDisplayed(ArrayList<Rating> ratings) {
+
+		for(int i=0; i < ratings.size(); i++){
+			assertEquals("wrong rating at "+ i, ratings.get(i).getValue(),getView().getRatings());
+		}
+		
 	}
 
 	public void filterByCategory(Category category) {
@@ -202,7 +217,7 @@ public class ApplicationRunner {
 		selectMovie(movieIndex);
 		enterMovieName(movie.getName());
 		selectCategory(movie.getCategory());
-		selectRating(movie.getRating() + 1);
+		selectRating(movie.getRating());
 		clickUpdate();
 	}
 
@@ -290,9 +305,10 @@ public class ApplicationRunner {
 	}
 
 	public void assertRatingDisplayedEqualTo(ArrayList<Rating> ratings) {
-		JListOperator ratingList = new JListOperator(mainWindow, new NameComponentChooser("ratingList"));
+		JListOperator ratingList = new JListOperator(mainWindow,
+				new NameComponentChooser("ratingList"));
 		ListModel<Rating> listModel = ratingList.getModel();
-		MoviesAssert.assertRatingsEqualListModel(ratings, listModel);		
+		MoviesAssert.assertRatingsEqualListModel(ratings, listModel);
 	}
 
 }

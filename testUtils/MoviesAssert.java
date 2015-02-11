@@ -66,7 +66,7 @@ public class MoviesAssert {
 	public static void assertRatingsEqualListModel(ArrayList<Rating> ratings,
 			ListModel<Rating> listModel) {
 		for (int i = 0; i < ratings.size(); i++) {
-			assertEquals(ratings.get(i),listModel.getElementAt(i));
+			assertEquals("Fail at element "+i,ratings.get(i),listModel.getElementAt(i));
 		}
 		
 	}

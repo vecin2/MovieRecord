@@ -3,28 +3,17 @@ package tests.endToEnd;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Vector;
-
-import javax.swing.JTextField;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.netbeans.jemmy.operators.JButtonOperator;
-import org.netbeans.jemmy.operators.JComboBoxOperator;
-import org.netbeans.jemmy.operators.JFileChooserOperator;
-import org.netbeans.jemmy.operators.JFrameOperator;
-import org.netbeans.jemmy.operators.JMenuBarOperator;
-import org.netbeans.jemmy.operators.JTextFieldOperator;
-import org.netbeans.jemmy.util.NameComponentChooser;
 
 import src.core.Category;
 import src.core.Movie;
-import src.core.MovieList;
-import src.core.MovieListEditor;
+import src.core.Rating;
 import src.core.exceptions.UnratedMovieException;
-import src.ui.SwingMovieListEditorView;
-import testUtils.ApplicationRunner;
 import testUtils.FileAssertor;
 
 public class TestSaveEndToEnd extends TestSettingupView {
@@ -58,8 +47,9 @@ public class TestSaveEndToEnd extends TestSettingupView {
 	public void testSave() throws IOException {
 		appRunner.saveAs(outputFile);
 		FileAssertor.assertEqualFile(fileText, outputFile);
-
-		appRunner.addMovie("Braveheart", Category.HORROR, 6);
+		ArrayList<Rating> ratings = new ArrayList<Rating>();
+		ratings.add(new Rating(5,"frank"));
+		appRunner.addMovie("Braveheart", Category.HORROR, ratings);
 		appRunner.save();
 
 		String extendedExpectedText = fileText + "Braveheart|Horror|5\n";

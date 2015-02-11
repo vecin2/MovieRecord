@@ -2,12 +2,11 @@ package src.ui;
 
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
@@ -31,9 +30,6 @@ import javax.swing.ListSelectionModel;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import javax.swing.plaf.FileChooserUI;
-
-import org.netbeans.jemmy.operators.JMenuBarOperator;
 
 import src.core.Category;
 import src.core.Movie;
@@ -56,7 +52,6 @@ public class SwingMovieListEditorView extends JFrame implements
 	private JComboBox<Category> categoryCombo;
 	JMenuItem saveAs;
 	JMenu menu;
-	
 	private JComboBox<ImageIcon> ratingCombo;
 	private JTextField sourceRatingTxt;
 	private JList<Rating> ratingList = null;
@@ -395,7 +390,7 @@ public class SwingMovieListEditorView extends JFrame implements
 
 	@Override
 	public int getRatingField() {
-		return ratingCombo.getSelectedIndex() - 1;
+		return ratingCombo.getSelectedIndex()-1;
 	}
 
 	@Override
@@ -437,13 +432,21 @@ public class SwingMovieListEditorView extends JFrame implements
 
 	@Override
 	public String getRatingSource() {
-		// TODO Auto-generated method stub
-		return null;
+		return sourceRatingTxt.getText();
 	}
 
 	@Override
-	public void setRatings(Vector<Rating> vector) {
-		// TODO Auto-generated method stub
+	public void setRatings(Vector<Rating> ratings) {
+		ratingList.setListData(ratings);
 		
+	}
+
+	@Override
+	public ArrayList<Rating> getRatings() {
+		ArrayList<Rating>viewRatings =new ArrayList<Rating>();
+		for(int i =0; i< ratingList.getModel().getSize(); i++){
+			viewRatings.add(ratingList.getModel().getElementAt(i));
+		}
+		return viewRatings;
 	}
 }

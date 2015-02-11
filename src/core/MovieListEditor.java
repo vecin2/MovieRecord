@@ -39,7 +39,9 @@ public class MovieListEditor {
 
 	public void addMovie() {
 		Movie newMovie = new Movie(view.getNameField(),
-				view.getCategoryField(), view.getRatingField());
+				view.getCategoryField());
+
+		newMovie.addRatings(view.getRatings());
 		try {
 			movieList.add(newMovie);
 		} catch (DuplicateMovieException e) {
@@ -58,6 +60,7 @@ public class MovieListEditor {
 			view.setCategoryField(selectedMovie.getCategory());
 			try {
 				view.setRatingField(selectedMovie.getRating());
+				view.setRatings(new Vector<Rating>(selectedMovie.getRatings()));
 			} catch (UnratedMovieException e) {
 				e.printStackTrace();
 			}

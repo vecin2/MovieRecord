@@ -18,11 +18,19 @@ public class Movie {
 	}
 
 	public Movie(String name, Category category, int rating) {
+		this(name, category, new Rating(rating));
+	}
+
+	public Movie(String name, Category category) {
+		this(name, category, -1);
+	}
+
+	public Movie(String name, Category category, Rating rating) {
 		if (name == null || name.equals(""))
 			throw new IllegalArgumentException();
 		this.name = name;
-		if (rating != -1)
-			this.ratings.add(new Rating(rating));
+		if (rating.getValue() != -1)
+			this.ratings.add(rating);
 		this.category = category;
 	}
 
@@ -108,5 +116,18 @@ public class Movie {
 	public void addRating(Rating rating) {
 		this.ratings.add(rating);
 		
+	}
+
+	public void addRatings(ArrayList<Rating> ratings) {
+		for(Rating rating: ratings){
+			this.addRating(rating);
+		}
+		
+	}
+
+	public ArrayList<Rating> getRatings() {
+		ArrayList<Rating>result = new ArrayList<Rating>();
+		result.addAll(ratings);
+		return result;
 	}
 }

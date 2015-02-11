@@ -24,18 +24,20 @@ public class TestSwingMovieListEditorView extends TestSettingupView {
 	// when the add button is pushed.
 	@Test
 	public void testAddingMovie() throws UnratedMovieException {
-		Movie newMovie = new Movie("New Movie", Category.SCIFI, 1);
+		Movie newMovie = new Movie("New Movie", Category.SCIFI);
+		newMovie.addRating(new Rating(2,"Dark Water"));
+		newMovie.addRating(new Rating(4, "Dark Water"));
 		movies.add(newMovie);
-
-		appRunner.addMovie("New Movie", Category.SCIFI, 2);
+		ArrayList<Rating> ratings = new ArrayList<Rating>();
+		ratings.add(new Rating(2,"Dark Water"));
+		ratings.add(new Rating(4, "Dark Water"));
+		appRunner.addMovie("New Movie", Category.SCIFI,ratings );
 
 		appRunner.assertMoviesDisplayedEqualTo(movies);
 	}
 
 	@Test
 	public void testAddingRating() throws UnratedMovieException {
-		Movie newMovie = new Movie("New Movie", Category.SCIFI, 1);
-		movies.add(newMovie);
 		ArrayList<Rating> ratings = new ArrayList<Rating>();
 		ratings.add(new Rating(2, "guru1"));
 		ratings.add(new Rating(3, "Spielberg"));
@@ -51,15 +53,15 @@ public class TestSwingMovieListEditorView extends TestSettingupView {
 	 * updates the displayed rating
 	 */
 	@Test
-	public void testWhenSelectFromOriginalListFillsMovieDetailsWithTheSelectedMovie() {
+	public void testWhenSelectFromOriginalListFillsMovieDetailsWithTheSelectedMovie() throws UnratedMovieException {
 		appRunner.selectMovie(0);
-		appRunner.assertMovieDetailsDisplays("Star Wars", Category.SCIFI, 4);
+		appRunner.assertMovieDetailsDisplays(starWars);
 
 		appRunner.selectMovie(1);
-		appRunner.assertMovieDetailsDisplays("Star Trek", Category.SCIFI, 5);
+		appRunner.assertMovieDetailsDisplays(starTrek);
 
 		appRunner.selectMovie(2);
-		appRunner.assertMovieDetailsDisplays("Stargate", Category.HORROR, 6);
+		appRunner.assertMovieDetailsDisplays(stargate);
 	}
 
 	@Test
@@ -91,7 +93,7 @@ public class TestSwingMovieListEditorView extends TestSettingupView {
 	public void testUpdateWithSameNameShouldNotThrowADuplicatedException()
 			throws UnratedMovieException {
 		appRunner.selectMovie(1);
-		appRunner.selectRating(3);
+		appRunner.selectRating(2);
 
 		appRunner.clickUpdate();
 
@@ -109,7 +111,9 @@ public class TestSwingMovieListEditorView extends TestSettingupView {
 	 */
 	@Test
 	public void testAddingADuplicateMovieDisplaysErrorDialog() {
-		appRunner.addMovie(stargate.getName(), Category.HORROR, 2);
+		ArrayList<Rating> ratings = new ArrayList<Rating>();
+		ratings.add(new Rating(2,"goum"));
+		appRunner.addMovie(stargate.getName(), Category.HORROR, ratings);
 		appRunner.assertDisplaysDialogWithText("Duplicate Movie",
 				"Adding this movie will result in a duplicate movie");
 		appRunner.clickOkInDialog();

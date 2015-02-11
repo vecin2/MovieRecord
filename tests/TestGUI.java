@@ -10,6 +10,7 @@ import static org.mockito.Mockito.when;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Vector;
 
 import org.junit.Before;
@@ -71,7 +72,9 @@ public class TestGUI {
 		when(mockView.getCategoryFilter()).thenReturn(Category.ALL);
 		editor = new MovieListEditor(movieList, mockView);
 		when(mockView.getNameField()).thenReturn("New Movie");
-		when(mockView.getRatingField()).thenReturn(2);
+		ArrayList<Rating> ratings = new ArrayList<Rating>();
+		ratings.add(new Rating(2,"rocker"));
+		when(mockView.getRatings()).thenReturn(ratings);
 		when(mockView.getCategoryField()).thenReturn(Category.HORROR);
 		verify(mockView).setMovies(movies);
 
@@ -87,12 +90,12 @@ public class TestGUI {
 	}
 
 	@Test
-	public void testAddRating() throws UnratedMovieException {
+	public void testAddRatings() throws UnratedMovieException {
 		mockView = mock(MovieListEditorView.class);
 		when(mockView.getCategoryFilter()).thenReturn(Category.ALL);
 		editor = new MovieListEditor(movieList, mockView);
-		when(mockView.getRatingField()).thenReturn(2);
-		when(mockView.getRatingSource()).thenReturn("Spielberg");
+		when(mockView.getRatingField()).thenReturn(2).thenReturn(4);
+		when(mockView.getRatingSource()).thenReturn("Spielberg").thenReturn("robert");
 		verify(mockView).setMovies(movies);
 
 		editor.addRating();
@@ -198,6 +201,7 @@ public class TestGUI {
 		mockView = mock(MovieListEditorView.class);
 		when(mockView.getCategoryFilter()).thenReturn(Category.ALL);
 		when(mockView.getNameField()).thenReturn("Star Wars");
+		when(mockView.getRatings()).thenReturn(new ArrayList<Rating>());
 
 		editor = new MovieListEditor(movieList, mockView);
 		editor.addMovie();

@@ -9,6 +9,7 @@ import src.core.Category;
 import src.core.Movie;
 import src.core.MovieList;
 import src.core.MovieListEditor;
+import src.core.Rating;
 import src.ui.SwingMovieListEditorView;
 import testUtils.ApplicationRunner;
 
@@ -27,9 +28,9 @@ public abstract class TestSettingupView {
 	@Before
 	public void setUp() throws Exception {
 		SwingMovieListEditorView.start();
-		starWars = new Movie("Star Wars", Category.SCIFI, 3);
-		starTrek = new Movie("Star Trek", Category.SCIFI, 4);
-		stargate = new Movie("Stargate", Category.HORROR, 5);
+		starWars = new Movie("Star Wars", Category.SCIFI, new Rating(3,"user1"));
+		starTrek = new Movie("Star Trek", Category.SCIFI, new Rating(4,"user2"));
+		stargate = new Movie("Stargate", Category.HORROR, new Rating(5,"user3"));
 		movies = new Vector<Movie>();
 		movies.add(starWars);
 		movies.add(starTrek);
