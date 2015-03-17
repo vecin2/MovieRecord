@@ -86,7 +86,7 @@ public class MovieList {
 		return result;
 	}
 
-	public void writeTo(File outputFile, MovieListFormatter movieListFormatter)
+	public void writeTo(File outputFile, MovieListFileFormatter movieListFormatter)
 			throws IOException {
 		FileWriter fileWriter = new FileWriter(outputFile);
 		fileWriter.write(movieListFormatter.fileFormat(this));
@@ -95,7 +95,7 @@ public class MovieList {
 	}
 
 	public static MovieList readFrom(File file,
-			MovieListFormatter movieListFormatter)
+			MovieListFileFormatter movieListFormatter)
 			throws NumberFormatException, DuplicateMovieException, IOException,
 			InvalidFileFormatException {
 

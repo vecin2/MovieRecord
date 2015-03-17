@@ -11,7 +11,8 @@ import org.junit.Test;
 import src.core.Category;
 import src.core.Movie;
 import src.core.MovieList;
-import src.core.MovieListFormatter;
+import src.core.MovieListFileFormatter;
+import src.core.MovieListFlatFileFormatter;
 import src.core.exceptions.DuplicateMovieException;
 import src.core.exceptions.InvalidFileFormatException;
 import testUtils.FileAssertor;
@@ -75,7 +76,7 @@ public class TestMovieList {
 		File output = File.createTempFile("output", ".dat");
 		output.deleteOnExit();
 		MovieList movieList = new MovieList();
-		MovieListFormatter movieListFormatter = mock(MovieListFormatter.class);
+		MovieListFileFormatter movieListFormatter = mock(MovieListFlatFileFormatter.class);
 		when(movieListFormatter.fileFormat(movieList)).thenReturn(
 				"mocked file text\n");
 
@@ -97,7 +98,7 @@ public class TestMovieList {
 		fileWriter.write(fileText);
 		fileWriter.flush();
 		fileWriter.close();
-		MovieListFormatter movieListFormatter = mock(MovieListFormatter.class);
+		MovieListFlatFileFormatter movieListFormatter = mock(MovieListFlatFileFormatter.class);
 		String formattedMoviesArray[] = { "Star Wars|" + Category.SCIFI + "|5",
 				"Star Trek|" + Category.SCIFI + "|4",
 				"Stargate|" + Category.HORROR + "|3" };

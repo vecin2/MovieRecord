@@ -109,3 +109,16 @@ Comparator that compares by descending rating.
  assertEquals list. 
  It runs the equals method for each of the component!!
  
+David does this all the time. We can see the inductive testing pattern emerging:
+1. test the basis case (no rating)
+2. test the next simplest case (one rating)
+3. test the general case (more than 1 rating)
+
+Dave approach is more step by step. First he follows the inductive test pattern for the multiple ratings requirement. Then he focus on the source field:
+testAnonynousRating
+testRatingWithSource
+
+Notice he used the following api: movie.addRating(5,"NY times"), instead of movie.addRating(new Rating(5,"NY Times"));
+
+When changing persistence from a flat file to an xml file, he does through away the previous tests and creates a new ones using a tool which helps writing xml code.
+ 

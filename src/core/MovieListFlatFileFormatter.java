@@ -4,8 +4,12 @@ import src.core.exceptions.DuplicateMovieException;
 import src.core.exceptions.InvalidFileFormatException;
 import src.core.exceptions.UnratedMovieException;
 
-public class MovieListFormatter {
+public class MovieListFlatFileFormatter implements MovieListFileFormatter {
 
+	/* (non-Javadoc)
+	 * @see src.core.MovieListFileFormatter#fileFormat(src.core.MovieList)
+	 */
+	@Override
 	public String fileFormat(MovieList movieList) {
 		String result = "";
 		for (Movie movie : movieList.getMovies()) {
@@ -26,6 +30,10 @@ public class MovieListFormatter {
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see src.core.MovieListFileFormatter#toMoviesList(java.lang.String[])
+	 */
+	@Override
 	public MovieList toMoviesList(String[] formattedMoviesText)
 			throws NumberFormatException, DuplicateMovieException, InvalidFileFormatException {
 		MovieList movieList = new MovieList();

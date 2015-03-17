@@ -8,18 +8,19 @@ import org.junit.Test;
 import src.core.Category;
 import src.core.Movie;
 import src.core.MovieList;
-import src.core.MovieListFormatter;
+import src.core.MovieListFileFormatter;
+import src.core.MovieListFlatFileFormatter;
 import src.core.exceptions.DuplicateMovieException;
 import src.core.exceptions.InvalidFileFormatException;
 import testUtils.MoviesAssert;
 
-public class TestMovieListFormatter {
-	MovieListFormatter formatter;
+public class TestMovieListFlatFileFormatter {
+	MovieListFileFormatter formatter;
 	private MovieList movieList;
 
 	@Before
 	public void setup() {
-		formatter = new MovieListFormatter();
+		formatter = new MovieListFlatFileFormatter();
 
 	}
 

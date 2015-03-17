@@ -98,7 +98,7 @@ public class MovieListEditor {
 	public boolean saveAs() throws IOException {
 		outputFile = view.getFile();
 		if (outputFile != null) {
-			movieList.writeTo(outputFile, new MovieListFormatter());
+			movieList.writeTo(outputFile, new MovieListFlatFileFormatter());
 			return true;
 		} else {
 			return false;
@@ -108,7 +108,7 @@ public class MovieListEditor {
 
 	public boolean save() throws IOException {
 		if (outputFile != null) {
-			movieList.writeTo(outputFile, new MovieListFormatter());
+			movieList.writeTo(outputFile, new MovieListFlatFileFormatter());
 			return true;
 		} else {
 			return false;
@@ -120,7 +120,7 @@ public class MovieListEditor {
 		outputFile = view.getFileToOpen();
 		if (outputFile != null) {
 			filteredMovieList = MovieList.readFrom(outputFile,
-					new MovieListFormatter());
+					new MovieListFlatFileFormatter());
 			updateMovieList();
 			return true;
 		}

@@ -14,7 +14,7 @@ import org.mockito.Mockito;
 import src.core.Category;
 import src.core.MovieList;
 import src.core.MovieListEditor;
-import src.core.MovieListFormatter;
+import src.core.MovieListFlatFileFormatter;
 import src.ui.MovieListEditorView;
 
 public class TestGUIPersistance {
@@ -33,7 +33,7 @@ public class TestGUIPersistance {
 		editor.saveAs();
 
 		verify(mockedMovieList).writeTo(Mockito.eq(outputFile),
-				Mockito.any(MovieListFormatter.class));
+				Mockito.any(MovieListFlatFileFormatter.class));
 	}
 	@Test
 	public void testCancelSaveAsWritesNothingToAfile() throws IOException {

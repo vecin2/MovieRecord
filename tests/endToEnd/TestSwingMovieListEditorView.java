@@ -80,6 +80,9 @@ public class TestSwingMovieListEditorView extends TestSettingupView {
 	public void testUpdate() throws UnratedMovieException {
 		Movie starTrekUpdated = new Movie("Star Trek (updated)",
 				Category.HORROR, 2);
+		ArrayList<Rating>ratings = new ArrayList<Rating>();
+		ratings.add(new Rating(5,"dav"));
+		ratings.add(new Rating(3,"raf"));
 		appRunner.updateMovie(1, starTrekUpdated);
 
 		appRunner.selectMovie(0);
