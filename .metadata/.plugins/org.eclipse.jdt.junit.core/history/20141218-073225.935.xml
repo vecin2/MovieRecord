@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?><testrun name="TestGUI" project="MovieRecord" tests="3" started="3" failures="0" errors="0" ignored="0">
-  <testsuite name="tests.TestGUI" time="0.127">
-    <testcase name="testConstructorCallsViewWithListToDisplay" classname="tests.TestGUI" time="0.121"/>
-    <testcase name="testAdd" classname="tests.TestGUI" time="0.004"/>
-    <testcase name="test" classname="tests.TestGUI" time="0.001"/>
-  </testsuite>
-</testrun>

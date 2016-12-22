@@ -1,5 +1,0 @@
-package src.core.exceptions;
-
-public class DuplicateMovieException extends Exception{
-
-}
