@@ -1,6 +1,6 @@
 package tests;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -8,13 +8,11 @@ import org.junit.Test;
 import src.core.Category;
 import src.core.Movie;
 import src.core.MovieList;
-import src.core.MovieListSorter;
 import src.core.OrderType;
 import src.core.exceptions.DuplicateMovieException;
 import src.core.exceptions.UnratedMovieException;
 import src.sorting.MovieNameComparator;
 import src.sorting.MovieRatingComparator;
-import testUtils.MoviesAssert;
 
 public class TestMovieListSorting {
 	private MovieList movieList;

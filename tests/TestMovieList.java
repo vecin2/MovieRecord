@@ -99,18 +99,15 @@ public class TestMovieList {
 		fileWriter.flush();
 		fileWriter.close();
 		MovieListFlatFileFormatter movieListFormatter = mock(MovieListFlatFileFormatter.class);
-		String formattedMoviesArray[] = { "Star Wars|" + Category.SCIFI + "|5",
-				"Star Trek|" + Category.SCIFI + "|4",
-				"Stargate|" + Category.HORROR + "|3" };
 		// return any list, the important test is to check that the formatter is
-		// invoked with the correct array string
+		// invoked with the correct  string
 		MovieList mockedList = new MovieList();
-		when(movieListFormatter.toMoviesList(formattedMoviesArray)).thenReturn(
+		when(movieListFormatter.toMoviesList(fileText)).thenReturn(
 				mockedList);
 
 		MovieList movieList = MovieList.readFrom(input, movieListFormatter);
 
-		verify(movieListFormatter).toMoviesList(formattedMoviesArray);
+		verify(movieListFormatter).toMoviesList(fileText);
 		MoviesAssert.assertEqualMovieCollection(mockedList, movieList);
 	}
 

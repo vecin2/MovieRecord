@@ -82,10 +82,6 @@ public class MovieListEditor {
 		}
 	}
 
-	public Movie getMovie(int i) {
-		return movieList.get(i);
-	}
-
 	public void filter() {
 		if (view.getCategoryFilter().equals(Category.ALL)) {
 			filteredMovieList = movieList;
@@ -98,7 +94,7 @@ public class MovieListEditor {
 	public boolean saveAs() throws IOException {
 		outputFile = view.getFile();
 		if (outputFile != null) {
-			movieList.writeTo(outputFile, new MovieListFlatFileFormatter());
+			movieList.writeTo(outputFile, new MovieListXMLFormatter());
 			return true;
 		} else {
 			return false;
@@ -108,7 +104,7 @@ public class MovieListEditor {
 
 	public boolean save() throws IOException {
 		if (outputFile != null) {
-			movieList.writeTo(outputFile, new MovieListFlatFileFormatter());
+			movieList.writeTo(outputFile, new MovieListXMLFormatter());
 			return true;
 		} else {
 			return false;
@@ -120,7 +116,7 @@ public class MovieListEditor {
 		outputFile = view.getFileToOpen();
 		if (outputFile != null) {
 			filteredMovieList = MovieList.readFrom(outputFile,
-					new MovieListFlatFileFormatter());
+					new MovieListXMLFormatter());
 			updateMovieList();
 			return true;
 		}

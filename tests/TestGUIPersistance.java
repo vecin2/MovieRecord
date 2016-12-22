@@ -1,6 +1,6 @@
 package tests;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -14,7 +14,7 @@ import org.mockito.Mockito;
 import src.core.Category;
 import src.core.MovieList;
 import src.core.MovieListEditor;
-import src.core.MovieListFlatFileFormatter;
+import src.core.MovieListXMLFormatter;
 import src.ui.MovieListEditorView;
 
 public class TestGUIPersistance {
@@ -33,7 +33,7 @@ public class TestGUIPersistance {
 		editor.saveAs();
 
 		verify(mockedMovieList).writeTo(Mockito.eq(outputFile),
-				Mockito.any(MovieListFlatFileFormatter.class));
+				Mockito.any(MovieListXMLFormatter.class));
 	}
 	@Test
 	public void testCancelSaveAsWritesNothingToAfile() throws IOException {

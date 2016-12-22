@@ -6,7 +6,9 @@ import src.core.exceptions.UnratedMovieException;
 
 public class MovieListFlatFileFormatter implements MovieListFileFormatter {
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see src.core.MovieListFileFormatter#fileFormat(src.core.MovieList)
 	 */
 	@Override
@@ -30,20 +32,27 @@ public class MovieListFlatFileFormatter implements MovieListFileFormatter {
 		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see src.core.MovieListFileFormatter#toMoviesList(java.lang.String[])
 	 */
 	@Override
-	public MovieList toMoviesList(String[] formattedMoviesText)
-			throws NumberFormatException, DuplicateMovieException, InvalidFileFormatException {
+	public MovieList toMoviesList(String fileContent)
+			throws NumberFormatException, DuplicateMovieException,
+			InvalidFileFormatException {
 		MovieList movieList = new MovieList();
-		for (int i=0; i < formattedMoviesText.length; i++) {
-			String line = formattedMoviesText[i];
-			String movieArray[] = line.split("\\|");
-			if(movieArray.length!=3)
-				throw new InvalidFileFormatException(i, line);
-			movieList.add(new Movie(movieArray[0], Category.make(movieArray[1]), Integer
-					.parseInt(movieArray[2])));
+		if (!fileContent.isEmpty()) {
+			String arrayFileContent[] = fileContent.split("\\n");
+
+			for (int i = 0; i < arrayFileContent.length; i++) {
+				String line = arrayFileContent[i];
+				String movieArray[] = line.split("\\|");
+				if (movieArray.length != 3)
+					throw new InvalidFileFormatException(i, line);
+				movieList.add(new Movie(movieArray[0], Category
+						.make(movieArray[1]), Integer.parseInt(movieArray[2])));
+			}
 		}
 		return movieList;
 	}

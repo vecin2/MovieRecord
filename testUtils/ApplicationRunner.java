@@ -23,6 +23,7 @@ import org.netbeans.jemmy.util.NameComponentChooser;
 
 import src.core.Category;
 import src.core.Movie;
+import src.core.MovieList;
 import src.core.Rating;
 import src.core.exceptions.UnratedMovieException;
 import src.ui.CustomMovieListRenderer;
@@ -160,16 +161,8 @@ public class ApplicationRunner {
 				CustomMovieListRenderer.iconForRating(movie.getRating()+1),
 				ratingOperator().getSelectedItem());	
 		assertEquals("Wrong list of ratings displayed", movie.getRatings(), getView().getRatings());
-		//assertRatingsDisplayed(movie.getRatings());
 	}
 
-	private void assertRatingsDisplayed(ArrayList<Rating> ratings) {
-
-		for(int i=0; i < ratings.size(); i++){
-			assertEquals("wrong rating at "+ i, ratings.get(i).getValue(),getView().getRatings());
-		}
-		
-	}
 
 	public void filterByCategory(Category category) {
 		categoryFilterOperator().setSelectedItem(category);
@@ -309,6 +302,15 @@ public class ApplicationRunner {
 				new NameComponentChooser("ratingList"));
 		ListModel<Rating> listModel = ratingList.getModel();
 		MoviesAssert.assertRatingsEqualListModel(ratings, listModel);
+	}
+
+	public void assertMoviesDisplayedEqualTo(MovieList movieList) throws UnratedMovieException {
+		Vector<Movie> movies = new Vector<>();
+		for(Movie movie: movieList.getMovies()){
+			movies.add(movie);
+		}
+		assertMoviesDisplayedEqualTo(movies);
+		
 	}
 
 }

@@ -170,7 +170,7 @@ public class SwingMovieListEditorView extends JFrame implements
 		JOptionPane
 				.showMessageDialog(
 						this,
-						"Wrong file format. Correct format is: Braveheart|HORROR|5. Please review the format and try again.",
+						"Wrong file format. Please review the format and try again.",
 						"Wrong file format", JOptionPane.ERROR_MESSAGE);
 
 	}

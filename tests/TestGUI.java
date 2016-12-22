@@ -80,7 +80,7 @@ public class TestGUI {
 
 		editor.addMovie();
 
-		movies.add(new Movie("New Movie", Category.HORROR, 2));
+		movies.add(new Movie("New Movie", Category.HORROR, ratings.get(0)));
 		ArgumentCaptor<Vector> movieListCaptor = ArgumentCaptor
 				.forClass(Vector.class);
 		verify(mockView, times(2)).setMovies(movieListCaptor.capture());

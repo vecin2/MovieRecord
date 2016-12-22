@@ -144,7 +144,7 @@ public class TestSwingMovieListEditorView extends TestSettingupView {
 	 * list are detected
 	 */
 	@Test
-	public void testUpdateFilteredListToDuplicateInAllListDisplaysErrorDialog()
+	public void testFilterListAndThenUpdateToDuplicateMovieDisplaysErrorDialog()
 			throws UnratedMovieException {
 		appRunner.selectMovie(1);
 		appRunner.filterByCategory(Category.SCIFI);

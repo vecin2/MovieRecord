@@ -56,7 +56,7 @@ public class TestMovieListFlatFileFormatter {
 			throws DuplicateMovieException, NumberFormatException,
 			InvalidFileFormatException {
 		MovieList expectedMovies = new MovieList();
-		String formattedMoviesText[] = {};
+		String formattedMoviesText = "";
 
 		movieList = formatter.toMoviesList(formattedMoviesText);
 
@@ -70,9 +70,9 @@ public class TestMovieListFlatFileFormatter {
 		MovieList expectedMovies = new MovieList();
 		expectedMovies.add(new Movie("Braveheart", Category.HORROR, 5));
 		expectedMovies.add(new Movie("Starwars", Category.SCIFI, 4));
-		String formattedMoviesText[] = {
-				"Braveheart|" + Category.HORROR + "|5",
-				"Starwars|" + Category.SCIFI + "|4" };
+		String formattedMoviesText = 
+				"Braveheart|" + Category.HORROR + "|5\n"+
+				"Starwars|" + Category.SCIFI + "|4";
 
 		movieList = formatter.toMoviesList(formattedMoviesText);
 
@@ -83,7 +83,7 @@ public class TestMovieListFlatFileFormatter {
 	public void testInvalidNumberOfAttributesThrowsInvalidFileFormatException()
 			throws DuplicateMovieException, NumberFormatException,
 			InvalidFileFormatException {
-		String formattedMoviesText[] = { "Braveheart|" + Category.HORROR };
+		String formattedMoviesText = "Braveheart|" + Category.HORROR;
 		movieList = formatter.toMoviesList(formattedMoviesText);
 	}
 
@@ -91,8 +91,7 @@ public class TestMovieListFlatFileFormatter {
 	public void testNoRatingNumberThrowsNumberFormatException()
 			throws DuplicateMovieException, NumberFormatException,
 			InvalidFileFormatException {
-		String formattedMoviesText[] = { "Braveheart|" + Category.HORROR + "|"
-				+ "a" };
+		String formattedMoviesText =  "Braveheart|" + Category.HORROR + "|a";
 		movieList = formatter.toMoviesList(formattedMoviesText);
 	}
 
@@ -100,9 +99,9 @@ public class TestMovieListFlatFileFormatter {
 	public void testDuplicateMovieThrowsDuplicateMovieException()
 			throws DuplicateMovieException, NumberFormatException,
 			InvalidFileFormatException {
-		String formattedMoviesText[] = {
-				"Braveheart|" + Category.HORROR + "|5",
-				"Braveheart|" + Category.SCIFI + "|1" };
+		String formattedMoviesText = 
+				"Braveheart|" + Category.HORROR + "|5\n"+
+				"Braveheart|" + Category.SCIFI + "|1";
 		movieList = formatter.toMoviesList(formattedMoviesText);
 	}
 

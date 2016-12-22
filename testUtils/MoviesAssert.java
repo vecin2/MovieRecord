@@ -20,29 +20,49 @@ import src.core.exceptions.UnratedMovieException;
 public class MoviesAssert {
 	public static void assertEqualMovieCollection(Collection<Movie> expected,
 			Collection<Movie> actual) throws UnratedMovieException {
-		assertEquals("Sizes are different", expected.size(),
-				actual.size());
+		assertEquals("Sizes are different", expected.size(), actual.size());
 		Iterator<Movie> expectedIterator = expected.iterator();
 		Iterator<Movie> actualIterator = actual.iterator();
-		int i=0;
-		while(expectedIterator.hasNext()){
+		int i = 0;
+		while (expectedIterator.hasNext()) {
 			Movie actualMovie = actualIterator.next();
 			Movie expectedMovie = expectedIterator.next();
-			assertEquals("Name failing on movie " + i, expectedMovie
-					.getName(), actualMovie.getName());
-			assertEquals("Category failing on movie " + i, expectedMovie
-					.getCategory(), actualMovie.getCategory());
-			assertEquals("Rating failing on movie " + i, expectedMovie
-					.getRating(), actualMovie.getRating());
+			assertEquals("Name failing on movie " + i, expectedMovie.getName(),
+					actualMovie.getName());
+			assertEquals("Category failing on movie " + i,
+					expectedMovie.getCategory(), actualMovie.getCategory());
+			assertRatingsEquals("Rating failing on movie " + i,
+					expectedMovie.getRatings(), actualMovie.getRatings());
 			i++;
-			
+
 		}
+	}
+
+	private static void assertRatingsEquals(String string,
+			ArrayList<Rating> expectedRatings, ArrayList<Rating> actualRatings) {
+		Iterator<Rating> expectedIterator = expectedRatings.iterator();
+		Iterator<Rating> actualIterator = actualRatings.iterator();
+		int i = 0;
+		while (expectedIterator.hasNext()) {
+
+			assertRatingEquals("Rating " + i + "is different from expected.",
+					expectedIterator.next(), actualIterator.next());
+			i++;
+		}
+
+	}
+
+	private static void assertRatingEquals(String errorMsg, Rating expected,
+			Rating actual) {
+		assertEquals(errorMsg +"Wrong value", expected.getValue(), actual.getValue());
+		assertEquals(errorMsg +"Wrong source", expected.getSource(), actual.getSource());
 	}
 
 	public static void assertEqualListModel(Vector<Movie> movies,
 			JListOperator movieListOperator) throws UnratedMovieException {
 		ListModel<Movie> listModel = movieListOperator.getModel();
-		assertEquals("Number of movies displayed is different from",movies.size(), listModel.getSize());
+		assertEquals("Number of movies displayed is different from",
+				movies.size(), listModel.getSize());
 		for (int i = 0; i < movies.size(); i++) {
 			assertEquals("Movie list contains bad movie at index " + i,
 					movies.get(i), listModel.getElementAt(i));
@@ -66,8 +86,9 @@ public class MoviesAssert {
 	public static void assertRatingsEqualListModel(ArrayList<Rating> ratings,
 			ListModel<Rating> listModel) {
 		for (int i = 0; i < ratings.size(); i++) {
-			assertEquals("Fail at element "+i,ratings.get(i),listModel.getElementAt(i));
+			assertEquals("Fail at element " + i, ratings.get(i),
+					listModel.getElementAt(i));
 		}
-		
+
 	}
 }

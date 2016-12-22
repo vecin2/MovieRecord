@@ -2,6 +2,7 @@ package tests.endToEnd;
 
 import java.util.Vector;
 
+import org.custommonkey.xmlunit.XMLTestCase;
 import org.junit.After;
 import org.junit.Before;
 
@@ -13,7 +14,7 @@ import src.core.Rating;
 import src.ui.SwingMovieListEditorView;
 import testUtils.ApplicationRunner;
 
-public abstract class TestSettingupView {
+public abstract class TestSettingupView extends XMLTestCase{
 
 	protected Vector<Movie> movies = null;
 	protected Movie starWars = null;

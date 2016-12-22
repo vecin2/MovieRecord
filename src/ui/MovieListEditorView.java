@@ -2,7 +2,6 @@ package src.ui;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Vector;
 
 import src.core.Category;

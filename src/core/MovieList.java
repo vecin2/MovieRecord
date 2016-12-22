@@ -8,6 +8,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Iterator;
 
 import src.core.exceptions.DuplicateMovieException;
 import src.core.exceptions.InvalidFileFormatException;
@@ -106,13 +107,17 @@ public class MovieList {
 			fileContent += line + "\n";
 			line = br.readLine();
 		}
-		return movieListFormatter.toMoviesList(fileContent.split("\\n"));
+		return movieListFormatter.toMoviesList(fileContent);
 
 	}
 
 	public void orderBy(Comparator comparator, OrderType orderType) {
 		MovieListSorter sorter = new MovieListSorter(this, orderType);
 		sorter.sort(comparator);
+	}
+
+	public Iterator<Movie> iterator() {
+		return movies.iterator();
 	}
 
 }

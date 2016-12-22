@@ -14,8 +14,8 @@ Then we could check the displayed list is correctly. I believe this would be a m
 #8
 The GUI should have a field for the movie name and an add button. It should answer the contents of the name field when asked, and request that the logical
 layer add a movie when the add button is pushed.
-Here it doesnt test it calls the logical obj method "add". Instead does the endToEnd test and it tests directly that the list have the right number of movies added.
-For this test to pass the logical class need to be implemented.
+Here the author is not testing the call to the logical layer on the method "add". Instead does the endToEnd test and it tests directly that the list have the 
+right number of movies added. For this test to pass the logical class need to be implemented.
 I would probably have done a mock here, and in the previous test I would have done a check on the number of elements of the list. The reason why, is because this 
 class seems to me the most outer class, the class that receive the event that triggers the action, and therefore I would start from there.
 
@@ -40,18 +40,13 @@ This test fail because of this:
 verify(mockClass).method(list)
 
 #32
-The book is not testing that the movie rate has been updated. Again it test, that the logical layer call the method on the view "getRatingField". I have decided
-to add a method getMovie, to the editor that allows me to a get a movie and assert on it. But I really should add this method to the view, so I can check the final 
-result rather than the just the logical class.
+The author is not testing that the movie rate has been updated. Again it test, that the logical layer call the method on the view "getRatingField".
 
 #44
-edit.filterOnCategory(Category.ALL), why in this case the editor recieves the category instead of taking from the UI with getCategoryField(), like rating and name.
+edit.filterOnCategory(Category.ALL), why in this case the editor receives the category instead of taking from the UI with getCategoryField(), like rating and name.
 
 #50 Persistance
-Astels uses a more bottom/up approach in the development of the stories. My goal is to determine or come up with a rule for my personal development, which defines
-
- 
-for most of the cases whether I start top/down or bottom/up.
+Astels uses a more bottom/up approach in the development of the stories. My goal is to determine or come up with a rule for my personal development, which defines for most of the cases whether I start top/down or bottom/up.
 The question do I start with a low level test like he does, testing movie and movieList classes.
 Or do I write a test to the editorMovieList logical object.
 Or do I write and end to end test, which adds two movies from the interface and them save them.
@@ -122,3 +117,12 @@ Notice he used the following api: movie.addRating(5,"NY times"), instead of movi
 
 When changing persistence from a flat file to an xml file, he does through away the previous tests and creates a new ones using a tool which helps writing xml code.
  
+ 
+**Summary**
+edit.filterOnCategory(Category.ALL), why in this case the editor receives the category instead of taking from the UI with getCategoryField(), like rating and name.
+Astels implements a design where the view always calls a method on the logical layer. However there are sometimes where it seems easier to just the view itself. For
+example: SaveAs, it calls the logical, who calls the view to display the filechooser popup. Instead the view could call directly a method within itself to display
+the filechooser, then under the ok button add the listener "editor.save()". Why does he do it? Keep consistency? 
+
+
+Check if it is possible no rating in amovie and if it writes the movielist

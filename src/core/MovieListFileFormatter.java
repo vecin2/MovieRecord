@@ -7,7 +7,7 @@ public interface MovieListFileFormatter {
 
 	public abstract String fileFormat(MovieList movieList);
 
-	public abstract MovieList toMoviesList(String[] formattedMoviesText)
+	public abstract MovieList toMoviesList(String formattedMoviesText)
 			throws NumberFormatException, DuplicateMovieException,
 			InvalidFileFormatException;
 
