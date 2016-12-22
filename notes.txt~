@@ -1,0 +1,131 @@
+Add Movie
+Test 7. When the logical layer is asked to add a movie, it should request the required data from the view and
+update the movie list to include a new movie based on the data provided.
+Test 8. The GUI should have a field for the movie name and an add button. It should answer the contents of
+the name field when asked, and request that the logical layer add a movie when the add button is pushed.
+
+It uses an approach in-out, since trigger comes from the GUI but instead of implementing this method first implements the logical layer first.
+Note as well that the listener of the button add dont get any parameter, instead the listener knows about the View and calls the method getMovieName on the View.
+
+#7
+Test add movie on MovieListeEditorView, uses mocks to check the view was called with right parameters. Instead we could add a method getDisplayed list on the View.
+Then we could check the displayed list is correctly. I believe this would be a more classic TDD approach, rather than the current mockist one.
+
+#8
+The GUI should have a field for the movie name and an add button. It should answer the contents of the name field when asked, and request that the logical
+layer add a movie when the add button is pushed.
+Here the author is not testing the call to the logical layer on the method "add". Instead does the endToEnd test and it tests directly that the list have the 
+right number of movies added. For this test to pass the logical class need to be implemented.
+I would probably have done a mock here, and in the previous test I would have done a check on the number of elements of the list. The reason why, is because this 
+class seems to me the most outer class, the class that receive the event that triggers the action, and therefore I would start from there.
+
+#14 and #15
+14 checks that the editor calls "setMovieName" on the view when selectItem is called.
+15 checks that when the list is clicked the textfield is populated with the movie name
+15 is more and end to end test, or at least an integration test between the logical and the view classes.
+If 15 works 14 has to work. 14 is a unit test for the editor class.
+
+Retrospective
+we implemented a simple GUI to expose the functionality we built.
+This is an important point. It's imperative to develop the system in as many wide-ranging slices as possible. Even after the first story
+you should have something to show.
+
+#23
+Learn that string == string1, does not always work. In the previous test it worked, but it didn't work in this one.
+Use instead string.equals(string1)
+
+
+#16 learning mockito
+This test fail because of this:
+verify(mockClass).method(list)
+
+#32
+The author is not testing that the movie rate has been updated. Again it test, that the logical layer call the method on the view "getRatingField".
+
+#44
+edit.filterOnCategory(Category.ALL), why in this case the editor receives the category instead of taking from the UI with getCategoryField(), like rating and name.
+
+#50 Persistance
+Astels uses a more bottom/up approach in the development of the stories. My goal is to determine or come up with a rule for my personal development, which defines
+
+ 
+for most of the cases whether I start top/down or bottom/up.
+The question do I start with a low level test like he does, testing movie and movieList classes.
+Or do I write a test to the editorMovieList logical object.
+Or do I write and end to end test, which adds two movies from the interface and them save them.
+
+Astels implements a design where the view always calls a method on the logical layer. However there are sometimes where it seems easier to just the view itself. For
+example: SaveAs, it calls the logical, who calls the view to display the filechooser popup. Instead the view could call directly a method within itself to display
+the filechooser, then under the ok button add the listener "editor.save()". Why does he do it? Keep consistency?
+
+#52 and #53
+These two test have some duplication, one test that the string that is written from the movielist is of the form Movie|title|rating... the other test this plus that 
+this is written into a file. In the test #53 we could mock the call which computes the string (Movie|title|rating), and just check that a file is created with 
+whatever returns the mock.
+When going for an out-in approach Problem testing that FileWriter containing the ouputFile is passed to the movieList.write method. Problem because theare too many
+mocks. We could create two methods one that just the FileWriter around but it seems to overkill it.
+We need to separate reponsabilities:
+1. Application layer which gets the info from the UI and it passes to the responsable object to execute the operation (this is the saveAs() method)
+1. Write to the file with the correct format.
+2. Format the movieList to be written into a file.
+We can cover this with three tests:
+One for the logical layer, to file got from the view is passed as a parameter to the movieList.writeTo() method. 
+And then two inside the movieList: 
+    one will check that file is written with the result of the formatter.
+    And the other will test the formatter itself.
+ 
+ David passes the writer to the movieList, which allows to formatting result using a StringWriter, but you end up with two tests that are testing a common requirement
+ saveAs() and writeTo() both check the text format written into the file is like "Braveheart|Horror|5..."
+ 
+ I have created unit tests for each of the classes formatter, movieList and editor. Now we need to pass the end to end test.
+
+
+**Bottom-up or Outer-inner development**
+With in-out approach less mocks need to be required. Because we create the inner code first then we can invoke from the next tests. However this produces some 
+duplication in the tests, since both tests, inner and outer are testing the inner funcionality. 
+ 
+
+*Rating*
+Rating could be a safe type enumeration. It would have:1,2,3,4,5. Containing an int inside, but not the image icon related with it, since we understand this is the
+visual representation of a rating and therefore should be included in the view, as it is now in the MovieListRenderer.
+
+
+*Exception Handling
+Two ways of manage exception handling. 
+The first one is having the logical layer catching the exceptions and calling handleWhatEverError() method on the view interface. This way the view should implement
+all the handleMethodErrors that the logical layer could possible create.
+The other one is having the logical layer throwing directly the exceptions. Then on button click of the view you would have the try catch block, which could have a
+diferent catch for everykind of exception. Maybe has one initially to catch all the types of exceptions but this could be change in the future to catch each exception
+separately without affecting the logical layer.
+
+*Ordering by name and rating
+Define a compare method which can compare two movies.
+I have created a class "MovieListSorter", which defines the algorithm for sorting. Instead I could used the JAVA collection method "sortUsing(Comparator comparator).
+As well I defined types of sorting as ASC or DESC. This logic could be encapsulated on the Comparator, creating and Comparator that compares by ascending order and
+Comparator that compares by descending rating.
+ 
+ assertEquals list. 
+ It runs the equals method for each of the component!!
+ 
+David does this all the time. We can see the inductive testing pattern emerging:
+1. test the basis case (no rating)
+2. test the next simplest case (one rating)
+3. test the general case (more than 1 rating)
+
+Dave approach is more step by step. First he follows the inductive test pattern for the multiple ratings requirement. Then he focus on the source field:
+testAnonynousRating
+testRatingWithSource
+
+Notice he used the following api: movie.addRating(5,"NY times"), instead of movie.addRating(new Rating(5,"NY Times"));
+
+When changing persistence from a flat file to an xml file, he does through away the previous tests and creates a new ones using a tool which helps writing xml code.
+ 
+ 
+**Summary**
+edit.filterOnCategory(Category.ALL), why in this case the editor receives the category instead of taking from the UI with getCategoryField(), like rating and name.
+Astels implements a design where the view always calls a method on the logical layer. However there are sometimes where it seems easier to just the view itself. For
+example: SaveAs, it calls the logical, who calls the view to display the filechooser popup. Instead the view could call directly a method within itself to display
+the filechooser, then under the ok button add the listener "editor.save()". Why does he do it? Keep consistency? 
+
+
+Check if it is possible no rating in amovie and if it writes the movielist
